@@ -1,0 +1,75 @@
+@import '../../../index.scss';
+
+.create-investor-container{
+    width: 100%;
+    overflow-x: hidden;
+
+    .banner{
+        width: 100%;
+        background-image: url(../../../imgs/login/login-background.jpeg);
+        background-size: cover;
+        background-position-y: -30px;
+        height: 80px;
+        margin-bottom: 100px;
+
+        .image-input{
+            position: relative;
+            width: 100%;
+            height: fit-content;
+            display: flex;
+            justify-content: center;
+            padding-top: 10px;
+            
+            img{
+                width: 40%;
+                border-radius: 50%;
+            }
+
+            .input-container{
+                position: absolute;
+                height: fit-content;
+                width: 35%;
+                bottom: -10px;
+                background-color: rgb(205, 205, 205);
+                border-radius: 40px;
+
+                input{
+                    width: 100%;
+                    opacity: 0;
+                    margin: 0;
+                }
+
+                &::before{
+                    width: fit-content;
+                    position: absolute;
+                    bottom: 5px;
+                    left: 0;
+                    right: 0;
+                    margin: auto auto;
+                    content: 'Upload image';
+                    color: rgb(64, 64, 64);
+                }
+            } 
+        }
+    }
+
+    section{
+        padding: 0 35px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .input-name{
+            width: 100%;
+            height: fit-content;
+        }
+        .input-about-me{
+            width: 100%;
+            height: fit-content;
+        }
+        .input-country-container{
+            width: 100%;
+            height: fit-content;
+        }
+    }
+}

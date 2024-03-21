@@ -5,15 +5,19 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.scss';
 
-import Home from './app/pages/home/Home';
-import About from './app/pages/aboutUs/About';
 import Template from './app/template';
+import RegisterPage from './app/pages/register/RegisterPage';
+import LoginPage from './app/pages/login/LoginPage';
+import PlainTemplate from './app/PlainTemplate';
+import CreateInvestor from './app/pages/create investor/CreateInvestor';
 
 const route = element => <Template>{element}</Template>
+const plainRoute = element => <PlainTemplate>{element}</PlainTemplate>
 
 const router = createBrowserRouter([
-  { path: '/', element: route(<Home/>)},
-  { path: '/about', element: route(<About/>)},
+  { path: '/', element: plainRoute(<RegisterPage/>)},
+  { path: '/login', element: plainRoute(<LoginPage/>)},
+  { path: '/set-up-investor', element: plainRoute(<CreateInvestor/>)},
   { path: '*', element: route('404')}
 ])
 

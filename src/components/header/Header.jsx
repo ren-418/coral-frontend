@@ -3,9 +3,9 @@ import './Header.scss'
 
 function Header() {
   return (
-    <>
-        <div>Header</div>
-    </>
+    <header>
+      
+    </header>
   )
 }
 

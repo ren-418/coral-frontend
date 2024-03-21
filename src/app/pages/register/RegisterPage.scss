@@ -1,0 +1,86 @@
+@import '../../../index.scss';
+
+body{
+    overflow: hidden; //Bloquea el scroll
+}
+
+.register-page{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    background-image: url('../../../imgs/register/register-background.jpg');
+    margin: 0;
+    overflow: hidden;
+    color: white;
+    z-index: 0;
+
+    .pink-background{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: $pink;
+        opacity: 80%;
+    }
+    
+    h1{
+        text-align: center;
+        z-index: 1;
+        font-size: 40px;
+    }
+
+    .form-container{
+        overflow: hidden;
+        height: fit-content;
+        padding: 5%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 1;
+
+        .check-container{
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+
+            label{
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            select{
+                margin-top: 10px;
+                font-size: 20px;
+            }
+        }
+
+        .button{
+            margin-top: 50px;
+            width: 200px;
+            height: 50px;
+            font-size: 20px;
+            border-radius: 10px;
+            border: none;
+        }
+    }
+
+    .login{
+        z-index: 1;
+        text-align: center;
+        margin-top: 20px;
+
+        p{
+            margin: 0;
+            margin-bottom: 5px;
+            font-size: 15px;
+        }
+
+        a{
+            font-weight: bold;
+            text-decoration: underline;
+            color: white;
+        }
+    }
+}

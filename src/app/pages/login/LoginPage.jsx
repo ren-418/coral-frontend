@@ -5,9 +5,6 @@ import ModernInput from '../../../components/modern inputs/ModernInput';
 
 
 function LoginPage() {
-  const email = useState()
-
-
   return (
     <>
     <div className="login-page">

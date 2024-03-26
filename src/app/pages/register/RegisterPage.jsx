@@ -2,6 +2,7 @@ import React from 'react'
 import './RegisterPage.scss'
 import { Link } from 'react-router-dom';
 import ModernInput from '../../../components/modern inputs/ModernInput';
+import ClassicInput from '../../../components/classic input/ClassicInput';
 
 function RegisterPage() {
   return (
@@ -12,10 +13,7 @@ function RegisterPage() {
       <div className='form-container'>
         <div className='check-container'>
           <label>Investor or enterprise?</label>
-          <select name="user">
-            <option value="enterprise">Enterprise</option>
-            <option value="inverstor">Investor</option>
-          </select>
+          <ClassicInput type='select' placeholder='Select account type' options={["Enterprise", "Investor"]}/>
         </div>
         <ModernInput type="text" color="white">Email</ModernInput>
         <ModernInput type="password" color="white">Password</ModernInput>

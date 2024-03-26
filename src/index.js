@@ -10,14 +10,16 @@ import RegisterPage from './app/pages/register/RegisterPage';
 import LoginPage from './app/pages/login/LoginPage';
 import PlainTemplate from './app/PlainTemplate';
 import CreateInvestor from './app/pages/create investor/CreateInvestor';
+import HeaderTemplate from './app/HeaderTemplate';
 
 const route = element => <Template>{element}</Template>
 const plainRoute = element => <PlainTemplate>{element}</PlainTemplate>
+const headerRoute = element => <HeaderTemplate title="Create Profile">{element}</HeaderTemplate>
 
 const router = createBrowserRouter([
   { path: '/', element: plainRoute(<RegisterPage/>)},
   { path: '/login', element: plainRoute(<LoginPage/>)},
-  { path: '/set-up-investor', element: plainRoute(<CreateInvestor/>)},
+  { path: '/set-up-investor', element: headerRoute(<CreateInvestor/>)},
   { path: '*', element: route('404')}
 ])
 

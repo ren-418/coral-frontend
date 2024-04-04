@@ -1,34 +1,55 @@
-.input-container{
+.modern-input-container{
+    width: 80%;
     display: flex;
     flex-direction: column;
-    align-items: left;
-    width: 80%;
-    position: relative;
+    align-items: center;
+    justify-content: center;
 
-    input{
+    .modern-input{
+        display: flex;
+        flex-direction: column;
+        align-items: left;
         width: 100%;
-        outline: none;
-        height: 25px;
-        background-color: transparent;
-        border: none;
-        border-bottom: 2px solid rgb(255, 255, 255);
-        font-size: 20px;
-        margin-top: 15%;
-        border-radius: 0;
+        position: relative;
+    
+        input{
+            width: 100%;
+            outline: none;
+            height: 25px;
+            background-color: transparent;
+            border: none;
+            border-bottom: 2px solid rgb(255, 255, 255);
+            font-size: 20px;
+            margin-top: 15%;
+            border-radius: 0;
+            color: white;
+        }
+    
+        label{
+            font-size: 20px;
+            position: absolute;
+            bottom: 10px;
+            pointer-events: none;
+            transition: 0.2s;
+            font-weight: bold;
+            font-weight: bold;
+        }
+    
+        input:focus + label, input:valid + label{
+            transform: translateY(-30px);
+        }
+    }
+
+    span{
+        align-self: flex-start;
+        text-align: left;
+        margin-top: 10px;
+        background-color: rgba(255, 0, 0, 0.466);
         color: white;
-    }
-
-    label{
-        font-size: 20px;
-        position: absolute;
-        bottom: 10px;
-        pointer-events: none;
-        transition: 0.2s;
-        font-weight: bold;
-        font-weight: bold;
-    }
-
-    input:focus + label, input:valid + label{
-        transform: translateY(-30px);
+        width: fit-content;
+        padding: 2px 15px;
+        border-radius: 100px;
+        max-width: 100%;
+        font-size: 11px;
     }
 }

@@ -13,7 +13,7 @@ function ClassicInput({children, type, placeholder, options, onChange, errorMess
               <select defaultValue="" onChange={(element)=>{onChange(element.target.value)}}>
                 <option value="" disabled>{placeholder}</option>
                 {options.map((op)=>(
-                  <option value={op} key={op}>{op}</option>
+                  <option value={op.toLowerCase()} key={op.toLowerCase()}>{op}</option>
                 ))}
               </select>
           }

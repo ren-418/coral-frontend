@@ -20,38 +20,40 @@ function RegisterPage() {
   });
 
 
-  /*const onSubmit = async () => {
-    setLoading(true);
-
-    try {
-      const res = await fetch('http://localhost:8080/api/v1/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password
-        }),
-      });
-
-      setLoading(false);
-
-      if (!res.ok) {
-        const error = await res.text();
-        handleError(error);
-      } else {
-        const message = await res.text();
-        console.log(message);
-        navigate('/login');
+  const onSubmit = async () => {
+    if(!hasErrors()){
+      try {
+        const res = await fetch('http://localhost:9090/api/v1/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+            accountType: accountType
+          }),
+        });
+  
+        //setLoading(false);
+  
+        if (!res.ok) {
+          const error = await res.text();
+          console.log(error);
+          //handleError(error);
+        } else {
+          const message = await res.text();
+          console.log(message);
+          //navigate('/login');
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
     }
-  };*/
+  };
 
-  function test(){
-    const newErrors = {};
+   function hasErrors(){
+    var newErrors = {};
     if (!email.includes('@')) {
       newErrors.email = 'Email inválido';
     }
@@ -66,6 +68,13 @@ function RegisterPage() {
     }
 
     setErrors(newErrors);
+
+    if(newErrors = {}){
+      return false;
+    }
+    else{
+      return true;
+    }
   }
 
   return (
@@ -81,7 +90,7 @@ function RegisterPage() {
         <ModernInput type="text" color="white" onChange={setEmail} errorMessage={errors.email}>Email</ModernInput>
         <ModernInput type="password" color="white" onChange={setPassword} errorMessage={errors.password}>Password</ModernInput>
         <ModernInput type="password" color="white" onChange={setConfirmPassword} errorMessage={errors.confirmPassword}>Repeat Password</ModernInput>
-        <button className='button' onClick={test}>Register</button>
+        <button className='button' onClick={onSubmit}>Register</button>
       </div>
       <div className='login'>
         <p>Already have an account?</p>

@@ -4,7 +4,28 @@ import ProfilePic from '../../../imgs/global/default-pp.png'
 import ClassicInput from '../../../components/classic input/ClassicInput'
 import Areas from '../../../data/areas.json'
 
+import Shark from '../../../imgs/global/shark.png'
+import Whale from '../../../imgs/global/whale.png'
+import Fish from '../../../imgs/global/fish.png'
+import Shrimp from '../../../imgs/global/shrimp.png'
+
 function CreateInvestor() {
+
+  const [typeInfo, setTypeInfo] = useState('');
+
+  function typeCheck(type){
+    if(type === "shark"){
+      setTypeInfo("For agresive investors")
+    }else if(type === "whale"){
+      setTypeInfo("For big investors")
+    }else if(type === "fish"){
+      setTypeInfo("For small investors")
+    }
+    else if(type === "shrimp"){
+      setTypeInfo("For small investors")
+    }
+  }
+
   //AREAS VARIABLES
   const [areaList, setAreaList] = useState([]);
   const [buttonColors, setButtonColors] = useState([]);
@@ -63,6 +84,9 @@ function CreateInvestor() {
           <div className="input-about-me">
             <ClassicInput type='textarea' placeholder="Tell people about you">About me*</ClassicInput>
           </div>
+          <div className="input-investment-criteria">
+            <ClassicInput type='textarea' placeholder="Tell people about your investment criteria">Investment Criteria*</ClassicInput>
+          </div>
           <div className="input-country-container">
             <ClassicInput type='select' placeholder="Select your country" options={["Argentina", "Tucuman"]}>Country*</ClassicInput>
           </div>
@@ -80,10 +104,41 @@ function CreateInvestor() {
             <label className='label-investment-range'>Investment range*</label>
             <p>How much are you willing to invest?</p>
               <div className='investment-inputs'>
-                <ClassicInput type='number' placeholder="From">From*</ClassicInput>
-                <ClassicInput type='number' placeholder="To">To*</ClassicInput>
+                <ClassicInput type='number' placeholder="Min">From*</ClassicInput>
+                <ClassicInput type='number' placeholder="Max">To*</ClassicInput>
               </div>
           </div>
+          <div className='investment-type-container'>
+            <label className='label-investment-type'>Investor type*</label>
+            <div className='investment-type-checks'>
+              <div className='check-container'>
+                <div className="img-container">
+                  <img src={Shark}/>
+                </div>
+                <input type='radio' name='type' value='shark' onClick={(event) => typeCheck(event.target.value)}/>
+              </div>
+              <div className='check-container'>
+                <div className="img-container">
+                  <img src={Whale}/>
+                </div>
+                <input type='radio' name='type' value='whale' onClick={(event) => typeCheck(event.target.value)}/>
+              </div>
+              <div className='check-container'>
+                <div className="img-container">
+                  <img src={Fish}/>
+                </div>
+                <input type='radio' name='type' value='fish' onClick={(event) => typeCheck(event.target.value)}/>
+              </div>
+              <div className='check-container'>
+                <div className="img-container">
+                  <img src={Shrimp}/>
+                </div>
+                <input type='radio' name='type' value='shrimp' onClick={(event) => typeCheck(event.target.value)}/>
+              </div>
+            </div>
+            <p className='info'>{typeInfo}</p>
+          </div>
+          <button className='create-profile-button'>Create Profile</button>
         </section>
     </div>
   )

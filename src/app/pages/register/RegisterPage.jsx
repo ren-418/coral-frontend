@@ -1,7 +1,7 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './RegisterPage.scss'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ModernInput from '../../../components/modern inputs/ModernInput';
 import ClassicInput from '../../../components/classic input/ClassicInput';
 import PopUp from '../../../components/popup/PopUp';
@@ -20,6 +20,7 @@ function RegisterPage() {
     confirmPassword: '',
     userType: ''
   });
+
   
   const onSubmit = async () => {
 
@@ -39,20 +40,20 @@ function RegisterPage() {
           }),
         });
     
+        const resMessage = await res.text();
+
         if (!res.ok) {
-          const error = await res.text();
-          setNewMessage(error, "error")
-          //handleError(error);
+          
+          setNewMessage(resMessage, "error")
         } else {
-          setNewMessage("Your account has been created", "success")
+          setNewMessage(resMessage, "success")
           setEmail("");
           setAccountType("");
           setPassword("");
           setConfirmPassword("");
         }
       } catch (error) {
-        console.error(error);
-        setNewMessage("An error has ocurred, please verify your connection", "error")
+        setNewMessage("An error has occurred, please verify your connection", "error")
       }
     }
     setLoading(false);
@@ -61,16 +62,16 @@ function RegisterPage() {
    function hasErrors(){
     var newErrors = {};
     if (isValidEmail(email) === false){
-      newErrors.email = 'Email inválido';
+      newErrors.email = 'Invalid email format';
     }
     if (password.length < 8) {
-      newErrors.password = 'La contraseña debe tener al menos 8 caracteres';
+      newErrors.password = 'Password must be at least 8 characters';
     }
     if (password !== confirmPassword) {
-      newErrors.confirmPassword = 'Las contraseñas no coinciden';
+      newErrors.confirmPassword = 'Passwords do not match';
     }
     if(accountType === ""){
-      newErrors.userType = 'Debes seleccionar un tipo de cuenta';
+      newErrors.userType = 'You must select an account type';
     }
 
     setErrors(newErrors);
@@ -96,15 +97,11 @@ function RegisterPage() {
     return emailPattern.test(email);
   }
 
-  const handleError = (error) => {
-
-  }
-
   return (
     <>
     <div className="register-page">
       {Object.keys(message).length !== 0 && 
-      <PopUp buttonText='Close' close={setMessage} to={'/login'}>{message}</PopUp>
+      <PopUp buttonText='Close' close={setMessage} redirectTo={'/login'}>{message}</PopUp>
       }
       <div className='form-container'>
         <h1>Register</h1>

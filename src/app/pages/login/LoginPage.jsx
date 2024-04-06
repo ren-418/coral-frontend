@@ -1,23 +1,110 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './LoginPage.scss'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ModernInput from '../../../components/modern inputs/ModernInput';
+import PopUp from '../../../components/popup/PopUp';
 
 
 function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({});
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if(user){
+      checkUser(user.userId);
+    }
+
+  }, []);
+
+  const onSubmit = async () => {
+
+    setLoading(true);
+
+    try {
+      const res = await fetch('http://localhost:9090/api/v1/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        }),
+      });
+
+      const resMessage = await res.text();
+  
+      if (!res.ok) {
+        setNewMessage(resMessage, "error");
+      } else {
+        setEmail("");
+        setPassword("");
+        //Redirect to home and save user id in local storage
+        localStorage.setItem('user', resMessage);
+        console.log(resMessage);
+        navigate('/');
+      }
+    } catch (error) {
+      setNewMessage("An error has occurred, please verify your connection", "error")
+    }
+
+    setLoading(false);
+  };
+
+  function setNewMessage(message, type){
+    var newMessage = {}
+    newMessage.text = message
+    newMessage.type = type
+    setMessage(newMessage);
+  }
+
+  const checkUser = async (userId) => {
+    try {
+      const res = await fetch('http://localhost:9090/api/v1/auth/check-user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userId,
+        }),
+      });
+  
+      const resMessage = await res.text();
+
+      if(!res.ok){
+        localStorage.removeItem('userId');
+      }
+      else{ 
+        navigate('/');
+      }
+
+    } catch (error) {
+      setNewMessage("An error has occurred, please verify your connection", "error")
+    }
+  }
+
   return (
     <>
     <div className="login-page">
-      <div className='pink-background'></div>
-      <h1>Login</h1>
+      {Object.keys(message).length !== 0 && 
+        <PopUp buttonText='Close' close={setMessage}>{message}</PopUp>
+      }
       <div className='form-container'>
-        <ModernInput type="text" color="white">Email</ModernInput>
-        <ModernInput type="password" color="white">Password</ModernInput>
-        <button className='button'>Login</button>
+        <h1>Login</h1>
+        <ModernInput type="text" color="white" onChange={setEmail} value={email}>Email</ModernInput>
+        <ModernInput type="password" color="white" onChange={setPassword} value={password}>Password</ModernInput>
+        <button className='button' onClick={onSubmit} disabled={loading}>Login</button>
       </div>
       <div className='register'>
         <p>Don't have an account?</p>
-        <Link to="/">Register here</Link>
+        <Link to="/register">Register here</Link>
       </div>
     </div>
     </>

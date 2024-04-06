@@ -41,15 +41,13 @@
     }
 
     span{
-        align-self: flex-start;
-        text-align: center;
-        margin-top: 10px;
+        align-self: center;
+        text-align: left;
         background-color: rgba(255, 0, 0, 0.466);
         color: white;
-        width: fit-content;
+        width: 91%;
         padding: 2px 15px;
-        border-radius: 100px;
         max-width: 100%;
-        font-size: 11px;
+        font-size: 13px;
     }
 }

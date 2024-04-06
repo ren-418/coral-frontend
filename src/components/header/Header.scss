@@ -1,0 +1,16 @@
+@import '../../index.scss';
+
+.logo-header{
+    width: 100%;
+    background-color: $pink;
+    height: 50px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    img{
+        width: 25%;
+    }
+}

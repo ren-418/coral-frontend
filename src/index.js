@@ -1,35 +1,34 @@
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import reportWebVitals from './reportWebVitals';
-import React from 'react';
+import React, {createContext} from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.scss';
 
-import Template from './app/template';
 import RegisterPage from './app/pages/register/RegisterPage';
 import LoginPage from './app/pages/login/LoginPage';
-import PlainTemplate from './app/PlainTemplate';
+import PlainTemplate from './app/templates/plain/PlainTemplate';
 import CreateInvestor from './app/pages/create investor/CreateInvestor';
-import HeaderTemplate from './app/HeaderTemplate';
+import HeaderTemplate from './app/templates/header/HeaderTemplate';
 import CreateEnterprise from './app/pages/create enterprise/CreateEnterprise';
+import Controller from './app/Controller';
 
-const route = element => <Template>{element}</Template>
+const route = element => <PlainTemplate selected={0}>{element}</PlainTemplate>
 const plainRoute = element => <PlainTemplate>{element}</PlainTemplate>
 const headerRoute = element => <HeaderTemplate title="Create Profile">{element}</HeaderTemplate>
 
+
 const router = createBrowserRouter([
-  { path: '/', element: plainRoute(<RegisterPage/>)},
+  { path: '/', element: route(<Controller/>)},
+  { path: '/register', element: plainRoute(<RegisterPage/>)},
   { path: '/login', element: plainRoute(<LoginPage/>)},
   { path: '/create-investor', element: headerRoute(<CreateInvestor/>)},
   { path: '/create-enterprise', element: headerRoute(<CreateEnterprise/>)},
-  { path: '*', element: route('404')}
+  { path: '*', element: plainRoute('404')}
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-      <RouterProvider router={router} />
-  </React.StrictMode>
+  <RouterProvider router={router} />
 );
 
 // If you want your app to work offline and load faster, you can change

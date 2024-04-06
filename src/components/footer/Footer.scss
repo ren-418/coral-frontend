@@ -1,0 +1,29 @@
+@import '../../index.scss';
+
+.footer-buttons{
+    width: 100%;
+    height: 50px;
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+    border-top: #9C9C9C 1px solid;
+    padding: 10px 0;
+    align-items: center;
+
+    div{
+        width: fit-content;
+        height: fit-content;
+    }
+
+    svg{
+        color: #686868;
+    }
+
+    .selected{
+        svg{
+            color: $pink
+        }
+    }
+}

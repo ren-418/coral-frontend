@@ -1,5 +1,4 @@
 import Home from './pages/home/Home'
-import LoginPage from './pages/login/LoginPage'
 import React, { useState, useEffect } from 'react'
 import Template from './templates/app template/template'
 import { Link, useNavigate } from 'react-router-dom';
@@ -21,11 +20,10 @@ function Controller() {
     const navigate = useNavigate();
 
   useEffect(() => {
-    const userObj = JSON.parse(localStorage.getItem('user'));
+    const sessionToken = localStorage.getItem('sessionToken');
 
-    if(userObj){
-        checkUserById(userObj.userId);
-        setUser(userObj);
+    if(sessionToken){
+        checkUser(sessionToken);
     }
     else{
         navigate('/login');
@@ -33,7 +31,7 @@ function Controller() {
 
   }, []);
 
-  const checkUserById = async (userId) => {
+  const checkUser = async (sessionToken) => {
     try {
       const res = await fetch('http://localhost:9090/api/v1/auth/check-user', {
         method: 'POST',
@@ -41,16 +39,33 @@ function Controller() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: userId,
+          sessionToken: sessionToken,
         }),
       });
   
       if(!res.ok){
-        localStorage.removeItem('user');
+        localStorage.removeItem('sessionToken');
         navigate('/login');
       }
       else{ 
-        navigate('/');
+        const user = await res.json();
+        if(res.ok){
+          setUser(user);
+
+          if(user.firstLogin === true){
+            if(user.userType === "InvestorUser"){
+              navigate('/create-investor');
+            }
+            else{
+              navigate('/create-enterprise');
+            }
+          }
+          else{
+            navigate('/');
+          }
+        }else{
+          navigate('/login');
+        }
       }
 
     } catch (error) {

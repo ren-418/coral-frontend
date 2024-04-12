@@ -20,8 +20,7 @@ function CreateInvestor() {
       setTypeInfo("For big investors")
     }else if(type === "fish"){
       setTypeInfo("For small investors")
-    }
-    else if(type === "shrimp"){
+    }else if(type === "shrimp"){
       setTypeInfo("For small investors")
     }
   }

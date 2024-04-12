@@ -10,7 +10,7 @@ export default function HeaderTemplate({ children, title }) {
 
   return (
     <>
-        <header>
+        <header className='text-header'>
             <h3>{title}</h3>    
         </header>
         <main>

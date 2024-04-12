@@ -14,10 +14,10 @@ function LoginPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-
-    if(user){
-      checkUser(user.userId);
+    const sessionToken = localStorage.getItem('sessionToken');
+    
+    if(sessionToken){
+      checkUser(sessionToken);
     }
 
   }, []);
@@ -46,8 +46,7 @@ function LoginPage() {
         setEmail("");
         setPassword("");
         //Redirect to home and save user id in local storage
-        localStorage.setItem('user', resMessage);
-        console.log(resMessage);
+        localStorage.setItem('sessionToken', resMessage);
         navigate('/');
       }
     } catch (error) {
@@ -64,7 +63,7 @@ function LoginPage() {
     setMessage(newMessage);
   }
 
-  const checkUser = async (userId) => {
+  const checkUser = async (sessionToken) => {
     try {
       const res = await fetch('http://localhost:9090/api/v1/auth/check-user', {
         method: 'POST',
@@ -72,14 +71,12 @@ function LoginPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: userId,
+          sessionToken: sessionToken,
         }),
       });
   
-      const resMessage = await res.text();
-
       if(!res.ok){
-        localStorage.removeItem('userId');
+        localStorage.removeItem('sessionToken');
       }
       else{ 
         navigate('/');

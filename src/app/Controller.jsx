@@ -2,6 +2,7 @@ import Home from './pages/home/Home'
 import React, { useState, useEffect } from 'react'
 import Template from './templates/app template/template'
 import { Link, useNavigate } from 'react-router-dom';
+import Profile from './pages/profile/Profile';
 
 function Controller() {
     const routes = {
@@ -15,7 +16,6 @@ function Controller() {
 
     const [page, setPage] = useState(routes.home)
     const [user, setUser] = useState({})
-
 
     const navigate = useNavigate();
 
@@ -79,7 +79,7 @@ function Controller() {
         {page === routes.search && <Template selected={page} setPage={setPage} userType={user.userType}><Home/></Template>}
         {page === routes.add && <Template selected={page} setPage={setPage} userType={user.userType}> <Home/></Template>}
         {page === routes.messages && <Template selected={page} setPage={setPage} userType={user.userType}><Home/></Template>}
-        {page === routes.profile && <Template selected={page} setPage={setPage} userType={user.userType}><Home/></Template>}
+        {page === routes.profile && <Template selected={page} setPage={setPage} userType={user.userType}><Profile/></Template>}
         {page === routes.news && <Template selected={page} setPage={setPage} userType={user.userType}><Home/></Template>}
     </>
   )

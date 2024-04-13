@@ -49,11 +49,11 @@ function LoginPage() {
         localStorage.setItem('sessionToken', resMessage);
         navigate('/');
       }
+      setLoading(false);
     } catch (error) {
       setNewMessage("An error has occurred, please verify your connection", "error")
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   function setNewMessage(message, type){

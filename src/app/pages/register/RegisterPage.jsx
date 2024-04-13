@@ -43,7 +43,6 @@ function RegisterPage() {
         const resMessage = await res.text();
 
         if (!res.ok) {
-          
           setNewMessage(resMessage, "error")
         } else {
           setNewMessage(resMessage, "success")

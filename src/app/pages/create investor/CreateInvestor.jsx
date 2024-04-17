@@ -21,11 +21,53 @@ function CreateInvestor() {
   const [aboutMe, setAboutME] = useState('');
   const [invCritera, setInvCritera] = useState('');
   const [country, setCountry] = useState('');
-  const [invMin, setInvMin] = useState(0);
-  const [invMax, setInvMax] = useState(0);
-  const [investorType, setInvestorType] = useState();
+  const [invMin, setInvMin] = useState(-1);
+  const [invMax, setInvMax] = useState(-1);
+  const [investorType, setInvestorType] = useState(-1);
 
   const [message, setMessage] = useState({});
+
+  //AREAS VARIABLES
+  const [areaList, setAreaList] = useState([]);
+  const [buttonColors, setButtonColors] = useState([]);
+  const [buttonTextColor, setButtonTextColor] = useState([]);
+
+  const [errors, setErrors] = useState({
+    name: '',
+    aboutMe: '',
+    criteria: '',
+    country: '',
+    invMin: '',
+    invMax: '',
+    investorType: '',
+    areas: ''
+  });
+
+  const [imageSrc, setImageSrc] = useState();
+  const [imageUpload, setImageUpload] = useState();
+
+
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+  
+    reader.onload = () => {
+      // Convert the result to a Uint8Array (byte array)
+      const byteArray = new Uint8Array(reader.result);
+      
+      // Set the imageSrc state with the Blob object
+      const blob = new Blob([byteArray], { type: file.type });
+      setImageSrc(blob);
+  
+      // Set the imageUpload state with the byte array
+      setImageUpload(byteArray);
+    };
+  
+    // Read the file as an array buffer
+    reader.readAsArrayBuffer(file);
+  };
+  
 
   const navigate = useNavigate();
 
@@ -44,11 +86,6 @@ function CreateInvestor() {
       setTypeInfo("For small investors")
     }
   }
-
-  //AREAS VARIABLES
-  const [areaList, setAreaList] = useState([]);
-  const [buttonColors, setButtonColors] = useState([]);
-  const [buttonTextColor, setButtonTextColor] = useState([]);
 
   //Change the color of the button when clicked (area of interest)
   function areaCheck(area, index) {
@@ -86,39 +123,83 @@ function CreateInvestor() {
     }
   }
 
-  const onSubmit = async () => {
-    try {
-      const res = await fetch('http://localhost:9090/api/v1/users/create-investor-profile', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          sessionToken: localStorage.getItem("sessionToken"),
-          name: name,
-          description: aboutMe,
-          investmentCriteria: invCritera,
-          location: country,
-          rangeMin: invMin,
-          rangeMax: invMax,
-          investorType: investorType,
-          firstLogin: false
-        }),
-      });
-
-      const resMessage = await res.text();
-  
-      if (!res.ok) {
-        setNewMessage(resMessage, "error");
-      } else {
-        //Redirect to home and save user id in local storage
-        navigate('/');
-      }
-      setLoading(false);
-    } catch (error) {
-      setNewMessage("An error has occurred, please verify your connection", "error")
-      setLoading(false);
+  function hasErrors(){
+    var newErrors = {};
+    if (name === ""){
+      newErrors.name = 'Insert a name for your account';
     }
+    if (aboutMe === ""){
+      newErrors.aboutMe = 'Insert a short description';
+    }
+    if (invCritera === ""){
+      newErrors.critera = 'Insert information about the type of enterprises you want to invest in';
+    }
+    if (country === ""){
+      newErrors.country = 'Please select a country of residence';
+    }
+    if (invMin === -1){
+      newErrors.invMin = 'Insert the minimum amount you are willing to invest in an enterprise';
+    }
+    if (invMax === -1){
+      newErrors.invMax = 'Insert the maximum amount you are willing to invest in an enterprise'
+    }
+    if (investorType === -1){
+      newErrors.investorType = 'Please select an investor type'
+    }
+    if (areaList.length === 0){
+      newErrors.areas = 'Please select at least one area of interest'
+    }
+
+    setErrors(newErrors);
+
+    if(Object.keys(newErrors).length === 0){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
+  const onSubmit = async () => {
+
+    setLoading(true)
+
+    if(!hasErrors()){
+      try {
+        const res = await fetch('http://localhost:9090/api/v1/users/create-investor-profile', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            sessionToken: localStorage.getItem("sessionToken"),
+            profileImage: imageUpload,
+            name: name,
+            description: aboutMe,
+            investmentCriteria: invCritera,
+            location: country,
+            rangeMin: invMin,
+            rangeMax: invMax,
+            investorType: investorType,
+            firstLogin: false
+          }),
+        });
+  
+        const resMessage = await res.text();
+    
+        if (!res.ok) {
+          setNewMessage(resMessage, "error");
+        } else {
+          //Redirect to home and save user id in local storage
+          navigate('/');
+        }
+        setLoading(false);
+      } catch (error) {
+        setNewMessage("An error has occurred, please verify your connection", "error")
+        setLoading(false);
+      }
+    }
+    setLoading(false)
   };
 
   function setNewMessage(message, type){
@@ -135,24 +216,24 @@ function CreateInvestor() {
       }
         <div className='banner'>
             <div className='image-input'>
-                <img src={ProfilePic}/>
+                {imageSrc ? <img src={URL.createObjectURL(imageSrc)}/> : <img src={ProfilePic}/>}
                 <div className="input-container">
-                  <input type="file" name="profile-pic" accept=".png,.jpeg,.jpg"/>
+                  <input id="profileImage" type="file" name="profile-pic" accept=".png,.jpeg,.jpg" onChange={handleImageUpload}/>
                 </div>
             </div>   
         </div>
         <section>
           <div className="input-name">
-            <ClassicInput type='text' placeholder="Full name" onChange={setName}>Name*</ClassicInput>
+            <ClassicInput type='text' placeholder="Full name" onChange={setName} errorMessage={errors.name}>Name*</ClassicInput>
           </div>
           <div className="input-about-me">
-            <ClassicInput type='textarea' placeholder="Tell people about you" onChange={setAboutME}>About me*</ClassicInput>
+            <ClassicInput type='textarea' placeholder="Tell people about you" onChange={setAboutME} errorMessage={errors.aboutMe}>About me*</ClassicInput>
           </div>
           <div className="input-investment-criteria">
-            <ClassicInput type='textarea' placeholder="Tell people about your investment criteria" onChange={setInvCritera}>Investment Criteria*</ClassicInput>
+            <ClassicInput type='textarea' placeholder="Tell people about your investment criteria" onChange={setInvCritera} errorMessage={errors.criteria}>Investment Criteria*</ClassicInput>
           </div>
           <div className="input-country-container">
-            <ClassicInput type='select' placeholder="Select your country" options={["Argentina", "Tucuman"]} onChange={setCountry}>Country*</ClassicInput>
+            <ClassicInput type='select' placeholder="Select your country" options={["Argentina", "Tucuman"]} onChange={setCountry} errorMessage={errors.country}>Country*</ClassicInput>
           </div>
           <div className="areas-container">
             <label className='label-areas'>Areas of interest*</label>
@@ -163,13 +244,14 @@ function CreateInvestor() {
                 </div>
               ))}
             </div>
+            {errors.areas != '' && <p>{errors.areas}</p>}
           </div>
           <div className='investment-range-container'>
             <label className='label-investment-range'>Investment range*</label>
             <p>How much are you willing to invest?</p>
               <div className='investment-inputs'>
-                <ClassicInput type='number' placeholder="Min" onChange={setInvMin}>From*</ClassicInput>
-                <ClassicInput type='number' placeholder="Max" onChange={setInvMax}>To*</ClassicInput>
+                <ClassicInput type='number' placeholder="Min" onChange={setInvMin} errorMessage={errors.invMin}>From*</ClassicInput>
+                <ClassicInput type='number' placeholder="Max" onChange={setInvMax} errorMessage={errors.invMax}>To*</ClassicInput>
               </div>
           </div>
           <div className='investment-type-container'>
@@ -201,6 +283,7 @@ function CreateInvestor() {
               </div>
             </div>
             <p className='info'>{typeInfo}</p>
+            {errors.investorType != '' && <p>{errors.investorType}</p>}
           </div>
           <button disabled={loading} onClick={onSubmit} className='create-profile-button'>Create Profile</button>
         </section>

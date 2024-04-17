@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './CreateInvestor.scss'
 import ProfilePic from '../../../imgs/global/default-pp.png'
 import ClassicInput from '../../../components/classic input/ClassicInput'
@@ -9,18 +10,37 @@ import Whale from '../../../imgs/global/whale.png'
 import Fish from '../../../imgs/global/fish.png'
 import Shrimp from '../../../imgs/global/shrimp.png'
 
+import PopUp from '../../../components/popup/PopUp';
+
 function CreateInvestor() {
 
   const [typeInfo, setTypeInfo] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const [name, setName] = useState('');
+  const [aboutMe, setAboutME] = useState('');
+  const [invCritera, setInvCritera] = useState('');
+  const [country, setCountry] = useState('');
+  const [invMin, setInvMin] = useState(0);
+  const [invMax, setInvMax] = useState(0);
+  const [investorType, setInvestorType] = useState();
+
+  const [message, setMessage] = useState({});
+
+  const navigate = useNavigate();
 
   function typeCheck(type){
     if(type === "shark"){
+      setInvestorType(0)
       setTypeInfo("For agresive investors")
     }else if(type === "whale"){
+      setInvestorType(1)
       setTypeInfo("For big investors")
     }else if(type === "fish"){
+      setInvestorType(2)
       setTypeInfo("For small investors")
     }else if(type === "shrimp"){
+      setInvestorType(3)
       setTypeInfo("For small investors")
     }
   }
@@ -66,8 +86,53 @@ function CreateInvestor() {
     }
   }
 
+  const onSubmit = async () => {
+    try {
+      const res = await fetch('http://localhost:9090/api/v1/users/create-investor-profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sessionToken: localStorage.getItem("sessionToken"),
+          name: name,
+          description: aboutMe,
+          investmentCriteria: invCritera,
+          location: country,
+          rangeMin: invMin,
+          rangeMax: invMax,
+          investorType: investorType,
+          firstLogin: false
+        }),
+      });
+
+      const resMessage = await res.text();
+  
+      if (!res.ok) {
+        setNewMessage(resMessage, "error");
+      } else {
+        //Redirect to home and save user id in local storage
+        navigate('/');
+      }
+      setLoading(false);
+    } catch (error) {
+      setNewMessage("An error has occurred, please verify your connection", "error")
+      setLoading(false);
+    }
+  };
+
+  function setNewMessage(message, type){
+    var newMessage = {}
+    newMessage.text = message
+    newMessage.type = type
+    setMessage(newMessage);
+  }
+
   return (
     <div className='create-investor-container'>
+      {Object.keys(message).length !== 0 && 
+        <PopUp buttonText='Close' close={setMessage}>{message}</PopUp>
+      }
         <div className='banner'>
             <div className='image-input'>
                 <img src={ProfilePic}/>
@@ -78,16 +143,16 @@ function CreateInvestor() {
         </div>
         <section>
           <div className="input-name">
-            <ClassicInput type='text' placeholder="Full name">Name*</ClassicInput>
+            <ClassicInput type='text' placeholder="Full name" onChange={setName}>Name*</ClassicInput>
           </div>
           <div className="input-about-me">
-            <ClassicInput type='textarea' placeholder="Tell people about you">About me*</ClassicInput>
+            <ClassicInput type='textarea' placeholder="Tell people about you" onChange={setAboutME}>About me*</ClassicInput>
           </div>
           <div className="input-investment-criteria">
-            <ClassicInput type='textarea' placeholder="Tell people about your investment criteria">Investment Criteria*</ClassicInput>
+            <ClassicInput type='textarea' placeholder="Tell people about your investment criteria" onChange={setInvCritera}>Investment Criteria*</ClassicInput>
           </div>
           <div className="input-country-container">
-            <ClassicInput type='select' placeholder="Select your country" options={["Argentina", "Tucuman"]}>Country*</ClassicInput>
+            <ClassicInput type='select' placeholder="Select your country" options={["Argentina", "Tucuman"]} onChange={setCountry}>Country*</ClassicInput>
           </div>
           <div className="areas-container">
             <label className='label-areas'>Areas of interest*</label>
@@ -103,8 +168,8 @@ function CreateInvestor() {
             <label className='label-investment-range'>Investment range*</label>
             <p>How much are you willing to invest?</p>
               <div className='investment-inputs'>
-                <ClassicInput type='number' placeholder="Min">From*</ClassicInput>
-                <ClassicInput type='number' placeholder="Max">To*</ClassicInput>
+                <ClassicInput type='number' placeholder="Min" onChange={setInvMin}>From*</ClassicInput>
+                <ClassicInput type='number' placeholder="Max" onChange={setInvMax}>To*</ClassicInput>
               </div>
           </div>
           <div className='investment-type-container'>
@@ -137,7 +202,7 @@ function CreateInvestor() {
             </div>
             <p className='info'>{typeInfo}</p>
           </div>
-          <button className='create-profile-button'>Create Profile</button>
+          <button disabled={loading} onClick={onSubmit} className='create-profile-button'>Create Profile</button>
         </section>
     </div>
   )

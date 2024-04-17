@@ -1,6 +1,6 @@
 import React from 'react'
 import './Header.scss'
-import Logo from '../../imgs/global/logo blanco.png'
+import Logo from '../../imgs/global/Logo blanco.png'
 
 function Header() {
   return (

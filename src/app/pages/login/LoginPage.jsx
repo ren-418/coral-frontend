@@ -99,6 +99,9 @@ function LoginPage() {
         <ModernInput type="password" color="white" onChange={setPassword} value={password}>Password</ModernInput>
         <button className='button' onClick={onSubmit} disabled={loading}>Login</button>
       </div>
+      <div className='forgot'>
+        <Link to="/forgot">Forgot your password?</Link>
+      </div>
       <div className='register'>
         <p>Don't have an account?</p>
         <Link to="/register">Register here</Link>

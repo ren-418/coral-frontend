@@ -23,6 +23,11 @@
             margin-top: 15%;
             border-radius: 0;
             color: white;
+
+            &:disabled{
+                border-bottom: 2px solid rgba(255, 255, 255, 0.495) !important;
+                color: rgba(255, 255, 255, 0.495) !important;
+            }
         }
     
         label{
@@ -37,6 +42,11 @@
     
         input:focus + label, input:valid + label{
             transform: translateY(-30px);
+        }
+
+        input:disabled + label{
+            transform: translateY(-30px);
+            color: rgba(255, 255, 255, 0.495) !important;
         }
         
         input:-webkit-autofill,

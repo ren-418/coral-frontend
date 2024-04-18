@@ -43,32 +43,21 @@ function CreateInvestor() {
     areas: ''
   });
 
-  const [imageSrc, setImageSrc] = useState();
-  const [imageUpload, setImageUpload] = useState();
+  const [imageBlob, setImageBlob] = useState(ProfilePic);
+  const [imageUrl, setImageUrl] = useState(null);
 
-
-
-  const handleImageUpload = (event) => {
+  const handleImageChange = (event) => {
     const file = event.target.files[0];
-    const reader = new FileReader();
+    if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setImageBlob(URL.createObjectURL(file));
+            setImageUrl(reader.result);
+        };
+        reader.readAsDataURL(file);
+    }
+};
   
-    reader.onload = () => {
-      // Convert the result to a Uint8Array (byte array)
-      const byteArray = new Uint8Array(reader.result);
-      
-      // Set the imageSrc state with the Blob object
-      const blob = new Blob([byteArray], { type: file.type });
-      setImageSrc(blob);
-  
-      // Set the imageUpload state with the byte array
-      setImageUpload(byteArray);
-    };
-  
-    // Read the file as an array buffer
-    reader.readAsArrayBuffer(file);
-  };
-  
-
   const navigate = useNavigate();
 
   function typeCheck(type){
@@ -173,7 +162,7 @@ function CreateInvestor() {
           },
           body: JSON.stringify({
             sessionToken: localStorage.getItem("sessionToken"),
-            profileImage: imageUpload,
+            profilePicture: imageUrl,
             name: name,
             description: aboutMe,
             investmentCriteria: invCritera,
@@ -216,9 +205,9 @@ function CreateInvestor() {
       }
         <div className='banner'>
             <div className='image-input'>
-                {imageSrc ? <img src={URL.createObjectURL(imageSrc)}/> : <img src={ProfilePic}/>}
+                <img src={imageBlob}/>
                 <div className="input-container">
-                  <input id="profileImage" type="file" name="profile-pic" accept=".png,.jpeg,.jpg" onChange={handleImageUpload}/>
+                  <input id="profileImage" type="file" name="profile-pic" accept=".png,.jpeg,.jpg" onChange={handleImageChange}/>
                 </div>
             </div>   
         </div>

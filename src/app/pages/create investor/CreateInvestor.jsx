@@ -170,7 +170,8 @@ function CreateInvestor() {
             rangeMin: invMin,
             rangeMax: invMax,
             investorType: investorType,
-            firstLogin: false
+            firstLogin: false,
+            areas: areaList
           }),
         });
   

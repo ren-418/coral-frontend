@@ -8,8 +8,8 @@ import { Link, useNavigate } from 'react-router-dom';
 function ForgotPassword() {
     const [email, setEmail] = useState("");
     const [code, setCode] = useState("");
-    const [emailSend, setEmailSend] = useState(true);
-    const [correctCode, setCorrectCode] = useState(true);
+    const [emailSend, setEmailSend] = useState(false);
+    const [correctCode, setCorrectCode] = useState(false);
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -55,14 +55,14 @@ function ForgotPassword() {
         setLoading(true);
 
         try {
-            const res = await fetch('http://localhost:9090/api/v1/auth/reset-password/send-code', {
+            const res = await fetch('http://localhost:9090/api/v1/auth/reset-password/verify-token', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     email: email,
-                    code: code,
+                    token: code,
                 }),
             });
 
@@ -86,14 +86,14 @@ function ForgotPassword() {
         if(!hasErrors()){
             setLoading(true);
             try {
-                const res = await fetch('http://localhost:9090/api/v1/auth/reset-password/send-password', {
+                const res = await fetch('http://localhost:9090/api/v1/auth/reset-password/change-password', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
                         email: email,
-                        code: code,
+                        token: code,
                         password: password,
                     }),
                 });
@@ -141,7 +141,7 @@ function ForgotPassword() {
         <div className='form-container'>
             <h1>Reset Password</h1>
             <ModernInput type="email" color="white" onChange={setEmail} value={email} disabled={emailSend}>Email</ModernInput>
-            {emailSend && <ModernInput type="number" color="white" onChange={setCode} value={password} disabled={correctCode}>Code</ModernInput>}
+            {emailSend && <ModernInput type="text" color="white" onChange={setCode} value={code} disabled={correctCode}>Code</ModernInput>}
             {correctCode && <>
                 <ModernInput type="password" color="white" onChange={setPassword} value={password} errorMessage={errors.password}>New password</ModernInput>
                 <ModernInput type="password" color="white" onChange={setConfirmPassword} value={confirmPassword} errorMessage={errors.confirmPassword}>Repeat new password</ModernInput>

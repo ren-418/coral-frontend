@@ -1,0 +1,177 @@
+@import '../../../index.scss';
+
+
+.search-investors-page{
+    height: 100dvh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+
+
+    .searchbar{
+        display: inset-block;
+        margin-top: 70px;
+        width: 90%;
+        display: flex;
+        justify-content: space-between;
+        height: fit-content;
+        align-self: center;
+
+        input{
+            display: inline-block;
+            width: 80%;
+            border: none;
+            background-color: #E9E9E9;
+            font-size: 20px;
+            padding: 5px 10px;
+            box-sizing: border-box;
+            border-radius: 100px;
+            height: 40px;
+
+            &:focus{
+                outline: $dark-blue 2px solid;
+            }
+        }
+
+        button{
+            border: none;
+            width: 60px;
+            height: 40px;
+            border-radius: 100px;
+            background-color: $pink;
+
+            &:active{
+                opacity: 0.8;
+            }
+        }
+    }
+
+    .filters-container{
+        background-color: #E9E9E9;
+        height: fit-content;
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 15px;
+        margin-top: 20px;
+
+        .areas-container{
+            margin: 15px 0;
+            width: 90%;
+            border: $dark-blue 0.5px solid;
+            padding: 10px 0;
+            border-radius: 15px;
+
+            .label-areas{
+                color: black;
+                text-align: left;
+                font-weight: bold;
+                padding-left: 20px;
+            }
+
+            .areas-of-interest{
+                margin-top: 5px;
+                border-radius: 10px;
+                display: flex;
+                flex-wrap: wrap;
+                padding: 2.5vw;
+    
+                .button-container{
+                    position: relative;
+                    margin: 1.5vw 1vw;
+    
+                    .area-button{
+                        padding: 0.5vh 5vw;
+                        background-color: #D9D9D9;
+                        border-radius: 100px;
+                        border: none;
+                        text-align: left;
+                        font-size: 12px;
+    
+                        &:active{
+                            background-color: #c5c5c5;
+                        }
+                    }
+                }
+            }
+        }
+
+        .investment-type-container{
+            width: 100%;
+            margin: 15px 0;
+            width: 90%;
+            padding: 10px 0;
+            border: $dark-blue 0.5px solid;
+            border-radius: 15px;
+
+            label{
+                color: black;
+                text-align: left;
+                font-weight: bold;
+                padding-left: 20px;
+            }
+
+            .img-container{
+                width: 60px;
+                height: 60px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                img{
+                    width: 12vw
+                }
+            }
+
+            .investment-type-checks{
+                margin-top: 10px;
+                display: flex;
+                justify-content: space-around;
+                width: 100%;
+
+                .check-container{
+                    display: flex;
+                    flex-direction: column;
+
+                    input{
+                        transform: scale(1.5);
+
+                        &:checked{
+                            accent-color: $pink;
+                        }
+                    }
+                }
+            }
+        }
+
+        .location-container{
+            width: 90%;
+            margin: 15px 0;
+            padding: 10px 0;
+            border: $dark-blue 0.5px solid;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            label{
+                color: black;
+                text-align: left;
+                font-weight: bold;
+                padding-left: 20px;
+                width: 90%;
+                margin-bottom: 10px;
+            }
+
+            .multi-select{
+                width: 90%;
+            }
+            
+        }
+    }
+
+    
+}

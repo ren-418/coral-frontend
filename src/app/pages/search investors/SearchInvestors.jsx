@@ -14,6 +14,7 @@ import { MultiSelect } from "react-multi-select-component";
 
 import Countries from '../../../data/countries.json'
 import PopUp from '../../../components/popup/PopUp';
+import InvestorCard from '../../../components/investor card/InvestorCard';
 
 
 function SearchInvestors() {
@@ -22,6 +23,8 @@ function SearchInvestors() {
     const [locationList, setLocationList] = useState([]);
     const [buttonColors, setButtonColors] = useState([]);
     const [buttonTextColor, setButtonTextColor] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [users, setUsers] = useState({});
 
     const [message, setMessage] = useState({});
 
@@ -35,17 +38,17 @@ function SearchInvestors() {
                 body: JSON.stringify({
                     investorType: investorType,
                     areas: areaList,
-                    locations: locationList
+                    locations: locationList.map(location => location.value)
                 }),
             });
 
-            const resMessage = await res.text();
+            const resJson = await res.json();
 
             if(!res.ok){
-                setNewMessage(resMessage, 'error');
+                setNewMessage("An error has occurred", 'error');
             }
             else{
-                console.log(resMessage);
+                setUsers(resJson);
             }
         }catch(error){
             setNewMessage("An error has occurred, please verify your connection", "error")
@@ -113,7 +116,7 @@ function SearchInvestors() {
             <input type="text" placeholder='Search for investors'/>
             <button onClick={onSearch}><FaSearch color='white'/></button>
         </div>
-        <div className='filters-container'>
+        {Object.keys(users).length === 0 ? <div className='filters-container'>
             <div className='investment-type-container'>
                 <label className='label-investment-type' name="type">Investor type:</label>
                 <div className='investment-type-checks'>
@@ -165,6 +168,12 @@ function SearchInvestors() {
             />
             </div>
         </div>
+        :
+        <div className="investors">
+            {users.map((user, index) => (
+            <InvestorCard key={index} name={user.name} description={user.description} image={user.profilePicture} areas={user.areas} location={user.location} id={user.userId} investorType={user.investorType}/>
+            ))}
+        </div>}
         
     </div>
   )

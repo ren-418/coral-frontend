@@ -18,6 +18,7 @@
         justify-content: space-between;
         height: fit-content;
         align-self: center;
+        position: relative;
 
         input{
             display: inline-block;
@@ -171,6 +172,12 @@
             }
             
         }
+    }
+
+    .investors-container{
+        width: 90%;
+        margin-top: 20px;
+        margin-bottom: 70px;
     }
 
     

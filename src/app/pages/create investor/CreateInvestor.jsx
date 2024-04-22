@@ -56,7 +56,7 @@ function CreateInvestor() {
         };
         reader.readAsDataURL(file);
     }
-};
+  };
   
   const navigate = useNavigate();
 
@@ -137,6 +137,16 @@ function CreateInvestor() {
     }
     if (areaList.length === 0){
       newErrors.areas = 'Please select at least one area of interest'
+    }
+    if (invMax < invMin){
+      newErrors.invMin = 'Maximum investment amount cannot be lower than minimum investment amount'
+      newErrors.invMax = 'Maximum investment amount cannot be lower than minimum investment amount'
+    }
+    if (invMax < 0){
+      newErrors.invMin = 'Please insert positive numbers in the investment range'
+    }
+    if (invMin < 0){
+      newErrors.invMax = 'Please insert positive numbers in the investment range'
     }
 
     setErrors(newErrors);
@@ -240,8 +250,8 @@ function CreateInvestor() {
             <label className='label-investment-range'>Investment range*</label>
             <p>How much are you willing to invest?</p>
               <div className='investment-inputs'>
-                <ClassicInput type='number' placeholder="Min" onChange={setInvMin} errorMessage={errors.invMin}>From*</ClassicInput>
-                <ClassicInput type='number' placeholder="Max" onChange={setInvMax} errorMessage={errors.invMax}>To*</ClassicInput>
+                <ClassicInput type='number' placeholder="Min" onChange={setInvMin} errorMessage={errors.invMin} min="0">From*</ClassicInput>
+                <ClassicInput type='number' placeholder="Max" onChange={setInvMax} errorMessage={errors.invMax} min="0">To*</ClassicInput>
               </div>
           </div>
           <div className='investment-type-container'>

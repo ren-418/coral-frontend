@@ -11,6 +11,7 @@ import CreateInvestor from './app/pages/create investor/CreateInvestor';
 import HeaderTemplate from './app/templates/header/HeaderTemplate';
 import CreateEnterprise from './app/pages/create enterprise/CreateEnterprise';
 import Controller from './app/Controller';
+import ForgotPassword from './app/pages/forgot password/ForgotPassword';
 
 const route = element => <PlainTemplate selected={0}>{element}</PlainTemplate>
 const plainRoute = element => <PlainTemplate>{element}</PlainTemplate>
@@ -20,6 +21,7 @@ const headerRoute = element => <HeaderTemplate title="Create Profile">{element}<
 const router = createBrowserRouter([
   { path: '/', element: route(<Controller/>)},
   { path: '/register', element: plainRoute(<RegisterPage/>)},
+  { path: '/forgot', element: plainRoute(<ForgotPassword/>)},
   { path: '/login', element: plainRoute(<LoginPage/>)},
   { path: '/create-investor', element: headerRoute(<CreateInvestor/>)},
   { path: '/create-enterprise', element: headerRoute(<CreateEnterprise/>)},

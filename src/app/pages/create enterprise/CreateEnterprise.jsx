@@ -7,15 +7,18 @@ import Areas from '../../../data/areas.json'
 import PopUp from '../../../components/popup/PopUp';
 
 function CreateEnterprise() {
+  // SLIDER
+  const [slider, setSlider] = useState(true);
 
   //Data
   const [name, setName] = useState('');
   const [aboutMe, setAboutME] = useState('');
   const [country, setCountry] = useState('');
   const [investmentType, setInvestmentType] = useState('');
-  const [goal, setGoal] = useState();
-  const [minumumInvestment, setMinimumInvestment] = useState();
-  const [profitReturn, setProfitReturn] = useState();
+
+  const [goal, setGoal] = useState(-1);
+  const [minumumInvestment, setMinimumInvestment] = useState(-1);
+  const [profitReturn, setProfitReturn] = useState(-1);
 
 
   //AREAS VARIABLES
@@ -23,6 +26,7 @@ function CreateEnterprise() {
   const [buttonColors, setButtonColors] = useState([]);
   const [buttonTextColor, setButtonTextColor] = useState([]);
 
+  // MESSAGE
   const [message, setMessage] = useState({});
 
   //Change the color of the button when clicked (area of interest)
@@ -93,7 +97,11 @@ function CreateEnterprise() {
     name: '',
     aboutMe: '',
     country: '',
-    areas: ''
+    areas: '',
+    goal: '',
+    minimumInvestment: '',
+    profitReturn: '',
+    image: ''
   });
 
   function hasErrors(){
@@ -109,6 +117,27 @@ function CreateEnterprise() {
     }
     if (areaList.length === 0){
       newErrors.areas = 'Please select at least one area of interest'
+    }
+    if (goal < 0){
+      newErrors.goal = 'Please insert positive numbers in the investment goal'
+    }
+    if (goal == -1){
+      newErrors.goal = 'Please insert an investment goal'
+    }
+    if (minumumInvestment < 0){
+      newErrors.minimumInvestment = 'Please insert positive numbers in minimum investment'
+    }
+    if (minumumInvestment == -1){
+      newErrors.minimumInvestment = 'Please insert the minimum amount required to invest in your enterprise'
+    }
+    if (profitReturn < 0){
+      newErrors.profitReturn = 'Please insert positive numbers in total profit Return'
+    }
+    if (profitReturn == -1){
+      newErrors.profitReturn = 'Please insert the total profit return for investors'
+    }
+    if (imageBlob == ProfilePic) {
+      newErrors.image = 'Please choose a profile picture'
     }
 
     setErrors(newErrors);
@@ -204,6 +233,15 @@ function CreateEnterprise() {
             </div>
             {errors.areas != '' && <p>{errors.areas}</p>}
           </div>
+          {slider &&
+          <div className='community-values'>
+            <p>Get investment from many small investors who contribute to a final investment goal</p>
+            <ClassicInput type='number' placeholder="000" onChange={setGoal} errorMessage={errors.goal} min="0">Goal*</ClassicInput>
+            <ClassicInput type='number' placeholder="000" onChange={setMinimumInvestment} errorMessage={errors.minimumInvestment} min="0">Minimum Investment*</ClassicInput>
+            <ClassicInput type='number' placeholder="000" onChange={setProfitReturn} errorMessage={errors.profitReturn} min="0">Total Profit Return for Investors*</ClassicInput>
+          </div>
+          }
+          {errors.image != '' && <p>{errors.image}</p>}
           <button disabled={loading} onClick={onSubmit} className='create-profile-button'>Create Profile</button>
         </section>
     </div>

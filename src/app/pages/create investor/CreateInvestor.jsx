@@ -40,7 +40,8 @@ function CreateInvestor() {
     invMin: '',
     invMax: '',
     investorType: '',
-    areas: ''
+    areas: '',
+    image: ''
   });
 
   const [imageBlob, setImageBlob] = useState(ProfilePic);
@@ -139,7 +140,6 @@ function CreateInvestor() {
       newErrors.areas = 'Please select at least one area of interest'
     }
     if (invMax < invMin){
-      newErrors.invMin = 'Maximum investment amount cannot be lower than minimum investment amount'
       newErrors.invMax = 'Maximum investment amount cannot be lower than minimum investment amount'
     }
     if (invMax < 0){
@@ -147,6 +147,9 @@ function CreateInvestor() {
     }
     if (invMin < 0){
       newErrors.invMax = 'Please insert positive numbers in the investment range'
+    }
+    if (imageBlob == ProfilePic) {
+      newErrors.image = 'Please choose a profile picture'
     }
 
     setErrors(newErrors);
@@ -220,7 +223,7 @@ function CreateInvestor() {
                 <div className="input-container">
                   <input id="profileImage" type="file" name="profile-pic" accept=".png,.jpeg,.jpg" onChange={handleImageChange}/>
                 </div>
-            </div>   
+            </div>
         </div>
         <section>
           <div className="input-name">
@@ -285,6 +288,7 @@ function CreateInvestor() {
             <p className='info'>{typeInfo}</p>
             {errors.investorType != '' && <p>{errors.investorType}</p>}
           </div>
+          {errors.image != '' && <p>{errors.image}</p>}
           <button disabled={loading} onClick={onSubmit} className='create-profile-button'>Create Profile</button>
         </section>
     </div>

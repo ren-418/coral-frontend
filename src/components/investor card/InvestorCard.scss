@@ -1,0 +1,107 @@
+@import '../../index.scss';
+
+.investor-card{
+    display: flex;
+    align-items: flex-end;
+    justify-content: left;
+    background-color: #EAEAEA;
+    width: 100%;
+    margin: 10px 0;
+    border-radius: 15px;
+    height: 260px;
+    position: relative;
+
+    .col1{
+        width: 50%;
+        height: max-content;
+        min-height: 200px;
+        margin: 20px 0;
+        margin-left: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+
+        img{
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+        }
+
+        p{
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .areas-container{
+            display: flex;
+            flex-wrap: wrap;
+            .area{
+                background-color: #D9D9D9;
+                color: black;
+                border-radius: 100px;
+                padding: 1px 7px;
+                margin-bottom: 5px;
+                font-size: 13px;
+                &:not(:last-child) {
+                    margin-right: 5px; /* Espacio entre elementos */
+                }
+            }
+        }
+    }
+
+    .col2{
+        width: 50%;
+        height: max-content;
+        margin: 20px 0;
+        margin-right: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+
+        h2{
+            margin: 0;
+        }
+        
+        .description{
+            width: 100%;
+            margin: 0;
+            margin-top: 10px;
+            font-size: 13px;
+            text-overflow: ellipsis;
+            overflow-y: hidden;
+            height: fit-content;
+            max-height: 100px;
+            display: -webkit-box;
+            -webkit-line-clamp: 5; /* Número de líneas antes de cortar */
+            -webkit-box-orient: vertical;
+        }
+
+        .location-container{
+            display: flex;
+            margin-top: 15px;
+            align-items: center;
+            .location{
+                margin: 0;
+                font-weight: bold;
+                color: rgba(0, 0, 0, 0.548);
+                margin-left: 5px;
+            }
+        }
+
+        button{
+            margin-top: 10px;
+            background-color: $pink;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            width: 100%;
+            padding: 10px 0;
+        }
+    }
+    .investor-type{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        height: 40px;
+    }
+}

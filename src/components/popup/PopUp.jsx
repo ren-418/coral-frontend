@@ -15,7 +15,8 @@ function PopUp({children, buttonText, close, redirectTo}) {
           children.type === "success" ?
           <>
             <p style={{color: 'green'}}>{children.text}</p>
-            <Link to={redirectTo}>{buttonText}</Link>
+            {close ? <Link onClick={()=>{close({})}}>{buttonText}</Link> : <Link to={redirectTo}>{buttonText}</Link>}
+            
           </>
           :
           <>

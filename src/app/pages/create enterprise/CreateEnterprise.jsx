@@ -12,6 +12,11 @@ function CreateEnterprise() {
   const [name, setName] = useState('');
   const [aboutMe, setAboutME] = useState('');
   const [country, setCountry] = useState('');
+  const [investmentType, setInvestmentType] = useState('');
+  const [goal, setGoal] = useState();
+  const [minumumInvestment, setMinimumInvestment] = useState();
+  const [profitReturn, setProfitReturn] = useState();
+
 
   //AREAS VARIABLES
   const [areaList, setAreaList] = useState([]);
@@ -140,7 +145,11 @@ function CreateEnterprise() {
             description: aboutMe,
             location: country,
             firstLogin: false,
-            areas: areaList
+            areas: areaList,
+            investmentType: investmentType,
+            goal: goal,
+            minimumInvestment: minumumInvestment,
+            totalProfitReturn: profitReturn
           }),
         });
   

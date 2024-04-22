@@ -15,9 +15,11 @@ function CreateEnterprise() {
   const [aboutMe, setAboutME] = useState('');
   const [country, setCountry] = useState('');
   const [investmentType, setInvestmentType] = useState('');
+
   const [goal, setGoal] = useState(-1);
   const [minumumInvestment, setMinimumInvestment] = useState(-1);
   const [profitReturn, setProfitReturn] = useState(-1);
+
 
   //AREAS VARIABLES
   const [areaList, setAreaList] = useState([]);

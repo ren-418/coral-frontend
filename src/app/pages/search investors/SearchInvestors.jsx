@@ -25,6 +25,7 @@ function SearchInvestors() {
     const [buttonTextColor, setButtonTextColor] = useState([]);
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState({});
+    const [userName, setUserName] = useState("");
 
     const [message, setMessage] = useState({});
 
@@ -38,7 +39,8 @@ function SearchInvestors() {
                 body: JSON.stringify({
                     investorType: investorType,
                     areas: areaList,
-                    locations: locationList.map(location => location.value)
+                    locations: locationList.map(location => location.value),
+                    userName: userName
                 }),
             });
 
@@ -51,7 +53,7 @@ function SearchInvestors() {
                 setUsers(resJson);
             }
         }catch(error){
-            setNewMessage("An error has occurred, please verify your connection", "error")
+            setNewMessage("No investors with that filters", "error")
         }
     }
     
@@ -113,7 +115,7 @@ function SearchInvestors() {
         {Object.keys(message).length !== 0 &&
         <PopUp buttonText='Close' close={setMessage}>{message}</PopUp>}
         <div className='searchbar'>
-            <input type="text" placeholder='Search for investors'/>
+            <input type="text" placeholder='Search for investors' value={userName} onChange={(element)=>{setUserName(element.target.value)}}/>
             <button onClick={onSearch}><FaSearch color='white'/></button>
         </div>
         {Object.keys(users).length === 0 ? <div className='filters-container'>
@@ -169,7 +171,7 @@ function SearchInvestors() {
             </div>
         </div>
         :
-        <div className="investors">
+        <div className="investors-container">
             {users.map((user, index) => (
             <InvestorCard key={index} name={user.name} description={user.description} image={user.profilePicture} areas={user.areas} location={user.location} id={user.userId} investorType={user.investorType}/>
             ))}

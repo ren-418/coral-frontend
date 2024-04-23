@@ -43,6 +43,8 @@ function Home({userType}) {
 }
   return (
     <div className='home-container'>
+      {userType === "InvestorUser" ? 
+      <>
       <h2>With your interest areas</h2>
       <div className='same-areas-investors'>
         <div className="slider">
@@ -63,6 +65,11 @@ function Home({userType}) {
             ))}
         </div>
       </div>
+      </>
+      :
+      <></>
+      }
+      
     </div>
   )
 }

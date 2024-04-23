@@ -4,6 +4,8 @@ import './CreateInvestor.scss'
 import ProfilePic from '../../../imgs/global/default-pp.png'
 import ClassicInput from '../../../components/classic input/ClassicInput'
 import Areas from '../../../data/areas.json'
+import Countries from '../../../data/countries.json'
+
 
 import Shark from '../../../imgs/global/shark.png'
 import Whale from '../../../imgs/global/whale.png'
@@ -11,6 +13,8 @@ import Fish from '../../../imgs/global/fish.png'
 import Shrimp from '../../../imgs/global/shrimp.png'
 
 import PopUp from '../../../components/popup/PopUp';
+
+
 
 function CreateInvestor() {
 
@@ -21,8 +25,8 @@ function CreateInvestor() {
   const [aboutMe, setAboutME] = useState('');
   const [invCritera, setInvCritera] = useState('');
   const [country, setCountry] = useState('');
-  const [invMin, setInvMin] = useState(-1);
-  const [invMax, setInvMax] = useState(-1);
+  const [invMin, setInvMin] = useState(null);
+  const [invMax, setInvMax] = useState(null);
   const [investorType, setInvestorType] = useState(-1);
 
   const [message, setMessage] = useState({});
@@ -127,10 +131,10 @@ function CreateInvestor() {
     if (country === ""){
       newErrors.country = 'Please select a country of residence';
     }
-    if (invMin === -1){
+    if (invMin === null){
       newErrors.invMin = 'Insert the minimum amount you are willing to invest in an enterprise';
     }
-    if (invMax === -1){
+    if (invMax === null){
       newErrors.invMax = 'Insert the maximum amount you are willing to invest in an enterprise'
     }
     if (investorType === -1){
@@ -236,7 +240,7 @@ function CreateInvestor() {
             <ClassicInput type='textarea' placeholder="Tell people about your investment criteria" onChange={setInvCritera} errorMessage={errors.criteria}>Investment Criteria*</ClassicInput>
           </div>
           <div className="input-country-container">
-            <ClassicInput type='select' placeholder="Select your country" options={["Argentina", "Tucuman"]} onChange={setCountry} errorMessage={errors.country}>Country*</ClassicInput>
+            <ClassicInput type='select' placeholder="Select your country" options={Countries.map(country => country.label)} onChange={setCountry} errorMessage={errors.country}>Country*</ClassicInput>
           </div>
           <div className="areas-container">
             <label className='label-areas'>Areas of interest*</label>
@@ -253,8 +257,8 @@ function CreateInvestor() {
             <label className='label-investment-range'>Investment range*</label>
             <p>How much are you willing to invest?</p>
               <div className='investment-inputs'>
-                <ClassicInput type='number' placeholder="Min" onChange={setInvMin} errorMessage={errors.invMin} min="0">From*</ClassicInput>
-                <ClassicInput type='number' placeholder="Max" onChange={setInvMax} errorMessage={errors.invMax} min="0">To*</ClassicInput>
+                <ClassicInput type='number' placeholder="Min" onChange={setInvMin} errorMessage={errors.invMin} value={invMin !== null ? invMin : 0}>From*</ClassicInput>
+                <ClassicInput type='number' placeholder="Max" onChange={setInvMax} errorMessage={errors.invMax} value={invMax !== null ? invMax : 0}>To*</ClassicInput>
               </div>
           </div>
           <div className='investment-type-container'>

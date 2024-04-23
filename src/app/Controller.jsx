@@ -76,7 +76,7 @@ function Controller() {
 
   return (
     <>
-        {page === routes.home && <Template selected={page} setPage={setPage} userType={user.userType}><Home setPage={setPage}/></Template>}
+        {page === routes.home && <Template selected={page} setPage={setPage} userType={user.userType}><Home setPage={setPage} userType={user.userType}/></Template>}
         {page === routes.search && <Template selected={page} setPage={setPage} userType={user.userType}>{ user.userType === "InvestorUser" ? <SearchInvestors/> : <SearchInvestors/>}</Template>}
         {page === routes.add && <Template selected={page} setPage={setPage} userType={user.userType}> <Home/></Template>}
         {page === routes.messages && <Template selected={page} setPage={setPage} userType={user.userType}><Home/></Template>}

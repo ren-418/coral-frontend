@@ -4,11 +4,12 @@ import './CreateEnterprise.scss'
 import ProfilePic from '../../../imgs/global/default-pp.png'
 import ClassicInput from '../../../components/classic input/ClassicInput'
 import Areas from '../../../data/areas.json'
+import Countries from '../../../data/countries.json'
 import PopUp from '../../../components/popup/PopUp';
 
 function CreateEnterprise() {
   // SLIDER
-  const [slider, setSlider] = useState(true);
+  const [slider, setSlider] = useState(false);
 
   //Data
   const [name, setName] = useState('');
@@ -175,7 +176,7 @@ function CreateEnterprise() {
             location: country,
             firstLogin: false,
             areas: areaList,
-            investmentType: investmentType,
+            enterpriseType: investmentType,
             goal: goal,
             minimumInvestment: minumumInvestment,
             totalProfitReturn: profitReturn
@@ -199,6 +200,22 @@ function CreateEnterprise() {
     setLoading(false)
   };
 
+  // Investment Types
+  const [typeInfo, setTypeInfo] = useState('');
+
+  function typeCheck(type){
+    console.log(type)
+    if(type === "Community"){
+      setInvestmentType("Community")
+      setSlider(true)
+      setTypeInfo("Get investment from many small investors who contribute to a final investment goal")
+    }else if(type === "Custom"){
+      setInvestmentType("Custom")
+      setSlider(false)
+      setTypeInfo("Arrange custom deals with each individual investor")
+    }
+  }
+
   return (
     <div className='create-enterprise-container'>
       {Object.keys(message).length !== 0 && 
@@ -220,7 +237,7 @@ function CreateEnterprise() {
             <ClassicInput type='textarea' placeholder="Tell people about your enterprise" onChange={setAboutME} errorMessage={errors.aboutMe}>Description*</ClassicInput>
           </div>
           <div className="input-country-container">
-            <ClassicInput type='select' placeholder="Select country" options={["Argentina", "Tucuman"]} onChange={setCountry} errorMessage={errors.country}>Country*</ClassicInput>
+            <ClassicInput type='select' placeholder="Select country" options={Countries.map(country => country.label)} onChange={setCountry} errorMessage={errors.country}>Country*</ClassicInput>
           </div>
           <div className="areas-container">
             <label className='label-areas'>Areas of development*</label>
@@ -233,9 +250,21 @@ function CreateEnterprise() {
             </div>
             {errors.areas != '' && <p>{errors.areas}</p>}
           </div>
+          <div className='investment-type-container'>
+            <div className='investment-type-checks'>
+              <p>Comunity Investment</p>
+              <div className='check-container'>
+                <input type='radio' name='type' value='Community' onClick={(event) => typeCheck(event.target.value)}/>
+              </div>
+              <p>Custom Investment</p>
+              <div className='check-container'>
+                <input type='radio' name='type' value='Custom' onClick={(event) => typeCheck(event.target.value)}/>
+              </div>
+            </div>
+          </div>
+          <p className='info'>{typeInfo}</p>
           {slider &&
           <div className='community-values'>
-            <p>Get investment from many small investors who contribute to a final investment goal</p>
             <ClassicInput type='number' placeholder="000" onChange={setGoal} errorMessage={errors.goal} min="0">Goal*</ClassicInput>
             <ClassicInput type='number' placeholder="000" onChange={setMinimumInvestment} errorMessage={errors.minimumInvestment} min="0">Minimum Investment*</ClassicInput>
             <ClassicInput type='number' placeholder="000" onChange={setProfitReturn} errorMessage={errors.profitReturn} min="0">Total Profit Return for Investors*</ClassicInput>

@@ -99,8 +99,9 @@ function RegisterPage() {
   return (
     <>
     <div className="register-page">
-      {Object.keys(message).length !== 0 && 
-      <PopUp buttonText='Close' close={setMessage} redirectTo={'/login'}>{message}</PopUp>
+      {Object.keys(message).length !== 0 ? (message.type == "success" ? 
+      <PopUp buttonText='Close' redirectTo={'/login'}>{message}</PopUp> : 
+      <PopUp buttonText='Close' close={setMessage}>{message}</PopUp>) : <></>
       }
       <div className='form-container'>
         <h1>Register</h1>

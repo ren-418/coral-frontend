@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Template from './templates/app template/template'
 import { Link, useNavigate } from 'react-router-dom';
 import Profile from './pages/profile/Profile';
+import Search from './pages/search/Search';
 
 function Controller() {
     const routes = {
@@ -77,7 +78,7 @@ function Controller() {
   return (
     <>
         {page === routes.home && <Template selected={page} setPage={setPage} userType={user.userType}><Home setPage={setPage} userType={user.userType}/></Template>}
-        {page === routes.search && <Template selected={page} setPage={setPage} userType={user.userType}>{ user.userType === "InvestorUser" ? <SearchInvestors/> : <SearchInvestors/>}</Template>}
+        {page === routes.search && <Template selected={page} setPage={setPage} userType={user.userType}>{<Search/>}</Template>}
         {page === routes.add && <Template selected={page} setPage={setPage} userType={user.userType}> <Home/></Template>}
         {page === routes.messages && <Template selected={page} setPage={setPage} userType={user.userType}><Home/></Template>}
         {page === routes.profile && <Template selected={page} setPage={setPage} userType={user.userType}><Profile/></Template>}

@@ -1,0 +1,38 @@
+@import '../../../index.scss';
+
+.search-page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 70px;
+    width: 100%;
+    height: 100dvh;
+
+    .search-type{
+        width: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        background-color: #EAEAEA;
+        border-radius: 30px;
+
+        .button{
+            width: 50%;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #EAEAEA;
+            border-radius: 15px;
+            transition: 0.3s;
+            border: none;
+
+            &:disabled{
+                background-color: $pink;
+                color: white;
+                font-weight: bold;
+            }
+        }
+    }
+}

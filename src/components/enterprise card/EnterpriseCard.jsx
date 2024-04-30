@@ -15,7 +15,7 @@ function EnterpriseCard({name, location, id, description, image, goal, backgroun
               <div className='minimum'><p className='subtitle'>Min invest:</p><p className='numbers'>US${minimum}</p></div>
             </div>
             <div className="progrss-bar">
-                <ProgressBar completed={(current/goal)*100} bgColor="#3BAFB7" width={'90%'}/>
+                <ProgressBar completed={Math.round((current/goal)*100)} bgColor="#3BAFB7" width={'90%'}/>
             </div>
         </div>
         <div className='col2'>

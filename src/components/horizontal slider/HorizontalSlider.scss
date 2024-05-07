@@ -1,0 +1,12 @@
+.horizontal-slider{
+    .slider{
+        display: flex;
+        overflow-x: scroll;
+        width: fit-content;
+
+        .card{
+            width: 85vw;
+            margin-left: 15px;
+        }
+    }
+}

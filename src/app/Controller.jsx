@@ -5,6 +5,8 @@ import Template from './templates/app template/template'
 import { Link, useNavigate } from 'react-router-dom';
 import Profile from './pages/profile/Profile';
 import Search from './pages/search/Search';
+import EnterpriseProfileInvestor from './pages/enterprise profile as investor/EnterpriseProfileInvestor';
+import Invest from './pages/invest page/Invest';
 
 function Controller() {
     const routes = {
@@ -13,11 +15,14 @@ function Controller() {
         add: 2,
         messages: 3,
         profile: 4,
-        news: 5
+        news: 5,
+        enterpriseAsInvestor: 7,
+        invest: 8
     };
 
     const [page, setPage] = useState(routes.home)
     const [user, setUser] = useState({})
+    const [enterpriseId, setEnterpriseId] = useState()
 
     const navigate = useNavigate();
 
@@ -77,12 +82,14 @@ function Controller() {
 
   return (
     <>
-        {page === routes.home && <Template selected={page} setPage={setPage} userType={user.userType}><Home setPage={setPage} userType={user.userType}/></Template>}
+        {page === routes.home && <Template selected={page} setPage={setPage} userType={user.userType}><Home setPage={setPage} userType={user.userType} setEnterpriseId={setEnterpriseId}/></Template>}
         {page === routes.search && <Template selected={page} setPage={setPage} userType={user.userType}>{<Search/>}</Template>}
-        {page === routes.add && <Template selected={page} setPage={setPage} userType={user.userType}> <Home/></Template>}
-        {page === routes.messages && <Template selected={page} setPage={setPage} userType={user.userType}><Home/></Template>}
+        {page === routes.add && <Template selected={page} setPage={setPage} userType={user.userType}></Template>}
+        {page === routes.messages && <Template selected={page} setPage={setPage} userType={user.userType}></Template>}
         {page === routes.profile && <Template selected={page} setPage={setPage} userType={user.userType}><Profile/></Template>}
-        {page === routes.news && <Template selected={page} setPage={setPage} userType={user.userType}><Home/></Template>}
+        {page === routes.news && <Template selected={page} setPage={setPage} userType={user.userType}></Template>}
+        {page === routes.enterpriseAsInvestor && <Template selected={page} setPage={setPage} userType={user.userType}><EnterpriseProfileInvestor enterpriseId={enterpriseId} setPage={setPage} nextPage={routes.invest}/></Template>}
+        {page === routes.invest && <Template selected={page} setPage={setPage} userType={user.userType}><Invest enterpriseId={enterpriseId} setPage={setPage}/></Template>}
     </>
   )
 }

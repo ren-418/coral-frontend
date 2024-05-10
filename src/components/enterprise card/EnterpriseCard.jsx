@@ -4,8 +4,13 @@ import { FaLocationDot } from "react-icons/fa6";
 
 import ProgressBar from "@ramonak/react-progress-bar";
 
-function EnterpriseCard({name, location, id, description, image, goal, backgroundColor, minimum, current}) {
+function EnterpriseCard({name, location, id, description, image, goal, backgroundColor, minimum, current, setPage, setEnterpriseId}) {
 
+  const goToProfile = () => {
+    setEnterpriseId(id)
+    setPage(7)
+  }
+  
   return (
     <div className='enterprise-card' style={{backgroundColor: backgroundColor}}>
         <div className='col1'>
@@ -25,7 +30,7 @@ function EnterpriseCard({name, location, id, description, image, goal, backgroun
               <FaLocationDot color='rgba(0, 0, 0, 0.548)'/>
               <p className='location'>{location[0].toUpperCase() + location.slice(1)}</p>
             </div>
-            <button>View proyect</button>
+            <button onClick={goToProfile}>View proyect</button>
         </div>
     </div>
   )

@@ -4,8 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import InvestorCard from '../../../components/investor card/InvestorCard';
 import EnterpriseCard from '../../../components/enterprise card/EnterpriseCard';
 import './Home.scss'
+import HorizontalSlider from '../../../components/horizontal slider/HorizontalSlider';
 
-function Home({userType}) {
+function Home({userType, setPage, setEnterpriseId}) {
   const [response, setResponse] = useState({});
 
   useEffect(() => {
@@ -47,23 +48,23 @@ function Home({userType}) {
       <>
       <h2>With your interest areas</h2>
       <div className='same-areas-investors'>
-        <div className="slider">
+        <HorizontalSlider>
           {Object.keys(response).length !== 0 && response["sameAreas"].map((user, index) => (
             <div className="card" key={index}>
-            <EnterpriseCard key={index} name={user.name} location={user.location} id={user.id} description={user.description} image={user.profileImage} goal={user.goal} current={10000*4} minimum={user.minimumInvestment}/>
+            <EnterpriseCard setEnterpriseId={setEnterpriseId} setPage={setPage} key={index} name={user.name} location={user.location} id={user.id} description={user.description} image={user.profileImage} goal={user.goal} current={2000} minimum={user.minimumInvestment}/>
             </div>
           ))}
-        </div>
+        </HorizontalSlider>
       </div>
       <h2>In your location</h2>
       <div className='same-location-investors'>
-        <div className="slider">
+        <HorizontalSlider>
             {Object.keys(response).length !== 0 && response["sameLocation"].map((user, index) => (
               <div className="card" key={index}>
-              <EnterpriseCard key={index} name={user.name} location={user.location} id={user.id} description={user.description} image={user.profileImage} goal={user.goal} current={10000*4} minimum={user.minimumInvestment}/>
+              <EnterpriseCard setEnterpriseId={setEnterpriseId} setPage={setPage} key={index} name={user.name} location={user.location} id={user.id} description={user.description} image={user.profileImage} goal={user.goal} current={2000} minimum={user.minimumInvestment}/>
               </div>
             ))}
-        </div>
+        </HorizontalSlider>
       </div>
       </>
       :

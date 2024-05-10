@@ -23,8 +23,8 @@ const router = createBrowserRouter([
   { path: '/register', element: plainRoute(<RegisterPage/>)},
   { path: '/forgot', element: plainRoute(<ForgotPassword/>)},
   { path: '/login', element: plainRoute(<LoginPage/>)},
-  { path: '/create-investor', element: headerRoute(<CreateInvestor/>)},
-  { path: '/create-enterprise', element: headerRoute(<CreateEnterprise/>)},
+  { path: '/create-investor', element: headerRoute(<CreateInvestor firstLogin={true}/>)},
+  { path: '/create-enterprise', element: headerRoute(<CreateEnterprise firstLogin={true}/>)},
   { path: '*', element: plainRoute('404')}
 ])
 

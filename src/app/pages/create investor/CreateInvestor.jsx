@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './CreateInvestor.scss'
 import ProfilePic from '../../../imgs/global/default-pp.png'
@@ -16,23 +16,35 @@ import PopUp from '../../../components/popup/PopUp';
 
 
 
-function CreateInvestor() {
+function CreateInvestor({
+  nameP,
+  aboutMeP,
+  invCriteriaP,
+  countryP,
+  invMinP,
+  invMaxP,
+  investorTypeP,
+  areaListP,
+  imageBlobP,
+  firstLogin
+}) {
 
+  
   const [typeInfo, setTypeInfo] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const [name, setName] = useState('');
-  const [aboutMe, setAboutME] = useState('');
-  const [invCritera, setInvCritera] = useState('');
-  const [country, setCountry] = useState('');
-  const [invMin, setInvMin] = useState(null);
-  const [invMax, setInvMax] = useState(null);
-  const [investorType, setInvestorType] = useState(-1);
+  const [name, setName] = useState(nameP);
+  const [aboutMe, setAboutME] = useState(aboutMeP);
+  const [invCritera, setInvCritera] = useState(invCriteriaP);
+  const [country, setCountry] = useState(countryP);
+  const [invMin, setInvMin] = useState(invMinP);
+  const [invMax, setInvMax] = useState(invMaxP);
+  const [investorType, setInvestorType] = useState(investorTypeP);
 
   const [message, setMessage] = useState({});
 
   //AREAS VARIABLES
-  const [areaList, setAreaList] = useState([]);
+  const [areaList, setAreaList] = useState(areaListP ? areaListP : []);
   const [buttonColors, setButtonColors] = useState([]);
   const [buttonTextColor, setButtonTextColor] = useState([]);
 
@@ -48,8 +60,8 @@ function CreateInvestor() {
     image: ''
   });
 
-  const [imageBlob, setImageBlob] = useState(ProfilePic);
-  const [imageUrl, setImageUrl] = useState(null);
+  const [imageBlob, setImageBlob] = useState(imageBlobP ? imageBlobP : ProfilePic);
+  const [imageUrl, setImageUrl] = useState(imageBlobP);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -126,7 +138,7 @@ function CreateInvestor() {
       newErrors.aboutMe = 'Insert a short description';
     }
     if (invCritera === ""){
-      newErrors.critera = 'Insert information about the type of enterprises you want to invest in';
+      newErrors.criteria = 'Insert information about the type of enterprises you want to invest in';
     }
     if (country === ""){
       newErrors.country = 'Please select a country of residence';
@@ -137,7 +149,7 @@ function CreateInvestor() {
     if (invMax === null){
       newErrors.invMax = 'Insert the maximum amount you are willing to invest in an enterprise'
     }
-    if (investorType === -1){
+    if (investorType === null){
       newErrors.investorType = 'Please select an investor type'
     }
     if (areaList.length === 0){
@@ -231,18 +243,18 @@ function CreateInvestor() {
         </div>
         <section>
           <div className="input-name">
-            <ClassicInput type='text' placeholder="Full name" onChange={setName} errorMessage={errors.name}>Name*</ClassicInput>
+            <ClassicInput type='text' placeholder="Full name" onChange={setName} errorMessage={errors.name} value={name}>Name*</ClassicInput>
           </div>
           <div className="input-about-me">
-            <ClassicInput type='textarea' placeholder="Tell people about you" onChange={setAboutME} errorMessage={errors.aboutMe}>About me*</ClassicInput>
+            <ClassicInput type='textarea' placeholder="Tell people about you" onChange={setAboutME} errorMessage={errors.aboutMe} value={aboutMe}>About me*</ClassicInput>
           </div>
           <div className="input-investment-criteria">
-            <ClassicInput type='textarea' placeholder="Tell people about your investment criteria" onChange={setInvCritera} errorMessage={errors.criteria}>Investment Criteria*</ClassicInput>
+            <ClassicInput type='textarea' placeholder="Tell people about your investment criteria" onChange={setInvCritera} errorMessage={errors.criteria} value={invCritera}>Investment Criteria*</ClassicInput>
           </div>
           <div className="input-country-container">
-            <ClassicInput type='select' placeholder="Select your country" options={Countries.map(country => country.label)} onChange={setCountry} errorMessage={errors.country}>Country*</ClassicInput>
+            <ClassicInput type='select' placeholder="Select your country" options={Countries.map(country => country.label)} onChange={setCountry} errorMessage={errors.country} value={country}>Country*</ClassicInput>
           </div>
-          <div className="areas-container">
+          {firstLogin && <div className="areas-container">
             <label className='label-areas'>Areas of interest*</label>
             <div className='areas-of-interest'>
               {Areas.map((area, index) => (
@@ -252,16 +264,16 @@ function CreateInvestor() {
               ))}
             </div>
             {errors.areas != '' && <p>{errors.areas}</p>}
-          </div>
+          </div>}
           <div className='investment-range-container'>
             <label className='label-investment-range'>Investment range*</label>
             <p>How much are you willing to invest?</p>
               <div className='investment-inputs'>
-                <ClassicInput type='number' placeholder="Min" onChange={setInvMin} errorMessage={errors.invMin} value={invMin !== null ? invMin : 0}>From*</ClassicInput>
-                <ClassicInput type='number' placeholder="Max" onChange={setInvMax} errorMessage={errors.invMax} value={invMax !== null ? invMax : 0}>To*</ClassicInput>
+                <ClassicInput type='number' placeholder="Min" onChange={setInvMin} errorMessage={errors.invMin} value={invMin}>From*</ClassicInput>
+                <ClassicInput type='number' placeholder="Max" onChange={setInvMax} errorMessage={errors.invMax} value={invMax}>To*</ClassicInput>
               </div>
           </div>
-          <div className='investment-type-container'>
+          {firstLogin && <div className='investment-type-container'>
             <label className='label-investment-type'>Investor type*</label>
             <div className='investment-type-checks'>
               <div className='check-container'>
@@ -291,7 +303,7 @@ function CreateInvestor() {
             </div>
             <p className='info'>{typeInfo}</p>
             {errors.investorType != '' && <p>{errors.investorType}</p>}
-          </div>
+          </div>}
           {errors.image != '' && <p>{errors.image}</p>}
           <button disabled={loading} onClick={onSubmit} className='create-profile-button'>Create Profile</button>
         </section>

@@ -1,5 +1,4 @@
 import Home from './pages/home/Home'
-import SearchInvestors from './pages/search investors/SearchInvestors'
 import React, { useState, useEffect } from 'react'
 import Template from './templates/app template/template'
 import { Link, useNavigate } from 'react-router-dom';
@@ -18,10 +17,10 @@ function Controller() {
         messages: 3,
         profile: 4,
         news: 5,
-        enterpriseAsInvestor: 7,
-        invest: 8,
         editInvestor: 6,
-        editEnterprise: 7
+        enterpriseAsInvestor: 7,
+        editEnterprise: 8,
+        invest: 9,
     };
 
     const [page, setPage] = useState(routes.home)
@@ -62,7 +61,6 @@ function Controller() {
         const user = await res.json();
         if(res.ok){
           setUser(user);
-          console.log(user)
 
           if(user.firstLogin === true){
             if(user.userType === "InvestorUser"){
@@ -88,7 +86,7 @@ function Controller() {
   return (
     <>
         {page === routes.home && <Template selected={page} setPage={setPage} userType={user.userType}><Home setPage={setPage} userType={user.userType} setEnterpriseId={setEnterpriseId}/></Template>}
-        {page === routes.search && <Template selected={page} setPage={setPage} userType={user.userType}>{<Search/>}</Template>}
+        {page === routes.search && <Template selected={page} setPage={setPage} userType={user.userType}>{<Search setEnterpriseId={setEnterpriseId} setPage={setPage}/>}</Template>}
         {page === routes.add && <Template selected={page} setPage={setPage} userType={user.userType}></Template>}
         {page === routes.messages && <Template selected={page} setPage={setPage} userType={user.userType}></Template>}
         {page === routes.news && <Template selected={page} setPage={setPage} userType={user.userType}></Template>}

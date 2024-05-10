@@ -1,23 +1,19 @@
 import React, {useState, useEffect} from 'react'
 import './SearchEnterprises.scss'
 import { FaSearch } from "react-icons/fa";
-
 import Areas from '../../../data/areas.json'
-import ClassicInput from '../../../components/classic input/ClassicInput';
-
 import { MultiSelect } from "react-multi-select-component";
 
 import Countries from '../../../data/countries.json'
 import PopUp from '../../../components/popup/PopUp';
 import EnterpriseCard from '../../../components/enterprise card/EnterpriseCard';
 
-function SearchEnterprises() {
+function SearchEnterprises({setEnterpriseId, setPage}) {
 
     const [areaList, setAreaList] = useState([]);
     const [locationList, setLocationList] = useState([]);
     const [buttonColors, setButtonColors] = useState([]);
     const [buttonTextColor, setButtonTextColor] = useState([]);
-    const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState({});
     const [userName, setUserName] = useState("");
     const [enterpriseType, setEnterpriseType] = useState("");
@@ -144,7 +140,7 @@ function SearchEnterprises() {
         :
         <div className="enterprises-container">
             {users.map((user, index) => (
-                <EnterpriseCard key={index} name={user.name} location={user.location} id={user.id} description={user.description} image={user.profileImage} goal={user.goal} minimum={user.minimumInvestment} current={100}/>
+                <EnterpriseCard key={index} name={user.name} location={user.location} id={user.userId} description={user.description} image={user.profileImage} goal={user.goal} minimum={user.minimumInvestment} current={100} setEnterpriseId={setEnterpriseId} setPage={setPage}/>
             ))}
         </div>}
     </div>

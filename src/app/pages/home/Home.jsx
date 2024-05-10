@@ -18,11 +18,12 @@ function Home({userType, setPage, setEnterpriseId}) {
     if(userType === 'InvestorUser'){
       userPath ="recommended-enterprises"
     }
-    else
+    if(userType === 'EnterpriseUser')
     {
       userPath = "recommended-investors"
     }
 
+    if(userPath === "") return;
     try{
         const res = await fetch('http://localhost:9090/api/v1/feed/'+userPath, {
             method: 'POST',
@@ -44,14 +45,14 @@ function Home({userType, setPage, setEnterpriseId}) {
 }
   return (
     <div className='home-container'>
-      {userType === "InvestorUser" ? 
+      {userType === "InvestorUser" && 
       <>
       <h2>With your interest areas</h2>
       <div className='same-areas-investors'>
         <HorizontalSlider>
           {Object.keys(response).length !== 0 && response["sameAreas"].map((user, index) => (
             <div className="card" key={index}>
-            <EnterpriseCard setEnterpriseId={setEnterpriseId} setPage={setPage} key={index} name={user.name} location={user.location} id={user.id} description={user.description} image={user.profileImage} goal={user.goal} current={2000} minimum={user.minimumInvestment}/>
+            <EnterpriseCard setEnterpriseId={setEnterpriseId} setPage={setPage} key={index} name={user.name} location={user.location} id={user.userId} description={user.description} image={user.profileImage} goal={user.goal} current={2000} minimum={user.minimumInvestment}/>
             </div>
           ))}
         </HorizontalSlider>
@@ -61,15 +62,13 @@ function Home({userType, setPage, setEnterpriseId}) {
         <HorizontalSlider>
             {Object.keys(response).length !== 0 && response["sameLocation"].map((user, index) => (
               <div className="card" key={index}>
-              <EnterpriseCard setEnterpriseId={setEnterpriseId} setPage={setPage} key={index} name={user.name} location={user.location} id={user.id} description={user.description} image={user.profileImage} goal={user.goal} current={2000} minimum={user.minimumInvestment}/>
+              <EnterpriseCard setEnterpriseId={setEnterpriseId} setPage={setPage} key={index} name={user.name} location={user.location} id={user.userId} description={user.description} image={user.profileImage} goal={user.goal} current={2000} minimum={user.minimumInvestment}/>
               </div>
             ))}
         </HorizontalSlider>
       </div>
       </>
-      :
-      <></>
-      }
+    }
       
     </div>
   )

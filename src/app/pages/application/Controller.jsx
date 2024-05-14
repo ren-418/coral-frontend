@@ -15,6 +15,7 @@ function Controller() {
     const [page, setPage] = useState(routes.home)
     const [user, setUser] = useState({})
     const [enterpriseId, setEnterpriseId] = useState()
+    const [prevPage, setPrevPage] = useState(routes.home)
 
     const navigate = useNavigate();
 
@@ -74,12 +75,12 @@ function Controller() {
 
   return (
     <>
-        {page === routes.home && <Template selected={page} setPage={setPage} userType={user.userType}><Home setPage={setPage} userType={user.userType} setEnterpriseId={setEnterpriseId}/></Template>}
-        {page === routes.search && <Template selected={page} setPage={setPage} userType={user.userType}>{<Search setEnterpriseId={setEnterpriseId} setPage={setPage}/>}</Template>}
+        {page === routes.home && <Template selected={page} setPage={setPage} userType={user.userType}><Home setPage={setPage} userType={user.userType} setEnterpriseId={setEnterpriseId} setPrevPage={setPrevPage}/></Template>}
+        {page === routes.search && <Template selected={page} setPage={setPage} userType={user.userType}>{<Search setEnterpriseId={setEnterpriseId} setPage={setPage} setPrevPage={setPrevPage}/>}</Template>}
         {page === routes.add && <Template selected={page} setPage={setPage} userType={user.userType}></Template>}
         {page === routes.messages && <Template selected={page} setPage={setPage} userType={user.userType}></Template>}
         {page === routes.news && <Template selected={page} setPage={setPage} userType={user.userType}></Template>}
-        {page === routes.enterpriseAsInvestor && <Template selected={page} setPage={setPage} userType={user.userType}><EnterpriseProfileInvestor enterpriseId={enterpriseId} setPage={setPage} nextPage={routes.invest}/></Template>}
+        {page === routes.enterpriseAsInvestor && <Template selected={page} setPage={setPage} userType={user.userType}><EnterpriseProfileInvestor enterpriseId={enterpriseId} setPage={setPage} prevPage={prevPage}/></Template>}
         {page === routes.invest && <Template selected={page} setPage={setPage} userType={user.userType}><Invest enterpriseId={enterpriseId} setPage={setPage}/></Template>}
         {page === routes.profile && <Template selected={page} setPage={setPage} userType={user.userType}><Profile setPage={setPage} userType={user.userType}/></Template>}
         {page === routes.editInvestor && <Template selected={routes.profile} setPage={setPage} userType={user.userType}><CreateInvestor nameP={user.name} aboutMeP={user.description} invCriteriaP={user.investmentCriteria} countryP={user.location} invMinP={user.rangeMin} invMaxP={user.rangeMax} investorTypeP={user.investorType} areaListP={user.areas} imageBlobP={user.profilePicture} firstLogin={user.firstLogin}/></Template>}

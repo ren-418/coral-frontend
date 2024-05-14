@@ -6,7 +6,7 @@ import { BiSolidDollarCircle } from "react-icons/bi";
 import { FaLocationDot } from 'react-icons/fa6';
 import Invest from '../invest page/Invest'
 
-function EnterpriseProfileInvestor({enterpriseId, setPage, nextPage}) {
+function EnterpriseProfileInvestor({enterpriseId, prevPage, setPage}) {
 
     const [openPopUp, setOpenPopUp] = useState(false)
 
@@ -27,13 +27,14 @@ function EnterpriseProfileInvestor({enterpriseId, setPage, nextPage}) {
 
     const fetchEnterpriseData = async () => {
         try {
-            const res = await fetch('http://localhost:9090/api/v1/users/enterprise/' + enterpriseId, {
+            const res = await fetch('http://localhost:9090/api/v1/users/enterprise', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    sessionToken: localStorage.getItem('sessionToken')
+                    sessionToken: localStorage.getItem('sessionToken'),
+                    userId: enterpriseId
                 }),
             });
 
@@ -50,31 +51,36 @@ function EnterpriseProfileInvestor({enterpriseId, setPage, nextPage}) {
         }
     }
 
+    const goBack = () => {
+        setPage(prevPage)
+    }
+
   return (
     <div className='enterprise-as-investor-page'>
-        {openPopUp === true && <Invest setOpenPopUp={setOpenPopUp} enterpriseData={enterpriseData}/>}
+        {openPopUp === true && <Invest setOpenPopUp={setOpenPopUp} enterpriseData={enterpriseData} setPage={setPage}/>}
         <div className="banner">
+            <a className='back-button' onClick={goBack}>{'< Back'}</a>
             <div className='container'>
-                <img src={ProfileImage} className='profile-picture' alt="profile picture enterprise"/>
+                <img src={enterpriseData.profileImage !== "" ? enterpriseData.profileImage : ProfileImage} className='profile-picture' alt="profile picture enterprise"/>
                 <button className='invest-button' onClick={() => {setOpenPopUp(true)}}>Invest <BiSolidDollarCircle size={25}/> </button>
             </div>
         </div>
         <div className='enterprise-data'>
-            <h1>Microsoft</h1>
+            <h1>{enterpriseData.name}</h1>
             <div className='location'>
                 <FaLocationDot color='rgba(0, 0, 0, 0.548)'/>
-                <h6>Canada</h6>
+                <h6>{enterpriseData.location.charAt(0).toUpperCase() + enterpriseData.location.slice(1)}</h6>
             </div>
             <div className='progress-bar'>
-                <ProgressBar completed={Math.round(70)} bgColor="#ED4E67" width={'100%'}/>
+                <ProgressBar completed={Math.round((enterpriseData.totalCollected/enterpriseData.goal)*100)} bgColor="#ED4E67" width={'100%'}/>
                 <div className='numbers'>
                     <p>US$ 0</p>
-                    <p>US$ 4000</p>
+                    <p>US$ {enterpriseData.goal}</p>
                 </div>
             </div>
             <h4>Description</h4>
             <div className="description">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro laudantium dolorum, aut alias iusto facilis exercitationem. Doloribus voluptates</p>
+                <p>{enterpriseData.description}</p>
             </div>
         </div>
     </div>

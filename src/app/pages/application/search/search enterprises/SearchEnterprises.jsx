@@ -7,6 +7,7 @@ import { MultiSelect } from "react-multi-select-component";
 import Countries from '../../../../../data/countries.json'
 import PopUp from '../../../../../components/popup/PopUp';
 import EnterpriseCard from '../../../../../components/enterprise card/EnterpriseCard';
+import routes from '../../../../../data/routes.json'
 
 function SearchEnterprises({setEnterpriseId, setPage}) {
 
@@ -103,14 +104,14 @@ function SearchEnterprises({setEnterpriseId, setPage}) {
             <div className="enterprise-type">
                 <div className='check-container'>
                     <div className='input'>
-                        <input type="radio" value="Community" checked={enterpriseType === "Community"} onClick={() => setEnterpriseType("Community")}/>
+                        <input type="radio" value="Community" checked={enterpriseType === "Community"} onClick={() => setEnterpriseType("Community")} onChange={()=>{}}/>
                         <label>Community Pool</label>
                     </div>
                     <p>Join others in investing on an ever-growing coral</p>
                 </div>
                 <div className='check-container'>
                     <div className='input'>
-                        <input type="radio" value="Custom" checked={enterpriseType === "Custom"} onClick={() => setEnterpriseType("Custom")}/>
+                        <input type="radio" value="Custom" checked={enterpriseType === "Custom"} onClick={() => setEnterpriseType("Custom")} onChange={()=>{}}/>
                         <label>Custom Deals</label>
                     </div>
                     <p>Invest big on your dream coral</p>

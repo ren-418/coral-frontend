@@ -15,6 +15,15 @@
         background-image: url(../../../../imgs/login/login-background.png);
         background-size: cover;
         background-position-y: -30px;
+
+        .back-button{
+            color: white;
+            font-size: 20px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
         .container{
             width: fit-content;
             position: absolute;

@@ -5,13 +5,18 @@ import InvestorCard from '../../../../components/investor card/InvestorCard';
 import EnterpriseCard from '../../../../components/enterprise card/EnterpriseCard';
 import './Home.scss'
 import HorizontalSlider from '../../../../components/horizontal slider/HorizontalSlider';
+import routes from '../../../../data/routes.json'
 
-function Home({userType, setPage, setEnterpriseId}) {
+function Home({userType, setPage, setEnterpriseId, setPrevPage}) {
   const [response, setResponse] = useState({});
 
   useEffect(() => {
     onLoad();
   }, [userType]);
+
+  useEffect(() => {
+    setPrevPage(routes.home)
+  }, [])
 
   const onLoad = async () => {
     let userPath = ""
@@ -52,7 +57,7 @@ function Home({userType, setPage, setEnterpriseId}) {
         <HorizontalSlider>
           {Object.keys(response).length !== 0 && response["sameAreas"].map((user, index) => (
             <div className="card" key={index}>
-            <EnterpriseCard setEnterpriseId={setEnterpriseId} setPage={setPage} key={index} name={user.name} location={user.location} id={user.userId} description={user.description} image={user.profileImage} goal={user.goal} current={2000} minimum={user.minimumInvestment}/>
+            <EnterpriseCard setEnterpriseId={setEnterpriseId} setPage={setPage} key={index} name={user.name} location={user.location} id={user.userId} description={user.description} image={user.profileImage} goal={user.goal} current={user.totalCollected} minimum={user.minimumInvestment}/>
             </div>
           ))}
         </HorizontalSlider>
@@ -62,7 +67,7 @@ function Home({userType, setPage, setEnterpriseId}) {
         <HorizontalSlider>
             {Object.keys(response).length !== 0 && response["sameLocation"].map((user, index) => (
               <div className="card" key={index}>
-              <EnterpriseCard setEnterpriseId={setEnterpriseId} setPage={setPage} key={index} name={user.name} location={user.location} id={user.userId} description={user.description} image={user.profileImage} goal={user.goal} current={2000} minimum={user.minimumInvestment}/>
+              <EnterpriseCard setEnterpriseId={setEnterpriseId} setPage={setPage} key={index} name={user.name} location={user.location} id={user.userId} description={user.description} image={user.profileImage} goal={user.goal} current={user.totalCollected} minimum={user.minimumInvestment}/>
               </div>
             ))}
         </HorizontalSlider>

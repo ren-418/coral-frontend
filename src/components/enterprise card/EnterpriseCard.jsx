@@ -3,12 +3,14 @@ import './EnterpriseCard.scss'
 import { FaLocationDot } from "react-icons/fa6";
 
 import ProgressBar from "@ramonak/react-progress-bar";
+import routes from '../../data/routes.json'
 
 function EnterpriseCard({name, location, id, description, image, goal, backgroundColor, minimum, current, setPage, setEnterpriseId}) {
 
   const goToProfile = () => {
     setEnterpriseId(id)
-    setPage(7)
+    console.log(id)
+    setPage(routes.enterpriseAsInvestor)
   }
   
   return (

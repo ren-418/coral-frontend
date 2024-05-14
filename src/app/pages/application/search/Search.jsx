@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import './Search.scss'
-import SearchInvestors from '../search investors/SearchInvestors'
-import SearchEnterprises from '../search enterprises/SearchEnterprises'
+import SearchInvestors from './search investors/SearchInvestors'
+import SearchEnterprises from './search enterprises/SearchEnterprises'
 
 function Search({setEnterpriseId, setPage}) {
     const [searchType, setSearchType] = useState(0)

@@ -1,0 +1,12 @@
+{
+    "home": 0,
+    "search": 1,
+    "add": 2,
+    "messages": 3,
+    "profile": 4,
+    "news": 5,
+    "editInvestor": 6,
+    "enterpriseAsInvestor": 7,
+    "editEnterprise": 8,
+    "invest": 9
+}

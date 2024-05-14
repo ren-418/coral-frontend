@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 
-import InvestorCard from '../../../components/investor card/InvestorCard';
-import EnterpriseCard from '../../../components/enterprise card/EnterpriseCard';
+import InvestorCard from '../../../../components/investor card/InvestorCard';
+import EnterpriseCard from '../../../../components/enterprise card/EnterpriseCard';
 import './Home.scss'
-import HorizontalSlider from '../../../components/horizontal slider/HorizontalSlider';
+import HorizontalSlider from '../../../../components/horizontal slider/HorizontalSlider';
 
 function Home({userType, setPage, setEnterpriseId}) {
   const [response, setResponse] = useState({});

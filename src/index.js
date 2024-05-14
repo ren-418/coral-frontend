@@ -10,7 +10,7 @@ import PlainTemplate from './app/templates/plain/PlainTemplate';
 import CreateInvestor from './app/pages/create investor/CreateInvestor';
 import HeaderTemplate from './app/templates/header/HeaderTemplate';
 import CreateEnterprise from './app/pages/create enterprise/CreateEnterprise';
-import Controller from './app/Controller';
+import Controller from './app/pages/application/Controller';
 import ForgotPassword from './app/pages/forgot password/ForgotPassword';
 
 const route = element => <PlainTemplate selected={0}>{element}</PlainTemplate>

@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import './EnterpriseProfileInvestor.scss'
-import ProfileImage from '../../../imgs/global/default-pp.png'
+import ProfileImage from '../../../../imgs/global/default-pp.png'
 import ProgressBar from '@ramonak/react-progress-bar'
 import { BiSolidDollarCircle } from "react-icons/bi";
 import { FaLocationDot } from 'react-icons/fa6';
+import Invest from '../invest page/Invest'
 
 function EnterpriseProfileInvestor({enterpriseId, setPage, nextPage}) {
+
+    const [openPopUp, setOpenPopUp] = useState(false)
 
     const [enterpriseData, setEnterpriseData] = useState({
         profileImage: "",
@@ -49,10 +52,11 @@ function EnterpriseProfileInvestor({enterpriseId, setPage, nextPage}) {
 
   return (
     <div className='enterprise-as-investor-page'>
+        {openPopUp === true && <Invest setOpenPopUp={setOpenPopUp} enterpriseData={enterpriseData}/>}
         <div className="banner">
             <div className='container'>
                 <img src={ProfileImage} className='profile-picture' alt="profile picture enterprise"/>
-                <button className='invest-button' onClick={() => {setPage(nextPage)}}>Invest <BiSolidDollarCircle size={25}/> </button>
+                <button className='invest-button' onClick={() => {setOpenPopUp(true)}}>Invest <BiSolidDollarCircle size={25}/> </button>
             </div>
         </div>
         <div className='enterprise-data'>

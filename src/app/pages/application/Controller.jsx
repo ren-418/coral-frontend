@@ -1,27 +1,16 @@
-import Home from './pages/home/Home'
+import Home from './home/Home'
 import React, { useState, useEffect } from 'react'
-import Template from './templates/app template/template'
+import Template from '../../templates/app template/template'
 import { Link, useNavigate } from 'react-router-dom';
-import Profile from './pages/profile/Profile';
-import Search from './pages/search/Search';
-import EnterpriseProfileInvestor from './pages/enterprise profile as investor/EnterpriseProfileInvestor';
-import Invest from './pages/invest page/Invest';
-import CreateInvestor from './pages/create investor/CreateInvestor';
-import CreateEnterprise from './pages/create enterprise/CreateEnterprise';
+import Profile from './profile/Profile';
+import Search from './search/Search';
+import EnterpriseProfileInvestor from './enterprise profile as investor/EnterpriseProfileInvestor';
+import Invest from './invest page/Invest';
+import CreateInvestor from '../create investor/CreateInvestor';
+import CreateEnterprise from '../create enterprise/CreateEnterprise';
+import routes from '../../../data/routes.json';
 
 function Controller() {
-    const routes = {
-        home: 0,
-        search: 1,
-        add: 2,
-        messages: 3,
-        profile: 4,
-        news: 5,
-        editInvestor: 6,
-        enterpriseAsInvestor: 7,
-        editEnterprise: 8,
-        invest: 9,
-    };
 
     const [page, setPage] = useState(routes.home)
     const [user, setUser] = useState({})

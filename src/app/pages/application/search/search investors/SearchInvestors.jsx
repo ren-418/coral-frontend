@@ -1,34 +1,42 @@
 import React, {useState, useEffect} from 'react'
-import './SearchEnterprises.scss'
+import './SearchInvestors.scss'
 import { FaSearch } from "react-icons/fa";
-import Areas from '../../../data/areas.json'
+
+import Shark from '../../../../../imgs/global/shark.png'
+import Whale from '../../../../../imgs/global/whale.png'
+import Fish from '../../../../../imgs/global/fish.png'
+import Shrimp from '../../../../../imgs/global/shrimp.png'
+
+import Areas from '../../../../../data/areas.json'
+
 import { MultiSelect } from "react-multi-select-component";
 
-import Countries from '../../../data/countries.json'
-import PopUp from '../../../components/popup/PopUp';
-import EnterpriseCard from '../../../components/enterprise card/EnterpriseCard';
+import Countries from '../../../../../data/countries.json'
+import PopUp from '../../../../../components/popup/PopUp';
+import InvestorCard from '../../../../../components/investor card/InvestorCard';
 
-function SearchEnterprises({setEnterpriseId, setPage}) {
 
+function SearchInvestors({setPage}) {
+    const [investorType, setInvestorType] = useState(-1);
     const [areaList, setAreaList] = useState([]);
     const [locationList, setLocationList] = useState([]);
     const [buttonColors, setButtonColors] = useState([]);
     const [buttonTextColor, setButtonTextColor] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState({});
     const [userName, setUserName] = useState("");
-    const [enterpriseType, setEnterpriseType] = useState("");
 
     const [message, setMessage] = useState({});
 
     const onSearch = async () => {
         try{
-            const res = await fetch('http://localhost:9090/api/v1/search/enterprises', {
+            const res = await fetch('http://localhost:9090/api/v1/search/investors', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    enterpriseType: enterpriseType,
+                    investorType: investorType,
                     areas: areaList,
                     locations: locationList.map(location => location.value),
                     userName: userName
@@ -44,10 +52,21 @@ function SearchEnterprises({setEnterpriseId, setPage}) {
                 setUsers(resJson);
             }
         }catch(error){
-            setNewMessage("No enterprises with that filters", "error")
+            setNewMessage("No investors with that filters", "error")
         }
     }
-
+    
+    function typeCheck(type){
+        if(type === "shark"){
+          setInvestorType(0)
+        }else if(type === "whale"){
+          setInvestorType(1)
+        }else if(type === "fish"){
+          setInvestorType(2)
+        }else if(type === "shrimp"){
+          setInvestorType(3)
+        }
+      }
     function areaCheck(area, index) {
         if(areaList.includes(area)) {
           const updatedList = areaList.filter(item => item !== area);
@@ -83,7 +102,7 @@ function SearchEnterprises({setEnterpriseId, setPage}) {
         }
       }
 
-    function setNewMessage(message, type){
+      function setNewMessage(message, type){
         var newMessage = {}
         newMessage.text = message
         newMessage.type = type
@@ -91,31 +110,44 @@ function SearchEnterprises({setEnterpriseId, setPage}) {
       }
 
   return (
-    <div className='search-enterprises-page'>
+    <div className='search-investors-page'>
         {Object.keys(message).length !== 0 &&
         <PopUp buttonText='Close' close={setMessage}>{message}</PopUp>}
         <div className='searchbar'>
-            <input type="text" placeholder='Search for enterprises' value={userName} onChange={(element)=>{setUserName(element.target.value)}}/>
+            <input type="text" placeholder='Search for investors' value={userName} onChange={(element)=>{setUserName(element.target.value)}}/>
             <button onClick={onSearch}><FaSearch color='white'/></button>
         </div>
-        {Object.keys(users).length === 0 ?
-        <div className='filters-container'>
-            <div className="enterprise-type">
+        {Object.keys(users).length === 0 ? <div className='filters-container'>
+            <div className='investment-type-container'>
+                <label className='label-investment-type' name="type">Investor type:</label>
+                <div className='investment-type-checks'>
                 <div className='check-container'>
-                    <div className='input'>
-                        <input type="radio" value="Community" checked={enterpriseType === "Community"} onClick={() => setEnterpriseType("Community")}/>
-                        <label>Community Pool</label>
+                    <div className="img-container">
+                    <img src={Shark}/>
                     </div>
-                    <p>Join others in investing on an ever-growing coral</p>
+                    <input type='radio' name='type' value='shark' onClick={(event) => typeCheck(event.target.value)}/>
                 </div>
                 <div className='check-container'>
-                    <div className='input'>
-                        <input type="radio" value="Custom" checked={enterpriseType === "Custom"} onClick={() => setEnterpriseType("Custom")}/>
-                        <label>Custom Deals</label>
+                    <div className="img-container">
+                    <img src={Whale}/>
                     </div>
-                    <p>Invest big on your dream coral</p>
+                    <input type='radio' name='type' value='whale' onClick={(event) => typeCheck(event.target.value)}/>
+                </div>
+                <div className='check-container'>
+                    <div className="img-container">
+                    <img src={Fish}/>
+                    </div>
+                    <input type='radio' name='type' value='fish' onClick={(event) => typeCheck(event.target.value)}/>
+                </div>
+                <div className='check-container'>
+                    <div className="img-container">
+                    <img src={Shrimp}/>
+                    </div>
+                    <input type='radio' name='type' value='shrimp' onClick={(event) => typeCheck(event.target.value)}/>
+                </div>
                 </div>
             </div>
+
             <div className="areas-container">
                 <label className='label-areas' name="areas">Areas of interest:</label>
                 <div className='areas-of-interest'>
@@ -138,13 +170,14 @@ function SearchEnterprises({setEnterpriseId, setPage}) {
             </div>
         </div>
         :
-        <div className="enterprises-container">
+        <div className="investors-container">
             {users.map((user, index) => (
-                <EnterpriseCard key={index} name={user.name} location={user.location} id={user.userId} description={user.description} image={user.profileImage} goal={user.goal} minimum={user.minimumInvestment} current={100} setEnterpriseId={setEnterpriseId} setPage={setPage}/>
+            <InvestorCard key={index} name={user.name} description={user.description} image={user.profilePicture} areas={user.areas} location={user.location} id={user.userId} investorType={user.investorType} setPage={setPage}/>
             ))}
         </div>}
+        
     </div>
   )
 }
 
-export default SearchEnterprises
+export default SearchInvestors

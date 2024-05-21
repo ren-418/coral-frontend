@@ -42,6 +42,7 @@ function EnterpriseProfileInvestor({enterpriseId, prevPage, setPage}) {
 
             if(res.ok){
                 setEnterpriseData(resJson);
+                console.log(resJson)
             }
             else{
                 console.log("Error")
@@ -81,6 +82,11 @@ function EnterpriseProfileInvestor({enterpriseId, prevPage, setPage}) {
             <h4>Description</h4>
             <div className="description">
                 <p>{enterpriseData.description}</p>
+            </div>
+            <div className="investors">
+                {enterpriseData.investors.map((area, index) => {
+                    return <div key={index} className='area'>{area}</div>
+                })}
             </div>
         </div>
     </div>

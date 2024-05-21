@@ -44,6 +44,7 @@ function Home({userType, setPage, setEnterpriseId, setPrevPage}) {
 
         if(res.ok){
           setResponse(resJson);
+          console.log(resJson)
         }
     }catch(error){
     }
@@ -53,17 +54,14 @@ function Home({userType, setPage, setEnterpriseId, setPrevPage}) {
       {userType === "InvestorUser" && 
       <>
       <h2>With your interest areas</h2>
-      <div className='same-areas-investors'>
         <HorizontalSlider>
-          {Object.keys(response).length !== 0 && response["sameAreas"].map((user, index) => (
+        {Object.keys(response).length !== 0 && response["sameAreas"].map((user, index) => (
             <div className="card" key={index}>
             <EnterpriseCard setEnterpriseId={setEnterpriseId} setPage={setPage} key={index} name={user.name} location={user.location} id={user.userId} description={user.description} image={user.profileImage} goal={user.goal} current={user.totalCollected} minimum={user.minimumInvestment}/>
             </div>
           ))}
         </HorizontalSlider>
-      </div>
       <h2>In your location</h2>
-      <div className='same-location-investors'>
         <HorizontalSlider>
             {Object.keys(response).length !== 0 && response["sameLocation"].map((user, index) => (
               <div className="card" key={index}>
@@ -71,7 +69,6 @@ function Home({userType, setPage, setEnterpriseId, setPrevPage}) {
               </div>
             ))}
         </HorizontalSlider>
-      </div>
       </>
     }
       

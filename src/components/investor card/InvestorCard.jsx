@@ -7,9 +7,9 @@ import Whale from '../../imgs/global/whale.png'
 import Fish from '../../imgs/global/fish.png'
 import Shrimp from '../../imgs/global/shrimp.png'
 
-function InvestorCard({name, location, investorType, id, description, image, areas, backgroundColor}) {
+function InvestorCard({investorData, setUserId}) {
   const checkInvestorType = () => {
-    switch(investorType){
+    switch(investorData.investorType){
       case 0:
         return Shark
       case 1:
@@ -23,22 +23,22 @@ function InvestorCard({name, location, investorType, id, description, image, are
     }
   }
   return (
-    <div className='investor-card' style={{backgroundColor: backgroundColor}}>
+    <div className='investor-card'>
         <div className='col1'>
-            <img src={image} alt="pfp"/>
+            <img src={investorData.profilePicture} alt="pfp"/>
             <p>Areas of interest</p>
             <div className='areas-container'>
-              {areas.map((area, index) => (
+              {investorData.areas.map((area, index) => (
                   <div key={index} className='area'>{area}</div>
               ))}
             </div>
         </div>
         <div className='col2'>
-            <h2>{name[0].toUpperCase() + name.slice(1)}</h2>
-            <p className='description'>{description}</p>
+            <h2>{investorData.name[0].toUpperCase() + investorData.name.slice(1)}</h2>
+            <p className='description'>{investorData.description}</p>
             <div className='location-container'>
               <FaLocationDot color='rgba(0, 0, 0, 0.548)'/>
-              <p className='location'>{location[0].toUpperCase() + location.slice(1)}</p>
+              <p className='location'>{investorData.location[0].toUpperCase() + investorData.location.slice(1)}</p>
             </div>
             <button>View profile</button>
         </div>

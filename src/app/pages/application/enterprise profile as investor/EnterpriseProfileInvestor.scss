@@ -3,10 +3,10 @@
 .enterprise-as-investor-page{
     margin: 50px 0;
     display: flex;
-    width: 100%;
     flex-direction: column;
     align-items: center;
     overflow-x: hidden;
+    padding-bottom: 40px;
 
     .banner{
         width: 100%;
@@ -114,13 +114,30 @@
             width: 90%;
         }
         
-        .description{
+        .enterprise-description{
             width: 90%;
             text-align: left;
             background-color: #EAEAEA;
             padding: 0 10px;
             box-sizing: border-box;
             border-radius: 10px;
+        }
+
+        .areas{
+            display: flex;
+            flex-wrap: wrap;
+            margin: 10px 0;
+            .area{
+                background-color: #D9D9D9;
+                color: black;
+                border-radius: 100px;
+                padding: 1px 7px;
+                margin-bottom: 5px;
+                font-size: 13px;
+                &:not(:last-child) {
+                    margin-right: 5px; /* Espacio entre elementos */
+                }
+            }
         }
     }
  }

@@ -4,11 +4,19 @@ import ClassicInput from '../../../../components/classic input/ClassicInput'
 import routes from '../../../../data/routes.json'
 
 function Invest({enterpriseData, setOpenPopUp, setPage}) {
-  const [investAmount, setInvestAmount] = useState(0)
+  const [investAmount, setInvestAmount] = useState()
   const [success, setSuccess] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState("")
 
   const invest = async () => {
+    if(investAmount<enterpriseData.minimumInvestment){
+      setMessage("Invest amount should be greater than minimum investment")
+      return;
+    }
     try {
+      setLoading(true)
+      setMessage("Loading...")
         const res = await fetch('http://localhost:9090/api/v1/users/invest', {
             method: 'POST',
             headers: {
@@ -21,16 +29,16 @@ function Invest({enterpriseData, setOpenPopUp, setPage}) {
             }),
         });
 
-        const resJson = await res.json();
-
         if(res.ok){
-            console.log(resJson)
+          setMessage("You have invested $" + investAmount + " in " + enterpriseData.name)
         }
         else{
-            console.log("Error")
+          setMessage("An error ocurred")
         }
+        setLoading(false)
     } catch (error) {
-        console.log(error)
+      setLoading(false)
+      setMessage("An error ocurred")
     }
   }
 
@@ -41,8 +49,6 @@ function Invest({enterpriseData, setOpenPopUp, setPage}) {
   const close = () => {
     setOpenPopUp(false)
   }
-
-
 
   return (
     <div className="invest-pop-up">
@@ -55,22 +61,16 @@ function Invest({enterpriseData, setOpenPopUp, setPage}) {
           </>
         }
 
-        { /*enterpriseData.enterpriseType === "Community" && !success &&*/
+        { enterpriseData.enterpriseType === "Community" && !success &&
           <>
             <h2>How much do you want to invest?</h2>
-            <ClassicInput label='Investment amount' type='number' placeholder='Invest amount' onChange={setInvestAmount} value={investAmount}>Invest amount</ClassicInput>
-            <button onClick={invest} className='main-button'>Invest</button>
+            <p>Minimum invest: ${enterpriseData.minimumInvestment}</p>
+            <ClassicInput label='Investment amount' type='number' placeholder={"$" + enterpriseData.minimumInvestment} onChange={setInvestAmount} value={investAmount} disabled={loading}>Invest amount</ClassicInput>
+            {message !== "" && <p>{message}</p>}
+            <button onClick={invest} className='main-button' disabled={loading}>Invest</button>
             <button onClick={close} className='close-button'>Close</button>
           </>
         }
-
-        { success &&
-          <>
-            <h2>Investment successful</h2>
-            <button onClick={close} className='close-button'>Close</button>
-          </>
-        }
-
         </div>
       </div>
   )

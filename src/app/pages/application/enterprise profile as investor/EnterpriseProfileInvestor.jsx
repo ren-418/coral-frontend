@@ -5,6 +5,8 @@ import ProgressBar from '@ramonak/react-progress-bar'
 import { BiSolidDollarCircle } from "react-icons/bi";
 import { FaLocationDot } from 'react-icons/fa6';
 import Invest from '../invest page/Invest'
+import InvestorCard from '../../../../components/investor card/InvestorCard'
+import HorizontalSlider from '../../../../components/horizontal slider/HorizontalSlider';
 
 function EnterpriseProfileInvestor({enterpriseId, prevPage, setPage}) {
 
@@ -18,7 +20,8 @@ function EnterpriseProfileInvestor({enterpriseId, prevPage, setPage}) {
         goal: "",
         current: "",
         minimumInvestment: "",
-        areas: []
+        areas: ["a"],
+        investors: []
     })
 
     useEffect(() => {
@@ -42,17 +45,15 @@ function EnterpriseProfileInvestor({enterpriseId, prevPage, setPage}) {
 
             if(res.ok){
                 setEnterpriseData(resJson);
-                console.log(resJson)
             }
             else{
-                console.log("Error")
             }
         } catch (error) {
-            console.log(error)
         }
     }
 
     const goBack = () => {
+        console.log(enterpriseData)
         setPage(prevPage)
     }
 
@@ -72,6 +73,11 @@ function EnterpriseProfileInvestor({enterpriseId, prevPage, setPage}) {
                 <FaLocationDot color='rgba(0, 0, 0, 0.548)'/>
                 <h6>{enterpriseData.location.charAt(0).toUpperCase() + enterpriseData.location.slice(1)}</h6>
             </div>
+            <div className="areas">
+                {enterpriseData.areas.map((area, index) => (
+                  <div key={index} className='area'>{area}</div>
+                ))}
+            </div>
             <div className='progress-bar'>
                 <ProgressBar completed={Math.round((enterpriseData.totalCollected/enterpriseData.goal)*100)} bgColor="#ED4E67" width={'100%'}/>
                 <div className='numbers'>
@@ -80,14 +86,17 @@ function EnterpriseProfileInvestor({enterpriseId, prevPage, setPage}) {
                 </div>
             </div>
             <h4>Description</h4>
-            <div className="description">
+            <div className="enterprise-description">
                 <p>{enterpriseData.description}</p>
             </div>
-            <div className="investors">
-                {enterpriseData.investors.map((area, index) => {
-                    return <div key={index} className='area'>{area}</div>
-                })}
-            </div>
+            <h4>Investors</h4>
+                <HorizontalSlider>
+                    {enterpriseData.investors.map((investor, index) => (
+                        <div className="card" key={index}>
+                            <InvestorCard key={index} investorData={investor}/>
+                        </div>
+                    ))}
+                </HorizontalSlider>
         </div>
     </div>
   )

@@ -16,12 +16,16 @@ function EnterpriseCard({enterpriseData, setPage, setUserId}) {
     <div className='enterprise-card'>
         <div className='col1'>
             <img src={enterpriseData.profileImage} alt="pfp"/>
-            <div className='ranges-container'>
+            {enterpriseData.enterpriseType === "Community" && <div className='ranges-container'>
               <div className='goal'><p className='subtitle'>Goal:</p><p className='numbers'>US${enterpriseData.totalCollected}</p></div>
               <div className='minimum'><p className='subtitle'>Min invest:</p><p className='numbers'>US${enterpriseData.minimumInvestment}</p></div>
-            </div>
-            <div className="progrss-bar">
-                <ProgressBar completed={Math.round((enterpriseData.totalCollected/enterpriseData.goal)*100)} bgColor="#3BAFB7" width={'90%'}/>
+            </div>}
+             <div className="progrss-bar">
+             {enterpriseData.enterpriseType === "Community" ?
+              <ProgressBar completed={Math.round((enterpriseData.totalCollected/enterpriseData.goal)*100)} bgColor="#3BAFB7" width={'90%'}/>
+            :
+              <p>Custom enterprise</p>
+            }
             </div>
         </div>
         <div className='col2'>

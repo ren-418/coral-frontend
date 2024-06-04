@@ -6,24 +6,26 @@ import ClassicInput from '../../../components/classic input/ClassicInput'
 import Areas from '../../../data/areas.json'
 import Countries from '../../../data/countries.json'
 import PopUp from '../../../components/popup/PopUp';
+import routes from '../../../data/routes.json'
 
-function CreateEnterprise() {
+function CreateEnterprise({enterpriseData={name:null, description:null, location:null, enterpriseType:null, goal:null, minimumInvestment:null, totalProfitReturn:null, areas:null, profileImage:null}, firstLogin, setPage}) {
+
   // SLIDER
   const [slider, setSlider] = useState(false);
 
   //Data
-  const [name, setName] = useState('');
-  const [aboutMe, setAboutME] = useState('');
-  const [country, setCountry] = useState('');
-  const [investmentType, setInvestmentType] = useState('');
+  const [name, setName] = useState(enterpriseData.name ? enterpriseData.name : '');
+  const [aboutMe, setAboutME] = useState(enterpriseData.description ? enterpriseData.description : '');
+  const [country, setCountry] = useState(enterpriseData.location ? enterpriseData.location : '');
+  const [investmentType, setInvestmentType] = useState(enterpriseData.enterpriseType ? enterpriseData.enterpriseType : '');
 
-  const [goal, setGoal] = useState(-1);
-  const [minumumInvestment, setMinimumInvestment] = useState(-1);
-  const [profitReturn, setProfitReturn] = useState(-1);
+  const [goal, setGoal] = useState(enterpriseData.goal >=0 ? enterpriseData.goal : -1);
+  const [minumumInvestment, setMinimumInvestment] = useState(enterpriseData.minimumInvestment >=0 ? enterpriseData.minimumInvestment : -1);
+  const [profitReturn, setProfitReturn] = useState(enterpriseData.totalProfitReturn >=0 ? enterpriseData.totalProfitReturn : -1);
 
 
   //AREAS VARIABLES
-  const [areaList, setAreaList] = useState([]);
+  const [areaList, setAreaList] = useState(enterpriseData.areas ? enterpriseData.areas : []);
   const [buttonColors, setButtonColors] = useState([]);
   const [buttonTextColor, setButtonTextColor] = useState([]);
 
@@ -68,8 +70,8 @@ function CreateEnterprise() {
   
 //Image Section
 
-  const [imageBlob, setImageBlob] = useState(ProfilePic);
-  const [imageUrl, setImageUrl] = useState(null);
+  const [imageBlob, setImageBlob] = useState(enterpriseData.profileImage ? enterpriseData.profileImage : ProfilePic);
+  const [imageUrl, setImageUrl] = useState(enterpriseData.profileImage);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -119,24 +121,30 @@ function CreateEnterprise() {
     if (areaList.length === 0){
       newErrors.areas = 'Please select at least one area of interest'
     }
-    if (goal < 0){
-      newErrors.goal = 'Please insert positive numbers in the investment goal'
+    if(investmentType === ""){
+      newErrors.investmentType = 'Please select an investment type'
     }
-    if (goal == -1){
-      newErrors.goal = 'Please insert an investment goal'
+    if(investmentType === "Community"){
+      if (goal == -1){
+        newErrors.goal = 'Please insert an investment goal'
+      }
+      if (goal <= 0 ){
+        newErrors.goal = 'Please insert positive numbers in the investment goal'
+      }
+      if (minumumInvestment < 0){
+        newErrors.minimumInvestment = 'Please insert positive numbers in minimum investment'
+      }
+      if (minumumInvestment == -1){
+        newErrors.minimumInvestment = 'Please insert the minimum amount required to invest in your enterprise'
+      }
+      if (profitReturn < 0){
+        newErrors.profitReturn = 'Please insert positive numbers in total profit Return'
+      }
+      if (profitReturn == -1){
+        newErrors.profitReturn = 'Please insert the total profit return for investors'
+      }
     }
-    if (minumumInvestment < 0){
-      newErrors.minimumInvestment = 'Please insert positive numbers in minimum investment'
-    }
-    if (minumumInvestment == -1){
-      newErrors.minimumInvestment = 'Please insert the minimum amount required to invest in your enterprise'
-    }
-    if (profitReturn < 0){
-      newErrors.profitReturn = 'Please insert positive numbers in total profit Return'
-    }
-    if (profitReturn == -1){
-      newErrors.profitReturn = 'Please insert the total profit return for investors'
-    }
+
     if (imageBlob == ProfilePic) {
       newErrors.image = 'Please choose a profile picture'
     }
@@ -189,7 +197,11 @@ function CreateEnterprise() {
           setNewMessage(resMessage, "error");
         } else {
           //Redirect to home and save user id in local storage
-          navigate('/');
+          if(firstLogin === true){
+            navigate('/');
+          }else{
+            setPage(routes.profile)
+          }
         }
         setLoading(false);
       } catch (error) {
@@ -216,12 +228,18 @@ function CreateEnterprise() {
     }
   }
 
+  const goBack = () => {
+    console.log('go back')
+    setPage(routes.profile)
+}
+
   return (
     <div className='create-enterprise-container'>
       {Object.keys(message).length !== 0 && 
         <PopUp buttonText='Close' close={setMessage}>{message}</PopUp>
       }
         <div className='banner'>
+            {firstLogin === false && <a className='back-button' onClick={goBack}>{'< Back'}</a>}
             <div className='image-input'>
             <img src={imageBlob}/>
                 <div className="input-container">
@@ -231,15 +249,15 @@ function CreateEnterprise() {
         </div>
         <section>
           <div className="input-name">
-            <ClassicInput type='text' placeholder="Name" onChange={setName} errorMessage={errors.name}>Enterprise name*</ClassicInput>
+            <ClassicInput type='text' value={name} placeholder="Name" onChange={setName} errorMessage={errors.name}>Enterprise name*</ClassicInput>
           </div>
           <div className="input-about-me">
-            <ClassicInput type='textarea' placeholder="Tell people about your enterprise" onChange={setAboutME} errorMessage={errors.aboutMe}>Description*</ClassicInput>
+            <ClassicInput type='textarea' value={aboutMe} placeholder="Tell people about your enterprise" onChange={setAboutME} errorMessage={errors.aboutMe}>Description*</ClassicInput>
           </div>
           <div className="input-country-container">
-            <ClassicInput type='select' placeholder="Select country" options={Countries.map(country => country.label)} onChange={setCountry} errorMessage={errors.country}>Country*</ClassicInput>
+            <ClassicInput type='select' value={country} placeholder="Select country" options={Countries.map(country => country.label)} onChange={setCountry} errorMessage={errors.country}>Country*</ClassicInput>
           </div>
-          <div className="areas-container">
+          {firstLogin && <div className="areas-container">
             <label className='label-areas'>Areas of development*</label>
             <div className='areas-of-interest'>
               {Areas.map((area, index) => (
@@ -248,9 +266,9 @@ function CreateEnterprise() {
                 </div>
               ))}
             </div>
-            {errors.areas != '' && <p>{errors.areas}</p>}
-          </div>
-          <div className='investment-type-container'>
+            {errors.areas != '' && <p className='error-message'>{errors.areas}</p>}
+          </div>}
+          {firstLogin && <div className='investment-type-container'>
             <div className='investment-type-checks'>
               <p>Comunity Investment</p>
               <div className='check-container'>
@@ -261,17 +279,17 @@ function CreateEnterprise() {
                 <input type='radio' name='type' value='Custom' onClick={(event) => typeCheck(event.target.value)}/>
               </div>
             </div>
-          </div>
-          <p className='info'>{typeInfo}</p>
-          {slider &&
+          </div>}
+          {firstLogin && <p className='info'>{typeInfo}</p>}
+          {slider && firstLogin &&
           <div className='community-values'>
-            <ClassicInput type='number' placeholder="000" onChange={setGoal} errorMessage={errors.goal} min="0">Goal*</ClassicInput>
-            <ClassicInput type='number' placeholder="000" onChange={setMinimumInvestment} errorMessage={errors.minimumInvestment} min="0">Minimum Investment*</ClassicInput>
-            <ClassicInput type='number' placeholder="000" onChange={setProfitReturn} errorMessage={errors.profitReturn} min="0">Total Profit Return for Investors*</ClassicInput>
+            <ClassicInput type='number' placeholder="$USD0" onChange={setGoal} errorMessage={errors.goal} min="0">Goal*</ClassicInput>
+            <ClassicInput type='number' placeholder="$USD0" onChange={setMinimumInvestment} errorMessage={errors.minimumInvestment} min="0">Minimum Investment*</ClassicInput>
+            <ClassicInput type='number' placeholder="0%" onChange={setProfitReturn} errorMessage={errors.profitReturn} min="0">Total Profit Return for Investors*</ClassicInput>
           </div>
           }
-          {errors.image != '' && <p>{errors.image}</p>}
-          <button disabled={loading} onClick={onSubmit} className='create-profile-button'>Create Profile</button>
+          {errors.image != '' && <p className='error-message'>{errors.image}</p>}
+          <button disabled={loading} onClick={onSubmit} className='create-profile-button'>{ firstLogin ? "Create Profile" : "Edit profile"}</button>
         </section>
     </div>
   )

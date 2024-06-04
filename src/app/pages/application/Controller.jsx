@@ -2,13 +2,15 @@ import Home from './home/Home'
 import React, { useState, useEffect } from 'react'
 import Template from '../../templates/app template/template'
 import { Link, useNavigate } from 'react-router-dom';
-import Profile from './profile/Profile';
+import Profile from './profiles/Profile';
 import Search from './search/Search';
-import EnterpriseProfileInvestor from './enterprise profile as investor/EnterpriseProfileInvestor';
+import EnterpriseProfileInvestor from './profiles/other/enterprise/EnterpriseProfileInvestor';
 import Invest from './invest page/Invest';
 import CreateInvestor from '../create investor/CreateInvestor';
 import CreateEnterprise from '../create enterprise/CreateEnterprise';
 import routes from '../../../data/routes.json';
+import Chats from './chats/Chats';
+import Chat from './chats/chat/Chat';
 
 function Controller() {
 
@@ -29,7 +31,7 @@ function Controller() {
         navigate('/login');
     }
 
-  }, []);
+  }, [page]);
 
   const checkUser = async (sessionToken) => {
     try {
@@ -78,13 +80,14 @@ function Controller() {
         {page === routes.home && <Template selected={page} setPage={setPage} userType={user.userType}><Home setPage={setPage} userType={user.userType} setUserId={setUserId} setPrevPage={setPrevPage}/></Template>}
         {page === routes.search && <Template selected={page} setPage={setPage} userType={user.userType}>{<Search setUserId={setUserId} setPage={setPage} setPrevPage={setPrevPage}/>}</Template>}
         {page === routes.add && <Template selected={page} setPage={setPage} userType={user.userType}></Template>}
-        {page === routes.messages && <Template selected={page} setPage={setPage} userType={user.userType}></Template>}
+        {page === routes.messages && <Template selected={page} setPage={setPage} userType={user.userType}><Chats setPage={setPage} setPrevPage={setPrevPage} setUserId={setUserId}/></Template>}
         {page === routes.news && <Template selected={page} setPage={setPage} userType={user.userType}></Template>}
         {page === routes.enterpriseAsInvestor && <Template selected={page} setPage={setPage} userType={user.userType}><EnterpriseProfileInvestor enterpriseId={userId} setPage={setPage} prevPage={prevPage}/></Template>}
         {page === routes.invest && <Template selected={page} setPage={setPage} userType={user.userType}><Invest enterpriseId={userId} setPage={setPage}/></Template>}
         {page === routes.profile && <Template selected={page} setPage={setPage} userType={user.userType}><Profile setPage={setPage} userType={user.userType}/></Template>}
-        {page === routes.editInvestor && <Template selected={routes.profile} setPage={setPage} userType={user.userType}><CreateInvestor nameP={user.name} aboutMeP={user.description} invCriteriaP={user.investmentCriteria} countryP={user.location} invMinP={user.rangeMin} invMaxP={user.rangeMax} investorTypeP={user.investorType} areaListP={user.areas} imageBlobP={user.profilePicture} firstLogin={user.firstLogin}/></Template>}
-        {page === routes.editEnterprise && <Template selected={routes.profile} setPage={setPage} userType={user.userType}><CreateEnterprise/></Template>}
+        {page === routes.editInvestor && <Template selected={routes.profile} setPage={setPage} userType={user.userType}><CreateInvestor investorData={user} firstLogin={user.firstLogin} setPage={setPage}/></Template>}
+        {page === routes.editEnterprise && <Template selected={routes.profile} setPage={setPage} userType={user.userType}><CreateEnterprise enterpriseData={user} firstLogin={user.firstLogin} setPage={setPage}/></Template>}
+        {page === routes.chat && <Template selected={page} setPage={setPage} userType={user.userType}><Chat userId={userId} setPage={setPage}/></Template>}
     </>
   )
 }

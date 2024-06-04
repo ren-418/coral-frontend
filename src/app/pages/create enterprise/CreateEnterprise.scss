@@ -9,6 +9,10 @@
         display: none;
     }
 
+    .error-message{
+        color: red;
+    }
+
     .banner{
         width: 100%;
         background-image: url(../../../imgs/login/login-background.png);
@@ -16,6 +20,16 @@
         background-position-y: -30px;
         height: 120px;
         margin-bottom: 100px;
+        position: relative;
+
+        .back-button{
+            color: white;
+            font-size: 20px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+        }
 
         .image-input{
             position: relative;
@@ -201,12 +215,10 @@
             &:active{
                 background-color: rgba(255, 77, 77, 0.741);
             }
-        }
-    }
-    .community-values{
-        
-        p{
 
+            &:disabled{
+                background-color: rgba(255, 77, 77, 0.542);
+            }
         }
     }
 }

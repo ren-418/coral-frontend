@@ -73,6 +73,26 @@ function Home({userType, setPage, setUserId, setPrevPage}) {
         </HorizontalSlider>
       </>
     }
+    {userType === "EnterpriseUser" &&
+      <>
+      {Object.keys(response["sameAreas"]).length !== 0 && <h2>With your interest areas</h2>}
+        <HorizontalSlider>
+        {Object.keys(response["sameAreas"]).length !== 0 && response["sameAreas"].map((user, index) => (
+            <div className="card" key={index}>
+            <InvestorCard setUserId={setUserId} setPage={setPage} key={index} investorData={user}/>
+            </div>
+          ))}
+        </HorizontalSlider>
+        {Object.keys(response["sameLocation"]).length !== 0 && <h2>In your location</h2>}
+        <HorizontalSlider>
+            {Object.keys(response["sameLocation"]).length !== 0 && response["sameLocation"].map((user, index) => (
+              <div className="card" key={index}>
+                <InvestorCard setUserId={setUserId} setPage={setPage} key={index} investorData={user}/>
+              </div>
+            ))}
+        </HorizontalSlider>
+      </>
+    }
       
     </div>
   )

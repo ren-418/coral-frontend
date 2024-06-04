@@ -9,7 +9,7 @@ function ChatPreview({profilePic, name, lastMessage, userId, openChat}) {
         </div>
         <div className='text-container'>
             <h3>{name}</h3>
-            <p>{lastMessage}</p>
+            <p>{lastMessage.message}</p>
         </div>
     </div>
   )

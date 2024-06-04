@@ -5,7 +5,7 @@ import ProfilePic from '../../../../imgs/global/default-pp.png';
 import routes from '../../../../data/routes.json'
 
 function Chats({setPage, setUserId}) {
-    const [chats, setChats] = useState([{profilePic: ProfilePic, name: 'Joe Biden', lastMessage: 'Example message', userId: 4}, {profilePic: ProfilePic, name: 'Joe Biden', lastMessage: 'Example message', userId: 4}])
+    const [chats, setChats] = useState([])
 
     useEffect(() => {
         fetchChats();
@@ -26,7 +26,7 @@ function Chats({setPage, setUserId}) {
             const resJson = await res.json();
 
             if(res.ok){
-                setChats(resJson);
+                setChats(resJson.chatPreviews);
             }
             else{
                 console.log('Error')
@@ -44,11 +44,12 @@ function Chats({setPage, setUserId}) {
     return (
         <div className='chats-page'>
             <h1>Chats</h1>
-            {chats && <div className='chats-container'>
+             <div className='chats-container'>
                 {chats.map((chat, index) => (
-                    <ChatPreview key={index} profilePic={chat.profilePic} name={chat.name} userId={chat.userId} lastMessage={chat.lastMessage} openChat={openChat}/>
+                    <ChatPreview key={index} profilePic={chat.profileImage} name={chat.name} userId={chat.userId} lastMessage={chat.lastMessage} openChat={openChat}/>
                 ))}
-            </div>}
+                {chats.length === 0 && <h3 style={{textAlign: 'center', width: '100%'}}>No chats</h3>}
+            </div>
         </div>
     )
 }

@@ -11,6 +11,7 @@ function Chat({userId, setPage}) {
     const [message, setMessage] = useState('')
 
     useEffect(() => {
+        console.log(userId)
         fetchMessages()
     } ,[])
 

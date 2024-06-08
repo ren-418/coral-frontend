@@ -9,5 +9,6 @@
     "enterpriseAsInvestor": 7,
     "editEnterprise": 8,
     "invest": 9,
-    "chat": 10
+    "chat": 10,
+    "investorAsEnterprise" : 11
 }

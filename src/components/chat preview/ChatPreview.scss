@@ -27,7 +27,12 @@
 
         p{
             margin: 0;
+            overflow: hidden;
             margin-top: 1.5dvh;
+            overflow-wrap: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 1; /* Número de líneas antes de cortar */
+            -webkit-box-orient: vertical;
         }
     }
 }

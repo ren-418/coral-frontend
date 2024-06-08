@@ -4,7 +4,7 @@ import ChatPreview from '../../../../components/chat preview/ChatPreview';
 import ProfilePic from '../../../../imgs/global/default-pp.png';
 import routes from '../../../../data/routes.json'
 
-function Chats({setPage, setUserId}) {
+function Chats({setPage}) {
     const [chats, setChats] = useState([])
 
     useEffect(() => {
@@ -37,8 +37,7 @@ function Chats({setPage, setUserId}) {
     }
 
     const openChat = (userId) => {
-        setUserId(userId);
-        setPage(routes.chat)
+        setPage(routes.chat, userId)
     }
 
     return (

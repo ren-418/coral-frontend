@@ -7,7 +7,7 @@ import './Home.scss'
 import HorizontalSlider from '../../../../components/horizontal slider/HorizontalSlider';
 import routes from '../../../../data/routes.json'
 
-function Home({userType, setPage, setUserId, setPrevPage}) {
+function Home({userType, setPage}) {
   const [response, setResponse] = useState({
     sameAreas: [],
     sameLocation: []
@@ -16,10 +16,6 @@ function Home({userType, setPage, setUserId, setPrevPage}) {
   useEffect(() => {
     onLoad();
   }, [userType]);
-
-  useEffect(() => {
-    setPrevPage(routes.home)
-  }, [])
 
   const onLoad = async () => {
     let userPath = ""
@@ -53,13 +49,14 @@ function Home({userType, setPage, setUserId, setPrevPage}) {
 }
   return (
     <div className='home-container'>
+      <h1>Home</h1>
       {userType === "InvestorUser" && 
       <>
       {Object.keys(response["sameAreas"]).length !== 0 && <h2>With your interest areas</h2>}
         <HorizontalSlider>
         {Object.keys(response["sameAreas"]).length !== 0 && response["sameAreas"].map((user, index) => (
             <div className="card" key={index}>
-            <EnterpriseCard setUserId={setUserId} setPage={setPage} key={index} enterpriseData={user}/>
+            <EnterpriseCard setPage={setPage} key={index} enterpriseData={user}/>
             </div>
           ))}
         </HorizontalSlider>
@@ -67,7 +64,7 @@ function Home({userType, setPage, setUserId, setPrevPage}) {
         <HorizontalSlider>
             {Object.keys(response["sameLocation"]).length !== 0 && response["sameLocation"].map((user, index) => (
               <div className="card" key={index}>
-                <EnterpriseCard setUserId={setUserId} setPage={setPage} key={index} enterpriseData={user}/>
+                <EnterpriseCard setPage={setPage} key={index} enterpriseData={user}/>
               </div>
             ))}
         </HorizontalSlider>
@@ -79,7 +76,7 @@ function Home({userType, setPage, setUserId, setPrevPage}) {
         <HorizontalSlider>
         {Object.keys(response["sameAreas"]).length !== 0 && response["sameAreas"].map((user, index) => (
             <div className="card" key={index}>
-            <InvestorCard setUserId={setUserId} setPage={setPage} key={index} investorData={user}/>
+            <InvestorCard setPage={setPage} key={index} investorData={user}/>
             </div>
           ))}
         </HorizontalSlider>
@@ -87,7 +84,7 @@ function Home({userType, setPage, setUserId, setPrevPage}) {
         <HorizontalSlider>
             {Object.keys(response["sameLocation"]).length !== 0 && response["sameLocation"].map((user, index) => (
               <div className="card" key={index}>
-                <InvestorCard setUserId={setUserId} setPage={setPage} key={index} investorData={user}/>
+                <InvestorCard setPage={setPage} key={index} investorData={user}/>
               </div>
             ))}
         </HorizontalSlider>

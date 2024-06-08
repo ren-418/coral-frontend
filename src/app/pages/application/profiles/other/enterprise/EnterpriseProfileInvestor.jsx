@@ -7,8 +7,10 @@ import { FaLocationDot } from 'react-icons/fa6';
 import Invest from '../../../../application/invest page/Invest'
 import InvestorCard from '../../../../../../components/investor card/InvestorCard'
 import HorizontalSlider from '../../../../../../components/horizontal slider/HorizontalSlider';
+import { AiFillMessage } from "react-icons/ai";
+import routes from '../../../../../../data/routes.json'
 
-function EnterpriseProfileInvestor({enterpriseId, prevPage, setPage}) {
+function EnterpriseProfileInvestor({enterpriseId, setPage, goBack, userType}) {
 
     const [openPopUp, setOpenPopUp] = useState(false)
 
@@ -20,13 +22,16 @@ function EnterpriseProfileInvestor({enterpriseId, prevPage, setPage}) {
         goal: "",
         current: "",
         minimumInvestment: "",
-        areas: ["a"],
+        areas: [],
         investors: []
     })
 
     useEffect(() => {
-        fetchEnterpriseData()
-    }, [])
+        if(openPopUp === false){
+            console.log('fetching data')
+            fetchEnterpriseData()
+        }
+    }, [openPopUp])
 
     const fetchEnterpriseData = async () => {
         try {
@@ -52,8 +57,8 @@ function EnterpriseProfileInvestor({enterpriseId, prevPage, setPage}) {
         }
     }
 
-    const goBack = () => {
-        setPage(prevPage)
+    const chat = () => {
+        setPage(routes.chat, enterpriseId)
     }
 
   return (
@@ -63,8 +68,9 @@ function EnterpriseProfileInvestor({enterpriseId, prevPage, setPage}) {
             <a className='back-button' onClick={goBack}>{'< Back'}</a>
             <div className='container'>
                 <img src={enterpriseData.profileImage !== "" ? enterpriseData.profileImage : ProfileImage} className='profile-picture' alt="profile picture enterprise"/>
-                <button className='invest-button' onClick={() => {setOpenPopUp(true)}}>Invest <BiSolidDollarCircle size={25}/> </button>
+                {userType === "InvestorUser" && <button className='invest-button' onClick={() => {setOpenPopUp(true)}}>Invest <BiSolidDollarCircle size={25}/> </button>}
             </div>
+            {userType === "InvestorUser" && <button className='chat-button' onClick={chat}><AiFillMessage color='rgba(255, 255, 255, 0.8)'/></button>}
         </div>
         <div className='enterprise-data'>
             <h1>{enterpriseData.name}</h1>
@@ -88,11 +94,11 @@ function EnterpriseProfileInvestor({enterpriseId, prevPage, setPage}) {
             <div className="enterprise-description">
                 <p>{enterpriseData.description}</p>
             </div>
-            {enterpriseData.investors != null || enterpriseData.investors.lenght != 0 && <h4>Investors</h4>}
+            {(enterpriseData.investors !== null && enterpriseData.investors.length !== 0) && <h4>Investors</h4>}
                 <HorizontalSlider>
                     {enterpriseData.investors.map((investor, index) => (
                         <div className="card" key={index}>
-                            <InvestorCard key={index} investorData={investor}/>
+                            <InvestorCard key={index} investorData={investor} setPage={setPage}/>
                         </div>
                     ))}
                 </HorizontalSlider>

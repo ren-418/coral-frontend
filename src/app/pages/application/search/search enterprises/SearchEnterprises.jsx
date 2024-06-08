@@ -9,7 +9,7 @@ import PopUp from '../../../../../components/popup/PopUp';
 import EnterpriseCard from '../../../../../components/enterprise card/EnterpriseCard';
 import routes from '../../../../../data/routes.json'
 
-function SearchEnterprises({setUserId, setPage}) {
+function SearchEnterprises({setPage}) {
 
     const [areaList, setAreaList] = useState([]);
     const [locationList, setLocationList] = useState([]);
@@ -141,7 +141,7 @@ function SearchEnterprises({setUserId, setPage}) {
         :
         <div className="enterprises-container">
             {users.map((user, index) => (
-                <EnterpriseCard setUserId={setUserId} setPage={setPage} key={index} enterpriseData={user}/>
+                <EnterpriseCard setPage={setPage} key={index} enterpriseData={user}/>
             ))}
         </div>}
     </div>

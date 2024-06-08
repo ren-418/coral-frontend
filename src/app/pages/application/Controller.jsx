@@ -11,19 +11,36 @@ import CreateEnterprise from '../create enterprise/CreateEnterprise';
 import routes from '../../../data/routes.json';
 import Chats from './chats/Chats';
 import Chat from './chats/chat/Chat';
+import InvestorProfileEnterprise from './profiles/other/investor/InvestorProfileEnterprise';
+import NewPost from './new post/NewPost';
 
 function Controller() {
 
-    const [page, setPage] = useState(routes.home)
+    const [page, setPageState] = useState({page:0, userId: null})
     const [user, setUser] = useState({})
-    const [userId, setUserId] = useState()
-    const [prevPage, setPrevPage] = useState(routes.home)
+    const [pageHistory, setPageHistory] = useState([{page:0, userId: null}]);
+    const [currentIndex, setCurrentIndex] = useState(0);
+
 
     const navigate = useNavigate();
 
+    const setPage = (p, userId) => {
+      const newPage = { page: p, userId: userId };
+      const newHistory = pageHistory.slice(0, currentIndex + 1); // Eliminar el historial futuro
+      setPageHistory([...newHistory, newPage]);
+      setPageState(newPage);
+      setCurrentIndex(newHistory.length);
+  };
+
+  const goBack = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+      setPageState(pageHistory[currentIndex - 1]);
+  }
+  };
+
   useEffect(() => {
     const sessionToken = localStorage.getItem('sessionToken');
-
     if(sessionToken){
         checkUser(sessionToken);
     }
@@ -77,17 +94,18 @@ function Controller() {
 
   return (
     <>
-        {page === routes.home && <Template selected={page} setPage={setPage} userType={user.userType}><Home setPage={setPage} userType={user.userType} setUserId={setUserId} setPrevPage={setPrevPage}/></Template>}
-        {page === routes.search && <Template selected={page} setPage={setPage} userType={user.userType}>{<Search setUserId={setUserId} setPage={setPage} setPrevPage={setPrevPage}/>}</Template>}
-        {page === routes.add && <Template selected={page} setPage={setPage} userType={user.userType}></Template>}
-        {page === routes.messages && <Template selected={page} setPage={setPage} userType={user.userType}><Chats setPage={setPage} setPrevPage={setPrevPage} setUserId={setUserId}/></Template>}
-        {page === routes.news && <Template selected={page} setPage={setPage} userType={user.userType}></Template>}
-        {page === routes.enterpriseAsInvestor && <Template selected={page} setPage={setPage} userType={user.userType}><EnterpriseProfileInvestor enterpriseId={userId} setPage={setPage} prevPage={prevPage}/></Template>}
-        {page === routes.invest && <Template selected={page} setPage={setPage} userType={user.userType}><Invest enterpriseId={userId} setPage={setPage}/></Template>}
-        {page === routes.profile && <Template selected={page} setPage={setPage} userType={user.userType}><Profile setPage={setPage} userType={user.userType}/></Template>}
-        {page === routes.editInvestor && <Template selected={routes.profile} setPage={setPage} userType={user.userType}><CreateInvestor investorData={user} firstLogin={user.firstLogin} setPage={setPage}/></Template>}
-        {page === routes.editEnterprise && <Template selected={routes.profile} setPage={setPage} userType={user.userType}><CreateEnterprise enterpriseData={user} firstLogin={user.firstLogin} setPage={setPage}/></Template>}
-        {page === routes.chat && <Template selected={page} setPage={setPage} userType={user.userType}><Chat userId={userId} setPage={setPage}/></Template>}
+        {page.page === routes.home && <Template selected={page.page} setPage={setPage} userType={user.userType}><Home setPage={setPage} userType={user.userType}/></Template>}
+        {page.page === routes.search && <Template selected={page.page} setPage={setPage} userType={user.userType}>{<Search setPage={setPage}/>}</Template>}
+        {page.page === routes.add && <Template selected={page.page} setPage={setPage} userType={user.userType}><NewPost/></Template>}
+        {page.page === routes.messages && <Template selected={page.page} setPage={setPage} userType={user.userType}><Chats setPage={setPage}/></Template>}
+        {page.page === routes.news && <Template selected={page.page} setPage={setPage} userType={user.userType}></Template>}
+        {page.page === routes.enterpriseAsInvestor && <Template selected={page.page} setPage={setPage} userType={user.userType}><EnterpriseProfileInvestor enterpriseId={page.userId} setPage={setPage} goBack={goBack} userType={user.userType}/></Template>}
+        {page.page === routes.invest && <Template selected={page.page} setPage={setPage} userType={user.userType}><Invest enterpriseId={page.userId} setPage={setPage}/></Template>}
+        {page.page === routes.profile && <Template selected={page.page} setPage={setPage} userType={user.userType}><Profile setPage={setPage} userType={user.userType}/></Template>}
+        {page.page === routes.editInvestor && <Template selected={routes.profile} setPage={setPage} userType={user.userType}><CreateInvestor investorData={user} firstLogin={user.firstLogin} setPage={setPage} goBack={goBack}/></Template>}
+        {page.page === routes.editEnterprise && <Template selected={routes.profile} setPage={setPage} userType={user.userType}><CreateEnterprise enterpriseData={user} firstLogin={user.firstLogin} setPage={setPage} goBack={goBack}/></Template>}
+        {page.page === routes.chat && <Template selected={routes.messages} setPage={setPage} userType={user.userType}><Chat userId={page.userId} setPage={setPage} goBack={goBack}/></Template>}
+        {page.page === routes.investorAsEnterprise && <Template selected={page.page} setPage={setPage} userType={user.userType}><InvestorProfileEnterprise  investorId={page.userId} setPage={setPage} goBack={goBack} userType={user.userType}/></Template>}
     </>
   )
 }

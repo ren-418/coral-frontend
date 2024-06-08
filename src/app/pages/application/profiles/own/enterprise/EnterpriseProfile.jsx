@@ -7,7 +7,7 @@ import InvestorCard from '../../../../../../components/investor card/InvestorCar
 import HorizontalSlider from '../../../../../../components/horizontal slider/HorizontalSlider';
 import { FaUserEdit } from "react-icons/fa";
 
-function EnterpriseProfile({edit, logout, deleteUser}) {
+function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
 
     const [enterpriseData, setEnterpriseData] = useState({
         profileImage: "",
@@ -17,7 +17,7 @@ function EnterpriseProfile({edit, logout, deleteUser}) {
         goal: 0,
         current: "",
         minimumInvestment: "",
-        areas: ["a"],
+        areas: [],
         investors: [],
         totalCollected: 0,
         enterpriseType: ""
@@ -81,11 +81,11 @@ function EnterpriseProfile({edit, logout, deleteUser}) {
             <div className="enterprise-description">
                 <p>{enterpriseData.description}</p>
             </div>
-            {enterpriseData.investors != null || enterpriseData.investors.lenght != 0 && <h4>My Investors</h4>}
+            {(enterpriseData.investors.length !== 0 && enterpriseData.investors !== null) && <h4>My Investors</h4>}
                 <HorizontalSlider>
                     {enterpriseData.investors.map((investor, index) => (
                         <div className="card" key={index}>
-                            <InvestorCard key={index} investorData={investor}/>
+                            <InvestorCard key={index} investorData={investor} setPage={setPage}/>
                         </div>
                     ))}
                 </HorizontalSlider>

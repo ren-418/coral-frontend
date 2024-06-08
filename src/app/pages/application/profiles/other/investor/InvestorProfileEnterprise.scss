@@ -1,13 +1,11 @@
 @import '../../../../../../index.scss';
 
-.enterprise-as-investor-page{
-    margin: 50px 0;
+.investor-as-enterprise-page{
     display: flex;
     flex-direction: column;
     align-items: center;
     overflow-x: hidden;
-    padding-bottom: 40px;
-    height: fit-content;
+    min-height: 100%;
 
     .banner{
         width: 100%;
@@ -16,6 +14,25 @@
         background-image: url(../../../../../../imgs/login/login-background.png);
         background-size: cover;
         background-position-y: -30px;
+
+        .back-button{
+            color: white;
+            font-size: 20px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        .type-conatiner{
+            position: absolute;
+            bottom: -20px;
+            right: 15px;
+
+            img{
+                width: 15vw;
+            }
+        }
+
 
         .back-button{
             color: white;
@@ -67,23 +84,23 @@
             background-color: transparent;
             position: absolute;
             right: 10px;
-            bottom: 10px;
+            top: 10px;
             font-size: 30px;
         }
     }
 
-    .enterprise-data{
+    .investor-data{
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         margin-top: 70px;
-        position: relative;
 
         h1{
             width: 100%;
             margin-bottom: 0;
             text-align: center;
+            margin-top: 10px;
         }
 
         .location{
@@ -125,7 +142,7 @@
             width: 90%;
         }
         
-        .enterprise-description{
+        .investor-description{
             width: 90%;
             text-align: left;
             background-color: #EAEAEA;
@@ -150,5 +167,15 @@
                 }
             }
         }
+    }
+
+    .delete-btn{
+        margin-top: 40px;
+        width: 100%;
+        height: 60px;
+        background-color: rgba(255, 0, 0, 0.637);
+        color: white;
+        border: none;
+        font-size: 15px;
     }
  }

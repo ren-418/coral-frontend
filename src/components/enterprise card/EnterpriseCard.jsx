@@ -5,11 +5,10 @@ import { FaLocationDot } from "react-icons/fa6";
 import ProgressBar from "@ramonak/react-progress-bar";
 import routes from '../../data/routes.json'
 
-function EnterpriseCard({enterpriseData, setPage, setUserId}) {
+function EnterpriseCard({enterpriseData, setPage}) {
 
   const goToProfile = () => {
-    setUserId(enterpriseData.userId)
-    setPage(routes.enterpriseAsInvestor)
+    setPage(routes.enterpriseAsInvestor, enterpriseData.userId)
   }
   
   return (
@@ -17,7 +16,7 @@ function EnterpriseCard({enterpriseData, setPage, setUserId}) {
         <div className='col1'>
             <img src={enterpriseData.profileImage} alt="pfp"/>
             {enterpriseData.enterpriseType === "Community" && <div className='ranges-container'>
-              <div className='goal'><p className='subtitle'>Goal:</p><p className='numbers'>US${enterpriseData.totalCollected}</p></div>
+              <div className='goal'><p className='subtitle'>Goal:</p><p className='numbers'>US${enterpriseData.goal}</p></div>
               <div className='minimum'><p className='subtitle'>Min invest:</p><p className='numbers'>US${enterpriseData.minimumInvestment}</p></div>
             </div>}
              <div className="progrss-bar">

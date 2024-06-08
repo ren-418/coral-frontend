@@ -2,16 +2,21 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    height: fit-content;
+
     .chat-header{
         width: 100%;
         display: flex;
-        position: absolute;
+        position: fixed;
         top: 50px;
         height: fit-content;
         border-bottom: solid rgba(128, 128, 128, 0.668) 1px;
         box-sizing: border-box;
         align-items: center;
         padding: 5px 0;
+        background-color: white;
+        z-index: 10;
 
         svg{
             width: 30px;
@@ -34,13 +39,56 @@
     }
 
     .messages-container{
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        padding-top: 90px;
+        padding-bottom: 90px;
+        width: 100%;
+        padding-left: 20px;
+        padding-right: 20px;
+        box-sizing: border-box;
+
+        p{
+            text-align: left;
+            margin: 0;
+        }
+        div{
+            width: fit-content;
+            height: fit-content;
+            padding: 7px 10px;
+            border-radius: 10px;
+            max-width: 50%;
+            margin-bottom: 5px;
+        }
+
+        .time{
+            opacity: 0.8;
+            font-size: 10px;
+            text-align: right;
+        }
+
+        .my-message{
+            align-self: flex-end;
+            background-color: #ED4E67;
+            color: white;
+            word-wrap: break-word;
+
+        }
+
+        .other-message{
+            background-color: rgb(221, 221, 221);
+            color: black;
+            word-wrap: break-word;
+            align-self: flex-start;
+        }
 
     }
 
     .chat-input{
         width: 100%;
         display: flex;
-        position: absolute;
+        position: fixed;
         bottom: 70px;
         height: fit-content;
         background-color: rgb(245, 245, 245);

@@ -1,0 +1,115 @@
+import React, {useState} from 'react'
+import './NewPost.scss'
+import ClassicInput from '../../../../components/classic input/ClassicInput'
+import DefaultPic from '../../../../imgs/global/default-pic.png'
+import PopUp from '../../../../components/popup/PopUp'
+
+function NewPost({}) {
+    const [title, setTitle] = useState('')
+    const [imageBlob, setImageBlob] = useState(DefaultPic)
+    const [imageUrl, setImageUrl] = useState('')
+    const [description, setDescription] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [message, setMessage] = useState({});
+
+    const [errors, setErrors] = useState({
+        title: "",
+        description: "",
+        image: ""
+    });
+
+    function setNewMessage(message, type){
+        var newMessage = {}
+        newMessage.text = message
+        newMessage.type = type
+        setMessage(newMessage);
+      }
+
+    const hasErrors = () => {
+        const newErrors = {}
+        if(title.trim() === ''){
+            newErrors.title = 'Title is required'
+        }
+        if(description.trim() === ''){
+            newErrors.description = 'Description is required'
+        }
+        if(imageUrl === ''){
+            newErrors.image = 'Image is required'
+        }
+        setErrors(newErrors)
+        return Object.keys(newErrors).length > 0
+    }
+
+
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImageBlob(URL.createObjectURL(file));
+                setImageUrl(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+      };
+
+    const submit = () => {
+        setLoading(true)
+        if(hasErrors()){
+            setLoading(false)
+            return;
+        }
+
+        fetch('http://localhost:9090/api/v1/posts/new-post', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                title: title,
+                description: description,
+                image: imageUrl,
+                sessionToken: localStorage.getItem('sessionToken')
+            }),
+        }).then((res) => {
+            if(res.ok){
+                setNewMessage('Post created successfully', 'success')
+                setDescription('')
+                setTitle('')
+                setImageBlob(DefaultPic)
+            }else{
+                setNewMessage('An error has occurred', 'error')
+            }
+
+            setLoading(false)
+        }).catch((error) => {
+            console.log(error)
+            setNewMessage('An error has occurred', 'error')
+            setLoading(false)
+        })
+    }
+
+  return (
+    <div className='new-post-page'>
+        {Object.keys(message).length !== 0 && 
+            <PopUp buttonText='Close' close={setMessage}>{message}</PopUp>
+        }
+        <h1>New Post</h1>
+        <section className="title">
+            <ClassicInput type="text" placeholder="New's title" onChange={setTitle} value={title} errorMessage={errors.title}>Title*</ClassicInput>
+        </section>
+        <section className='image'>
+            <label>Image Post*</label>
+            <div className={"image-container " + (errors.image ? "error" : "")} style={{backgroundImage: 'url('+imageBlob+')'}}></div>
+            <input type="file" name="profile-pic" accept=".png,.jpeg,.jpg" onChange={handleImageChange}/>
+            {errors.image && <p className='image-error'>{errors.image}</p>}
+        </section>
+        <section className='description'>
+            <ClassicInput type="textarea" placeholder="Description" onChange={setDescription} value={description} errorMessage={errors.description}>Description*</ClassicInput>
+        </section>
+        <button className='submit' onClick={submit} disabled={loading}>Post</button>
+    </div>
+  )
+}
+
+export default NewPost

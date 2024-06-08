@@ -1,0 +1,102 @@
+@import '../../../../index.scss';
+
+.new-post-page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h1{
+        margin: 0;
+        text-align: left;
+        width: 90vw;
+        margin-top: 2dvh;
+        margin-bottom: 1dvh;
+    }
+
+    section{
+        width: 90vw;
+        margin-bottom: 20px;
+    }
+
+    .title{
+        
+    }
+
+    .image{
+        position: relative;
+
+        label{
+            color: black;
+            text-align: left;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .image-container{
+            margin-top: 5px;
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: solid 1px rgba(0, 0, 0, 0.192);
+            border-radius: 10px;
+        }
+
+        input{
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            margin: auto auto;
+            width: 100%;
+            opacity: 0;
+        }
+
+        &::before{
+            width: fit-content;
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            right: 0;
+            margin: auto auto;
+            content: 'Upload image';
+            color: black;
+            background-color: rgb(214, 214, 214);
+            padding: 5px 10px;
+            border-radius: 100px;
+        }
+
+        .error{
+            border: solid 1px red;
+        }
+
+        .image-error{
+            color: red;
+            font-size: 15px;   
+            position: absolute;
+            bottom: -40px;     
+        }
+    }
+
+    .description{
+        textarea{
+            height: 200px;
+        }
+    }
+
+    .submit{
+        background-color: $pink;
+        margin-bottom: 50px;
+        width: 90vw;
+        border: none;
+        border-radius: 100px;
+        color: white;
+        font-size: 20px;
+        padding: 10px 0;
+
+        &:disabled{
+            opacity: 0.5;
+        }
+    }
+}

@@ -3,6 +3,7 @@ import Styles from './Profile.module.scss'
 import { Link, useNavigate } from 'react-router-dom';
 import EnterpriseProfile from './own/enterprise/EnterpriseProfile';
 import routes from '../../../../data/routes.json'
+import InvestorProfile from './own/investor/InvestorProfile';
 
 function Profile({setPage, userType}) {
 
@@ -70,7 +71,8 @@ function Profile({setPage, userType}) {
 
   return (
     <div className={Styles["profile-page"]}>
-        {userType === "EnterpriseUser" && <EnterpriseProfile edit={edit} logout={logout} deleteUser={deleteUser}/>}
+        {userType === "EnterpriseUser" && <EnterpriseProfile edit={edit} logout={logout} deleteUser={deleteUser} setPage={setPage}/>}
+        {userType === "InvestorUser" && <InvestorProfile edit={edit} logout={logout} deleteUser={deleteUser} setPage={setPage}/>}
     </div>
   )
 }

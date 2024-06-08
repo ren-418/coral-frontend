@@ -7,7 +7,9 @@ import Whale from '../../imgs/global/whale.png'
 import Fish from '../../imgs/global/fish.png'
 import Shrimp from '../../imgs/global/shrimp.png'
 
-function InvestorCard({investorData, setUserId}) {
+import routes from '../../data/routes.json'
+
+function InvestorCard({investorData, setPage}) {
   const checkInvestorType = () => {
     switch(investorData.investorType){
       case 0:
@@ -22,6 +24,12 @@ function InvestorCard({investorData, setUserId}) {
         return '';
     }
   }
+
+  const goToProfile = () => {
+    setPage(routes.investorAsEnterprise, investorData.userId)
+  }
+
+
   return (
     <div className='investor-card'>
         <div className='col1'>
@@ -40,7 +48,7 @@ function InvestorCard({investorData, setUserId}) {
               <FaLocationDot color='rgba(0, 0, 0, 0.548)'/>
               <p className='location'>{investorData.location[0].toUpperCase() + investorData.location.slice(1)}</p>
             </div>
-            <button>View profile</button>
+            <button onClick={goToProfile}>View profile</button>
         </div>
         <img className='investor-type' src={checkInvestorType()}/>
     </div>

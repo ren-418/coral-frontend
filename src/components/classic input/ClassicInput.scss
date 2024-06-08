@@ -78,16 +78,19 @@
             margin-bottom: 5px;
             width: 100%;
         }
+
+        .error{
+            border: 1px solid red;
+        }
     }
 
     span{
         align-self: flex-start;
         text-align: left;
-        background-color: rgba(255, 0, 0, 0.466);
-        color: white;
+        color: rgb(255, 0, 0);
         width: 86%;
-        padding: 2px 15px;
+        padding: 2px 0;
         max-width: 100%;
-        font-size: 13px;
+        font-size: 15px;
     }
 }

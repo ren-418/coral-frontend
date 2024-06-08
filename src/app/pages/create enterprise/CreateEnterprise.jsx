@@ -8,7 +8,7 @@ import Countries from '../../../data/countries.json'
 import PopUp from '../../../components/popup/PopUp';
 import routes from '../../../data/routes.json'
 
-function CreateEnterprise({enterpriseData={name:null, description:null, location:null, enterpriseType:null, goal:null, minimumInvestment:null, totalProfitReturn:null, areas:null, profileImage:null}, firstLogin, setPage}) {
+function CreateEnterprise({enterpriseData={name:null, description:null, location:null, enterpriseType:null, goal:null, minimumInvestment:null, totalProfitReturn:null, areas:null, profileImage:null}, firstLogin, setPage, goBack}) {
 
   // SLIDER
   const [slider, setSlider] = useState(false);
@@ -228,11 +228,6 @@ function CreateEnterprise({enterpriseData={name:null, description:null, location
     }
   }
 
-  const goBack = () => {
-    console.log('go back')
-    setPage(routes.profile)
-}
-
   return (
     <div className='create-enterprise-container'>
       {Object.keys(message).length !== 0 && 
@@ -283,9 +278,9 @@ function CreateEnterprise({enterpriseData={name:null, description:null, location
           {firstLogin && <p className='info'>{typeInfo}</p>}
           {slider && firstLogin &&
           <div className='community-values'>
-            <ClassicInput type='number' placeholder="$USD0" onChange={setGoal} errorMessage={errors.goal} min="0">Goal*</ClassicInput>
-            <ClassicInput type='number' placeholder="$USD0" onChange={setMinimumInvestment} errorMessage={errors.minimumInvestment} min="0">Minimum Investment*</ClassicInput>
-            <ClassicInput type='number' placeholder="0%" onChange={setProfitReturn} errorMessage={errors.profitReturn} min="0">Total Profit Return for Investors*</ClassicInput>
+            <ClassicInput type='number' placeholder="$USD" onChange={setGoal} errorMessage={errors.goal} min="0">Goal*</ClassicInput>
+            <ClassicInput type='number' placeholder="$USD" onChange={setMinimumInvestment} errorMessage={errors.minimumInvestment} min="0">Minimum Investment*</ClassicInput>
+            <ClassicInput type='number' placeholder="%" onChange={setProfitReturn} errorMessage={errors.profitReturn} min={0} max={100}>Total Profit Return for Investors*</ClassicInput>
           </div>
           }
           {errors.image != '' && <p className='error-message'>{errors.image}</p>}

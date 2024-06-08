@@ -14,11 +14,15 @@ import Shrimp from '../../../imgs/global/shrimp.png'
 
 import PopUp from '../../../components/popup/PopUp';
 
+import routes from '../../../data/routes.json'
+
 
 
 function CreateInvestor({
   firstLogin,
-  investorData={name:null, description:null, location:null, enterpriseType:null, goal:null, minimumInvestment:null, totalProfitReturn:null, areas:null, profileImage:null}
+  investorData={name:null, description:null, location:null, enterpriseType:null, goal:null, minimumInvestment:null, totalProfitReturn:null, areas:null, profileImage:null},
+  goBack,
+  setPage
 }) {
 
   
@@ -26,7 +30,7 @@ function CreateInvestor({
   const [loading, setLoading] = useState(false);
 
   const [name, setName] = useState(investorData.name ? investorData.name : '');
-  const [aboutMe, setAboutME] = useState(investorData.aboutMe ? investorData.aboutMe : '');
+  const [aboutMe, setAboutME] = useState(investorData.description ? investorData.description : '');
   const [invCritera, setInvCritera] = useState(investorData.investmentCriteria ? investorData.investmentCriteria : '');
   const [country, setCountry] = useState(investorData.location ? investorData.location : '');
   const [invMin, setInvMin] = useState(investorData.rangeMin ? investorData.rangeMin : 0);
@@ -201,11 +205,15 @@ function CreateInvestor({
         if (!res.ok) {
           setNewMessage(resMessage, "error");
         } else {
-          //Redirect to home and save user id in local storage
-          navigate('/');
+          if(firstLogin === true){
+            navigate('/');
+          }else{
+            setPage(routes.profile)
+          }
         }
         setLoading(false);
       } catch (error) {
+        console.log(error)
         setNewMessage("An error has occurred, please verify your connection", "error")
         setLoading(false);
       }
@@ -226,6 +234,7 @@ function CreateInvestor({
         <PopUp buttonText='Close' close={setMessage}>{message}</PopUp>
       }
         <div className='banner'>
+            {firstLogin === false && <a className='back-button' onClick={goBack}>{'< Back'}</a>}
             <div className='image-input'>
                 <img src={imageBlob}/>
                 <div className="input-container">
@@ -297,7 +306,7 @@ function CreateInvestor({
             {errors.investorType != '' && <p>{errors.investorType}</p>}
           </div>}
           {errors.image != '' && <p>{errors.image}</p>}
-          <button disabled={loading} onClick={onSubmit} className='create-profile-button'>Create Profile</button>
+          <button disabled={loading} onClick={onSubmit} className='create-profile-button'>{ firstLogin ? "Create Profile" : "Edit profile"}</button>
         </section>
     </div>
   )

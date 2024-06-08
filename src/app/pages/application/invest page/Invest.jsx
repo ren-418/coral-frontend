@@ -10,7 +10,7 @@ function Invest({enterpriseData, setOpenPopUp, setPage}) {
   const [message, setMessage] = useState("")
 
   const invest = async () => {
-    if(investAmount<enterpriseData.minimumInvestment){
+    if(investAmount<enterpriseData.minimumInvestment || investAmount === undefined || investAmount === ""){
       setMessage("Invest amount should be greater than minimum investment")
       return;
     }
@@ -43,7 +43,7 @@ function Invest({enterpriseData, setOpenPopUp, setPage}) {
   }
 
   const goToChat = () => {
-    setPage(routes.chat)
+    setPage(routes.chat, enterpriseData.userId)
   }
 
   const close = () => {

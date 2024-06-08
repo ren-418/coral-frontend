@@ -1,0 +1,21 @@
+.horizontal-slider-container{
+    width: 100%;
+    overflow-x: scroll;
+
+    &::-webkit-scrollbar {
+        display: none; /* Oculta la barra de desplazamiento en navegadores WebKit (Chrome, Safari, etc.) */
+    }
+
+    .horizontal-slider{
+        .slider{
+            display: flex;
+            overflow-x: scroll;
+            width: fit-content;
+            .card{
+                width: 340px;
+                margin-right: 15px;
+                margin-left: 15px;
+            }
+        }
+    }
+}

@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react'
 import Styles from './Profile.module.scss'
 import { Link, useNavigate } from 'react-router-dom';
-
+import EnterpriseProfile from './own/enterprise/EnterpriseProfile';
+import routes from '../../../../data/routes.json'
+import InvestorProfile from './own/investor/InvestorProfile';
 
 function Profile({setPage, userType}) {
 
   const navigate = useNavigate();
-
-    let sessionToken
     
     useEffect(() => {
-        sessionToken = localStorage.getItem('sessionToken');
+        const sessionToken = localStorage.getItem('sessionToken');
     
         if(!sessionToken){
             window.location.reload();
@@ -25,12 +25,10 @@ function Profile({setPage, userType}) {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                sessionToken: sessionToken,
+                sessionToken: localStorage.getItem('sessionToken'),
               }),
             });
-      
-            const resMessage = await res.text();
-        
+              
             if (res.ok) {
                 localStorage.removeItem('sessionToken');
                 window.location.reload();
@@ -41,9 +39,9 @@ function Profile({setPage, userType}) {
 
     function edit(){
       if (userType === "InvestorUser"){
-        setPage(6)
+        setPage(routes.editInvestor)
       } else {
-        setPage(7)
+        setPage(routes.editEnterprise)
       }
     }
 
@@ -73,9 +71,8 @@ function Profile({setPage, userType}) {
 
   return (
     <div className={Styles["profile-page"]}>
-        <button onClick={logout}>Log out</button>
-        <button onClick={edit}>Edit</button>
-        <button onClick={deleteUser}>Delete</button>
+        {userType === "EnterpriseUser" && <EnterpriseProfile edit={edit} logout={logout} deleteUser={deleteUser} setPage={setPage}/>}
+        {userType === "InvestorUser" && <InvestorProfile edit={edit} logout={logout} deleteUser={deleteUser} setPage={setPage}/>}
     </div>
   )
 }

@@ -1,0 +1,63 @@
+@import "../../../../index.scss";
+
+.invest-pop-up{
+    background-color: rgba(0, 0, 0, 0.656);
+    position: fixed;
+    width: 100%;
+    height: calc(100dvh - 50px);
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    .box{
+        width: 80%;
+        height: fit-content;
+        background-color: $light-blue;
+        border-radius: 15px;
+        padding: 20px;
+        box-sizing: border-box;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        h2{
+            font-size: 25px;
+            font-weight: normal;
+            margin: 0;
+            text-align: center;
+        }
+
+        label{
+            color: white;
+        }
+
+        p{
+            margin-bottom: 0;
+        }
+
+        .main-button{
+            border: none;
+            border-radius: 7px;
+            background-color: white;
+            color: black;
+            width: 100%;
+            font-size: 20px;
+            padding: 6px 0;
+            margin-top: 20px;
+        }
+
+        .close-button{
+            border: none;
+            border-radius: 7px;
+            background-color: rgba(255, 255, 255, 0.466);
+            color: black;
+            width: 100%;
+            font-size: 20px;
+            padding: 6px 0;
+            margin-top: 5px;
+        }
+    }
+}

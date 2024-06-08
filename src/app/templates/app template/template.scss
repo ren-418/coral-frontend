@@ -1,13 +1,4 @@
-@import '../../../index.scss';
-
-header{
-    width: 100%;
-    background-color: $pink;
-    color: white;
-    height: fit-content;
-    text-align: center;
-    h3{
-        margin: 0;
-        padding: 1vh 0;
-    }
+.app-main{
+    margin-top: 50px;
+    margin-bottom: 70px;
 }

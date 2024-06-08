@@ -1,15 +1,17 @@
-@import '../../../index.scss';
+@import '../../../../../index.scss';
 
 
-.search-enterprises-page{
-    height: 100%;
+.search-investors-page{
+    height: fit-content;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow-x: hidden;
     margin-top: 10px;
 
+    .popup-container{
+        margin-top: -70px;
+    }
 
     .searchbar{
         display: inset-block;
@@ -50,7 +52,7 @@
     }
 
     .filters-container{
-        background-color: #E9E9E9;
+        background-color: #eaeaea5c;
         height: fit-content;
         width: 90%;
         display: flex;
@@ -58,38 +60,6 @@
         align-items: center;
         border-radius: 15px;
         margin-top: 20px;
-
-        .enterprise-type{
-            display: flex;
-            flex-direction: column;
-            margin: 15px 0;
-            width: 90%;
-            border: $dark-blue 0.5px solid;
-            padding: 10px 0;
-            border-radius: 15px;
-
-            .check-container{
-                margin-left: 10px;
-                .input{
-                    input{
-                        transform: scale(1.5);
-
-                        &:checked{
-                            accent-color: $pink;
-                        }
-                    }
-
-                    label{
-                        font-weight: bold;
-                        margin-left: 10px;
-                    }
-                }
-
-                p{
-                    margin: 10px 0;
-                }
-            }
-        }
 
         .areas-container{
             margin: 15px 0;
@@ -206,9 +176,11 @@
         }
     }
 
-    .enterprises-container{
+    .investors-container{
         width: 90%;
         margin-top: 20px;
         margin-bottom: 70px;
     }
+
+    
 }

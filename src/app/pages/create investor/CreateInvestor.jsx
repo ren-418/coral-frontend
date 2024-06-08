@@ -14,37 +14,33 @@ import Shrimp from '../../../imgs/global/shrimp.png'
 
 import PopUp from '../../../components/popup/PopUp';
 
+import routes from '../../../data/routes.json'
+
 
 
 function CreateInvestor({
-  nameP,
-  aboutMeP,
-  invCriteriaP,
-  countryP,
-  invMinP,
-  invMaxP,
-  investorTypeP,
-  areaListP,
-  imageBlobP,
-  firstLogin
+  firstLogin,
+  investorData={name:null, description:null, location:null, enterpriseType:null, goal:null, minimumInvestment:null, totalProfitReturn:null, areas:null, profileImage:null},
+  goBack,
+  setPage
 }) {
 
   
   const [typeInfo, setTypeInfo] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const [name, setName] = useState(nameP);
-  const [aboutMe, setAboutME] = useState(aboutMeP);
-  const [invCritera, setInvCritera] = useState(invCriteriaP);
-  const [country, setCountry] = useState(countryP);
-  const [invMin, setInvMin] = useState(invMinP);
-  const [invMax, setInvMax] = useState(invMaxP);
-  const [investorType, setInvestorType] = useState(investorTypeP);
+  const [name, setName] = useState(investorData.name ? investorData.name : '');
+  const [aboutMe, setAboutME] = useState(investorData.description ? investorData.description : '');
+  const [invCritera, setInvCritera] = useState(investorData.investmentCriteria ? investorData.investmentCriteria : '');
+  const [country, setCountry] = useState(investorData.location ? investorData.location : '');
+  const [invMin, setInvMin] = useState(investorData.rangeMin ? investorData.rangeMin : 0);
+  const [invMax, setInvMax] = useState(investorData.rangeMax ? investorData.rangeMax : 0);
+  const [investorType, setInvestorType] = useState(investorData.investorType ? investorData.investorType : null);
 
   const [message, setMessage] = useState({});
 
   //AREAS VARIABLES
-  const [areaList, setAreaList] = useState(areaListP ? areaListP : []);
+  const [areaList, setAreaList] = useState(investorData.areas ? investorData.areas : []);
   const [buttonColors, setButtonColors] = useState([]);
   const [buttonTextColor, setButtonTextColor] = useState([]);
 
@@ -60,8 +56,8 @@ function CreateInvestor({
     image: ''
   });
 
-  const [imageBlob, setImageBlob] = useState(imageBlobP ? imageBlobP : ProfilePic);
-  const [imageUrl, setImageUrl] = useState(imageBlobP);
+  const [imageBlob, setImageBlob] = useState(investorData.profilePicture ? investorData.profilePicture : ProfilePic);
+  const [imageUrl, setImageUrl] = useState(investorData.profilePicture ? investorData.profilePicture : ProfilePic);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -209,11 +205,15 @@ function CreateInvestor({
         if (!res.ok) {
           setNewMessage(resMessage, "error");
         } else {
-          //Redirect to home and save user id in local storage
-          navigate('/');
+          if(firstLogin === true){
+            navigate('/');
+          }else{
+            setPage(routes.profile)
+          }
         }
         setLoading(false);
       } catch (error) {
+        console.log(error)
         setNewMessage("An error has occurred, please verify your connection", "error")
         setLoading(false);
       }
@@ -234,6 +234,7 @@ function CreateInvestor({
         <PopUp buttonText='Close' close={setMessage}>{message}</PopUp>
       }
         <div className='banner'>
+            {firstLogin === false && <a className='back-button' onClick={goBack}>{'< Back'}</a>}
             <div className='image-input'>
                 <img src={imageBlob}/>
                 <div className="input-container">
@@ -305,7 +306,7 @@ function CreateInvestor({
             {errors.investorType != '' && <p>{errors.investorType}</p>}
           </div>}
           {errors.image != '' && <p>{errors.image}</p>}
-          <button disabled={loading} onClick={onSubmit} className='create-profile-button'>Create Profile</button>
+          <button disabled={loading} onClick={onSubmit} className='create-profile-button'>{ firstLogin ? "Create Profile" : "Edit profile"}</button>
         </section>
     </div>
   )

@@ -1,23 +1,20 @@
 import React, {useState, useEffect} from 'react'
 import './SearchEnterprises.scss'
 import { FaSearch } from "react-icons/fa";
-
-import Areas from '../../../data/areas.json'
-import ClassicInput from '../../../components/classic input/ClassicInput';
-
+import Areas from '../../../../../data/areas.json';
 import { MultiSelect } from "react-multi-select-component";
 
-import Countries from '../../../data/countries.json'
-import PopUp from '../../../components/popup/PopUp';
-import EnterpriseCard from '../../../components/enterprise card/EnterpriseCard';
+import Countries from '../../../../../data/countries.json'
+import PopUp from '../../../../../components/popup/PopUp';
+import EnterpriseCard from '../../../../../components/enterprise card/EnterpriseCard';
+import routes from '../../../../../data/routes.json'
 
-function SearchEnterprises() {
+function SearchEnterprises({setPage}) {
 
     const [areaList, setAreaList] = useState([]);
     const [locationList, setLocationList] = useState([]);
     const [buttonColors, setButtonColors] = useState([]);
     const [buttonTextColor, setButtonTextColor] = useState([]);
-    const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState({});
     const [userName, setUserName] = useState("");
     const [enterpriseType, setEnterpriseType] = useState("");
@@ -107,14 +104,14 @@ function SearchEnterprises() {
             <div className="enterprise-type">
                 <div className='check-container'>
                     <div className='input'>
-                        <input type="radio" value="Community" checked={enterpriseType === "Community"} onClick={() => setEnterpriseType("Community")}/>
+                        <input type="radio" value="Community" checked={enterpriseType === "Community"} onClick={() => setEnterpriseType("Community")} onChange={()=>{}}/>
                         <label>Community Pool</label>
                     </div>
                     <p>Join others in investing on an ever-growing coral</p>
                 </div>
                 <div className='check-container'>
                     <div className='input'>
-                        <input type="radio" value="Custom" checked={enterpriseType === "Custom"} onClick={() => setEnterpriseType("Custom")}/>
+                        <input type="radio" value="Custom" checked={enterpriseType === "Custom"} onClick={() => setEnterpriseType("Custom")} onChange={()=>{}}/>
                         <label>Custom Deals</label>
                     </div>
                     <p>Invest big on your dream coral</p>
@@ -144,7 +141,7 @@ function SearchEnterprises() {
         :
         <div className="enterprises-container">
             {users.map((user, index) => (
-                <EnterpriseCard key={index} name={user.name} location={user.location} id={user.id} description={user.description} image={user.profileImage} goal={user.goal} minimum={user.minimumInvestment} current={100}/>
+                <EnterpriseCard setPage={setPage} key={index} enterpriseData={user}/>
             ))}
         </div>}
     </div>

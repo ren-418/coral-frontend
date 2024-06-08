@@ -1,0 +1,38 @@
+.chat-preview-component{
+    display: flex;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    box-sizing: border-box;
+    .image-container{
+        width: 20%;
+        img{
+            width: 90%;
+            border-radius: 50%;
+        }
+    }
+
+    .text-container{
+        width: 80%;
+        padding-left: 5vw;
+        border-bottom: solid rgba(128, 128, 128, 0.668) 1px;
+        padding-bottom: 20px;
+        height: fit-content;
+        
+        h3{
+            margin: 0;
+            font-size: 3.2dvh;
+        }
+
+        p{
+            margin: 0;
+            overflow: hidden;
+            margin-top: 1.5dvh;
+            overflow-wrap: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 1; /* Número de líneas antes de cortar */
+            -webkit-box-orient: vertical;
+        }
+    }
+}

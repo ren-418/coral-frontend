@@ -2,22 +2,21 @@ import React, {useState, useEffect} from 'react'
 import './SearchInvestors.scss'
 import { FaSearch } from "react-icons/fa";
 
-import Shark from '../../../imgs/global/shark.png'
-import Whale from '../../../imgs/global/whale.png'
-import Fish from '../../../imgs/global/fish.png'
-import Shrimp from '../../../imgs/global/shrimp.png'
+import Shark from '../../../../../imgs/global/shark.png'
+import Whale from '../../../../../imgs/global/whale.png'
+import Fish from '../../../../../imgs/global/fish.png'
+import Shrimp from '../../../../../imgs/global/shrimp.png'
 
-import Areas from '../../../data/areas.json'
-import ClassicInput from '../../../components/classic input/ClassicInput';
+import Areas from '../../../../../data/areas.json'
 
 import { MultiSelect } from "react-multi-select-component";
 
-import Countries from '../../../data/countries.json'
-import PopUp from '../../../components/popup/PopUp';
-import InvestorCard from '../../../components/investor card/InvestorCard';
+import Countries from '../../../../../data/countries.json'
+import PopUp from '../../../../../components/popup/PopUp';
+import InvestorCard from '../../../../../components/investor card/InvestorCard';
 
 
-function SearchInvestors() {
+function SearchInvestors({setPage}) {
     const [investorType, setInvestorType] = useState(-1);
     const [areaList, setAreaList] = useState([]);
     const [locationList, setLocationList] = useState([]);
@@ -173,7 +172,7 @@ function SearchInvestors() {
         :
         <div className="investors-container">
             {users.map((user, index) => (
-            <InvestorCard key={index} name={user.name} description={user.description} image={user.profilePicture} areas={user.areas} location={user.location} id={user.userId} investorType={user.investorType}/>
+            <InvestorCard key={index} investorData={user} setPage={setPage}/>
             ))}
         </div>}
         

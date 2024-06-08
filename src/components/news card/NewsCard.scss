@@ -1,0 +1,50 @@
+.news-card{
+    width: 100%;
+    background-color: rgb(243, 243, 243);
+    border-radius: 15px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+
+    .header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .enterprise-data{
+            display: flex;
+            align-items: center;
+            height: fit-content;
+            img{
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                margin-right: 10px;
+            }
+    
+            .enterprise-name{
+                font-weight: bold;
+                font-size: 15px;
+                margin: 0;
+            }    
+        }
+
+        .date{
+            margin: 0;
+            font-size: 15px;
+        }
+    }
+
+    .content{
+        .image{
+            width: 100%;
+            height: 200px;
+            border-radius: 10px;
+            background-position: center;
+            background-size: cover;
+        }
+
+        h3{
+            margin-bottom: 10px;
+        }
+    }
+}

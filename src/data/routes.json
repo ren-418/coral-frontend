@@ -10,5 +10,6 @@
     "editEnterprise": 8,
     "invest": 9,
     "chat": 10,
-    "investorAsEnterprise" : 11
+    "investorAsEnterprise" : 11,
+    "notifications": 12
 }

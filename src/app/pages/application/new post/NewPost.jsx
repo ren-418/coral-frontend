@@ -60,7 +60,7 @@ function NewPost({}) {
             return;
         }
 
-        fetch('http://localhost:9090/api/v1/posts/new-post', {
+        fetch('http://localhost:9090/api/v1/news/new-post', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

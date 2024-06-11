@@ -3,7 +3,7 @@ import Header from '../../../components/header/Header'
 import Footer from '../../../components/footer/Footer'
 import './template.scss'
 
-function Template({ children, title, selected, setPage, userType}) {
+function Template({ children, selected, setPage, userType, hasNotificationsToRead}) {
 
   useEffect(()=>{
     //Line to prevent keeping the scroll across diferent routes
@@ -12,7 +12,7 @@ function Template({ children, title, selected, setPage, userType}) {
 
   return (
     <>
-        <Header/>
+        <Header setPage={setPage} userType={userType} hasNotificationsToRead={hasNotificationsToRead}/>
         <main className='app-main'>
           {children}
         </main>

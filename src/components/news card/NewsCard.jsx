@@ -2,18 +2,18 @@ import React from 'react'
 import './NewsCard.scss'
 import routes from '../../data/routes.json'
 
-function NewsCard({title, description, image, date, enterprise, setPage}) {
+function NewsCard({title, description, image, date, enterpriseId, enterpriseName, enterpriseProfileImage, setPage}) {
 
   const goToEnterprise = () => {
-    setPage(routes.enterpriseAsInvestor, enterprise.userId)
+    setPage(routes.enterpriseAsInvestor, enterpriseId)
   }
 
   return (
     <div className='news-card'>
         <div className="header">
           <div className="enterprise-data" onClick={goToEnterprise}>
-            <img src={enterprise.profileImage}/>
-            <p className="enterprise-name">{enterprise.name}</p>
+            <img src={enterpriseProfileImage}/>
+            <p className="enterprise-name">{enterpriseName}</p>
           </div>
             <p className="date">{date}</p>
         </div>

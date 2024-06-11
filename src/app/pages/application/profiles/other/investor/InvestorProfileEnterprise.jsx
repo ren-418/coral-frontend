@@ -12,8 +12,14 @@ import Fish from '../../../../../../imgs/global/fish.png'
 import Shrimp from '../../../../../../imgs/global/shrimp.png'
 
 import routes from '../../../../../../data/routes.json'
+import {BiSolidCircle, BiSolidDollarCircle} from "react-icons/bi";
+import Invest from "../../../invest page/Invest";
+import PopUp from "../../../../../../components/popup/PopUp";
 
 function InvestorProfileEnterprise({investorId, setPage, goBack, userType}) {
+    const [openPopUp, setOpenPopUp] = useState(false)
+    const [message, setMessage] = useState({});
+    const [isFollowing, setIsFollowing] = useState(false);
 
     const [investorData, setInvestorData] = useState({
         profilePicture: "",
@@ -71,12 +77,109 @@ function InvestorProfileEnterprise({investorId, setPage, goBack, userType}) {
         setPage(routes.chat, investorId)
     }
 
+    const follow = async () => {
+        try {
+            const res = await fetch('http://localhost:9090/api/v1/users/follow', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    sessionToken: localStorage.getItem('sessionToken'),
+                    investorId: investorId
+                }),
+            });
+
+            const resMessage = await res.text();
+
+            if(res.ok){
+                setMessage({
+                    text:resMessage,
+                    type: "success"
+                })
+            }
+            else{
+                setMessage({
+                    text:resMessage,
+                    type: "error"
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const unfollow = async () => {
+        try {
+            const res = await fetch('http://localhost:9090/api/v1/users/unfollow', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    sessionToken: localStorage.getItem('sessionToken'),
+                    investorId: investorId
+                }),
+            });
+
+            const resMessage = await res.text();
+
+            if(res.ok){
+                setMessage({
+                    text:resMessage,
+                    type: "success"
+                })
+            }
+            else{
+                setMessage({
+                    text:resMessage,
+                    type: "error"
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const fetchIsFollowing = async () => {
+        try {
+            const res = await fetch('http://localhost:9090/api/v1/users/is-following', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    sessionToken: localStorage.getItem('sessionToken'),
+                    investorId: investorId
+                }),
+            });
+
+            const resMessage = await res.text();
+
+            if(res.ok){
+                console.log(resMessage)
+                setIsFollowing(true)
+            }
+            else {
+                console.log(resMessage)
+                setIsFollowing(false)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        fetchIsFollowing()
+    }, [message])
   return (
     <div className='investor-as-enterprise-page'>
+        {Object.keys(message).length !== 0 &&
+        <PopUp buttonText={"OK"} close={setMessage}>{message}</PopUp>
+        }
         <div className="banner">
             <a className='back-button' onClick={goBack}>{'< Back'}</a>
             <div className='container'>
                 <img src={investorData.profilePicture !== "" ? investorData.profilePicture : ProfileImage} className='profile-picture' alt="profile picture enterprise"/>
+                {userType === "InvestorUser" && <button style={isFollowing ? {backgroundColor:"#09495D"} : {backgroundColor:"#66B9BF"}} className='invest-button' onClick={isFollowing ? unfollow : follow}>{isFollowing ? "Unfollow" : "Follow"} </button>}
             </div>
             <div className="type-conatiner">
                 <img src={investorTypeImg} />

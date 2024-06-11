@@ -32,7 +32,7 @@ function LocationNews({setPage}) {
 
     return(
         <div className='read-news-page'>
-            <h1>Latest News From Your Investments</h1>
+            <h1>News In Your Location</h1>
             <div className='news-cotainer'>
                 {news.map((news, index) => (
                     <NewsCard key={index} title={news.title} description={news.description} image={news.image} date={news.date} enterpriseId={news.enterpriseId} enterpriseName={news.enterpriseName} enterpriseProfileImage={news.enterpriseProfileImage} setPage={setPage}/>

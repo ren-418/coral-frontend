@@ -3,45 +3,25 @@ import DefaultPic from '../../../../imgs/global/default-pic.png'
 import ProfilePic from '../../../../imgs/global/default-pp.png'
 import './ReadNews.scss'
 import NewsCard from '../../../../components/news card/NewsCard'
+import InvestedNews from "../read news/invested news/InvestedNews";
+import AreasNews from "../read news/areas news/AreasNews";
+import LocationNews from "./location news/LocationNews";
 
 function ReadNews({setPage}) {
-    const [news, setNews] = useState([])
-
-    useEffect(() => {
-        fetchNews()
-    }, [])
-
-    const fetchNews = async () => {
-        try{
-            const res = await fetch('http://localhost:9090/api/v1/news/get-news', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    sessionToken: localStorage.getItem('sessionToken')
-                }),
-            });
-    
-            const resJson = await res.json();
-            console.log(resJson)
-
-            if(res.ok){
-                setNews(resJson.posts);
-            }
-        }catch(error){
-        }
-    }
+    const [searchType, setSearchType] = useState(0)
 
     return (
-        <div className='read-news-page'>
-            <h1>Latest News</h1>
-            <div className='news-cotainer'>
-                {news.map((news, index) => (
-                    <NewsCard key={index} title={news.title} description={news.description} image={news.image} date={news.date} enterpriseId={news.enterpriseId} enterpriseName={news.enterpriseName} enterpriseProfileImage={news.enterpriseProfileImage} setPage={setPage}/>
-                ))}
-                {news.length === 0 && <p>No news available</p>}
+        <div className="search-page">
+            <div className="search-type">
+                <button onClick={() => setSearchType(0)} className='button' disabled={searchType === 0}>Investment
+                    News
+                </button>
+                <button onClick={() => setSearchType(1)} className='button' disabled={searchType === 1}>Areas of Interest
+                </button>
+                <button onClick={() => setSearchType(2)} className='button' disabled={searchType === 2}>Location
+                </button>
             </div>
+            {searchType === 0 ? <InvestedNews setPage={setPage}/> : searchType === 1 ? <AreasNews setPage={setPage}/> : <LocationNews setPage={setPage}/>}
         </div>
     )
 }

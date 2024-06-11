@@ -56,7 +56,7 @@ function Controller() {
         const resJson = await res.json();
 
         if(res.ok){
-            setHasNotifications(resJson);
+          setHasNotifications(resJson);
         }
     }catch(error){
     }

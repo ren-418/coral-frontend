@@ -1,0 +1,50 @@
+.new-own-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: left;
+    background-color: #eaeaea5c;
+    width: 100%;
+    border-radius: 15px;
+    height: 300px;
+    position: relative;
+    padding: 10px;
+    box-sizing: border-box;
+
+    .edit-btn{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: transparent;
+        border: none;
+        font-size: 20px;
+        color: rgba(0, 0, 0, 0.397);
+    }
+
+    h6{
+        margin: 0;
+        font-size: 12px;
+        color: rgb(0, 0, 0);
+        font-size: 15px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
+    img{
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    p{
+        width: 100%;
+        margin: 0;
+        margin-top: 5px;
+        text-align: left;
+        text-overflow: ellipsis;
+        overflow-y: hidden;
+        height: fit-content;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Número de líneas antes de cortar */
+        -webkit-box-orient: vertical;
+    }
+}

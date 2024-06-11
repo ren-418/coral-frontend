@@ -24,9 +24,10 @@ function ReadNews({setPage}) {
             });
     
             const resJson = await res.json();
-    
+            console.log(resJson)
+
             if(res.ok){
-                setNews(resJson);
+                setNews(resJson.posts);
             }
         }catch(error){
         }
@@ -37,7 +38,7 @@ function ReadNews({setPage}) {
             <h1>Latest News</h1>
             <div className='news-cotainer'>
                 {news.map((news, index) => (
-                    <NewsCard key={index} title={news.title} description={news.description} image={news.image} date={news.date} enterprise={news.enterprise} setPage={setPage}/>
+                    <NewsCard key={index} title={news.title} description={news.description} image={news.image} date={news.date} enterpriseId={news.enterpriseId} enterpriseName={news.enterpriseName} enterpriseProfileImage={news.enterpriseProfileImage} setPage={setPage}/>
                 ))}
                 {news.length === 0 && <p>No news available</p>}
             </div>

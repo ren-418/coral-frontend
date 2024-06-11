@@ -8,7 +8,7 @@ function NewsOwnCard({title, image, description, date, editNew, deleteNew}) {
     <div className='new-own-card'>
         <button className='edit-btn' onClick={editNew}><RiEditFill/></button>
         <h6>{title}</h6>
-        <img src={image} alt="" />
+        <div className='image' style={{backgroundImage: 'url('+image+')'}}></div>
         <p>{description}</p>
     </div>
   )

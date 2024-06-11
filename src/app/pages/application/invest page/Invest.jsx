@@ -25,6 +25,7 @@ function Invest({enterpriseData, setOpenPopUp, setPage}) {
         },
         body: JSON.stringify({
           sessionToken: localStorage.getItem('sessionToken'),
+          enterpriseId: enterpriseData.userId,
           title: enterpriseData.name,
           price: investAmount,
           quantity: 1,
@@ -32,7 +33,6 @@ function Invest({enterpriseData, setOpenPopUp, setPage}) {
       });
       const preference = await res.json();
       if(res.ok){
-        console.log(investAmount)
         return preference.id;
       }
     } catch (error) {
@@ -48,39 +48,6 @@ function Invest({enterpriseData, setOpenPopUp, setPage}) {
     }
   }
 
-  const invest = async () => {
-    if(investAmount<enterpriseData.minimumInvestment || investAmount === undefined || investAmount === ""){
-      setMessage("Invest amount should be greater than minimum investment")
-      return;
-    }
-    try {
-      setLoading(true)
-      setMessage("Loading...")
-        const res = await fetch('http://localhost:9090/api/v1/users/invest', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                sessionToken: localStorage.getItem('sessionToken'),
-                enterpriseId: enterpriseData.userId,
-                amount: investAmount,
-            }),
-        });
-
-        if(res.ok){
-          setMessage("You have invested $" + investAmount + " in " + enterpriseData.name)
-        }
-        else{
-          setMessage("An error ocurred")
-        }
-        setLoading(false)
-    } catch (error) {
-      setLoading(false)
-      setMessage("An error ocurred")
-    }
-  }
-
   const goToChat = () => {
     setPage(routes.chat, enterpriseData.userId)
   }
@@ -88,10 +55,6 @@ function Invest({enterpriseData, setOpenPopUp, setPage}) {
   const close = () => {
     setOpenPopUp(false)
   }
-
-  const handleOnSubmit = (event) => {
-    invest();
-};
 
   return (
     <div className="invest-pop-up">
@@ -111,7 +74,7 @@ function Invest({enterpriseData, setOpenPopUp, setPage}) {
             <ClassicInput label='Investment amount' type='number' placeholder={"$" + enterpriseData.minimumInvestment} onChange={setInvestAmount} value={investAmount} disabled={loading}>Invest amount</ClassicInput>
             {message !== "" && <p>{message}</p>}
             <button onClick={set_preference} className='main-button' disabled={loading}>Invest</button>
-            {preferenceId && <Wallet initialization={{ preferenceId: preferenceId, redirectMode: "blank"}} customization={{ texts:{ valueProp: 'smart_option'}}} onSubmit={handleOnSubmit} />}
+            {preferenceId && <Wallet initialization={{ preferenceId: preferenceId, redirectMode: "blank"}} customization={{ texts:{ valueProp: 'smart_option'}}} />}
             <button onClick={close} className='close-button'>Close</button>
           </>
         }

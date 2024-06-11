@@ -7,7 +7,18 @@ import InvestorCard from '../../../../../../components/investor card/InvestorCar
 import HorizontalSlider from '../../../../../../components/horizontal slider/HorizontalSlider';
 import { FaUserEdit } from "react-icons/fa";
 
+import DefaultPic from '../../../../../../imgs/global/default-pic.png'
+import NewsOwnCard from '../../../../../../components/news own card/NewsOwnCard';
+
+import ClassicInput from '../../../../../../components/classic input/ClassicInput';
+
 function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
+
+    const [editNew, setEditNew] = useState(-1)
+
+    const [titleNewEdit, setNewTitleEdit] = useState('')
+
+    const [newEditId, setNewEditId] = useState('')
 
     const [enterpriseData, setEnterpriseData] = useState({
         profileImage: "",
@@ -23,8 +34,11 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
         enterpriseType: ""
     })
 
+    const [news, setNews] = useState([{title: 'Title', image: DefaultPic, description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta repellat amet laborum ea numquam dignissimos, officiis nemo delectus necessitatibus doloremque dolorum similique quam maiores ullam odio veritatis aperiam beatae error!', date: '09/06/2024'},{title: 'Title', image: DefaultPic, description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta repellat amet laborum ea numquam dignissimos, officiis nemo delectus necessitatibus doloremque dolorum similique quam maiores ullam odio veritatis aperiam beatae error!', date: '09/06/2024'}])
+
     useEffect(() => {
         fetchEnterpriseData()
+        fetchNews()
     }, [])
 
     const fetchEnterpriseData = async () => {
@@ -50,8 +64,175 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
         }
     }
 
+    const fetchNews = async () => {
+        try {
+            const res = await fetch('http://localhost:9090/api/v1/news/get-own', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    sessionToken: localStorage.getItem('sessionToken')
+                }),
+            });
+
+            const resJson = await res.json();
+
+            if(res.ok){
+                setNews(resJson);
+            }
+            else{
+            }
+        } catch (error) {
+        }
+    }
+
+    const editNewFunction = (index, id) => {
+        setNewTitleEdit(news[index].title)
+        setDescription(news[index].description)
+        setImageBlob(news[index].image)
+        setNewEditId(id)
+        setEditNew(index)
+    }
+
+    const [imageBlob, setImageBlob] = useState(DefaultPic)
+    const [imageURL, setImageURL] = useState('')
+
+    const [description, setDescription] = useState('')
+
+    const [errors, setErrors] = useState({
+        title: '',
+        image: '',
+        description: ''
+    })
+
+    const [loading, setLoading] = useState(false)
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0]
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onloadend = () => {
+            setImageBlob(URL.createObjectURL(file));
+            setImageURL(reader.result);
+        }
+    }
+
+    const hasErrors = () => {
+        const newErrors = {}
+        if(titleNewEdit.trim() === ''){
+            newErrors.title = 'Title is required'
+        }
+        if(description.trim() === ''){
+            newErrors.description = 'Description is required'
+        }
+        if(imageURL === ''){
+            newErrors.image = 'Image is required'
+        }
+        setErrors(newErrors)
+        return Object.keys(newErrors).length > 0
+    }
+
+    const editPostSubmit = async () => {
+        setLoading(true)
+        
+        if(!hasErrors()){
+            try {
+                const res = await fetch('http://localhost:9090/api/v1/news/edit-post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        sessionToken: localStorage.getItem('sessionToken'),
+                        title: titleNewEdit,
+                        description: description,
+                        image: imageURL,
+                        postId: newEditId
+                    }),
+                });
+    
+                const resJson = await res.json();
+    
+                if(res.ok){
+                    fetchNews()
+                    setEditNew(-1)
+                    setNewTitleEdit('')
+                    setDescription('')
+                    setImageBlob(DefaultPic)
+                    setNewEditId('')
+                }
+                else{
+                }
+            } catch (error) {
+            }
+        }
+        setLoading(false)
+    }
+
+    const closeEditNew = () => {
+        setEditNew(-1)
+        setNewEditId('')
+        setEditNew(-1)
+        setNewTitleEdit('')
+        setDescription('')
+        setImageBlob(DefaultPic)
+        setNewEditId('')
+        setErrors({})
+    }
+
+    const deletePost = async () => {
+        try {
+            const res = await fetch('http://localhost:9090/api/v1/news/delete-post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    sessionToken: localStorage.getItem('sessionToken'),
+                    postId: newEditId
+                }),
+            });
+
+            const resJson = await res.json();
+
+            if(res.ok){
+                fetchNews()
+                setEditNew(-1)
+                setNewTitleEdit('')
+                setDescription('')
+                setImageBlob(DefaultPic)
+            }
+            else{
+            }
+        } catch (error) {
+        }
+    }
+
+
   return (
     <div className='enterprise-profile-page'>
+        {editNew !== -1 && 
+        <div className='edit-new-bg'>
+            <div className='edit-new-container'>
+                <button className='close-btn' onClick={closeEditNew}>Close</button>
+                <button className='delete-post-btn' onClick={deletePost}>Delete post</button>
+                <h1>Edit Post</h1>
+                <section className="title">
+                    <ClassicInput type="text" placeholder="New's title" onChange={setNewTitleEdit} value={titleNewEdit} errorMessage={errors.title}></ClassicInput>
+                </section>
+                <section className='image'>
+                    <div className={"image-container " + (errors.image ? "error" : "")} style={{backgroundImage: 'url('+imageBlob+')'}}></div>
+                    <input type="file" name="profile-pic" accept=".png,.jpeg,.jpg" onChange={handleImageChange}/>
+                    {errors.image && <p className='image-error'>{errors.image}</p>}
+                </section>
+                <section className='description'>
+                    <ClassicInput type="textarea" placeholder="Description" onChange={setDescription} value={description} errorMessage={errors.description}></ClassicInput>
+                </section>
+                <button className='submit' onClick={editPostSubmit} disabled={loading}>Edit Post</button>
+            </div>
+        </div>
+        }
         <div className="banner">
             <button className='edit-btn' onClick={edit}><FaUserEdit/></button>
             <button className='logout-btn' onClick={logout}>Logout</button>
@@ -89,10 +270,18 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
                         </div>
                     ))}
                 </HorizontalSlider>
+            {(news.length !== 0 && news !== null) && <h4>My News</h4>}
+                <HorizontalSlider>
+                    {news.map((news, index) => (
+                        <div className="card" key={index}>
+                            <NewsOwnCard key={index} title={news.title} image={news.image} description={news.description} date={news.date} editNew={() => {editNewFunction(index, news.id)}}/>
+                        </div>
+                    ))}
+                </HorizontalSlider>
         </div>
         <button className="delete-btn" onClick={deleteUser}>Delete Account</button>
     </div>
-  )
+      )
 }
 
 export default EnterpriseProfile

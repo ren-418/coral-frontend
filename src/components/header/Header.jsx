@@ -10,14 +10,13 @@ function Header({hasNotificationsToRead, setPage, userType}) {
   return (
     <header className='logo-header'>
       <img src={Logo} alt="logo"/>
-      {userType === "EnterpriseUser" && 
         <div className='notification-btn' onClick={()=>{setPage(routes.notifications)}}>
         {hasNotificationsToRead ?
           <IoNotifications size={30} color='white'/>
           :
           <IoNotificationsOutline size={30} color='white'/>
         }
-      </div>}
+      </div>
     </header>
   )
 }

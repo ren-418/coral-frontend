@@ -20,6 +20,7 @@ function InvestorProfileEnterprise({investorId, setPage, goBack, userType}) {
     const [openPopUp, setOpenPopUp] = useState(false)
     const [message, setMessage] = useState({});
     const [isFollowing, setIsFollowing] = useState(false);
+    const [myId, setMyId] = useState(localStorage.getItem('userId'))
 
     const [investorData, setInvestorData] = useState({
         profilePicture: "",
@@ -32,6 +33,7 @@ function InvestorProfileEnterprise({investorId, setPage, goBack, userType}) {
         investmentCriteria: "",
         rangeMin: 0,
         rangeMax: 0,
+        userId: ''
     })
 
     const [investorTypeImg, setInvestorTypeImg] = useState('')
@@ -57,6 +59,7 @@ function InvestorProfileEnterprise({investorId, setPage, goBack, userType}) {
 
             if(res.ok){
                 setInvestorData(resJson);
+                console.log(resJson)
                 if(resJson.investorType === 0){
                     setInvestorTypeImg(Shark)
                   }else if(resJson.investorType === 1){
@@ -179,7 +182,7 @@ function InvestorProfileEnterprise({investorId, setPage, goBack, userType}) {
             <a className='back-button' onClick={goBack}>{'< Back'}</a>
             <div className='container'>
                 <img src={investorData.profilePicture !== "" ? investorData.profilePicture : ProfileImage} className='profile-picture' alt="profile picture enterprise"/>
-                {userType === "InvestorUser" && <button style={isFollowing ? {backgroundColor:"#09495D"} : {backgroundColor:"#66B9BF"}} className='invest-button' onClick={isFollowing ? unfollow : follow}>{isFollowing ? "Unfollow" : "Follow"} </button>}
+                {(userType === "InvestorUser" && investorId != myId) ? <button style={isFollowing ? {backgroundColor:"#09495D"} : {backgroundColor:"#66B9BF"}} className='invest-button' onClick={isFollowing ? unfollow : follow}>{isFollowing ? "Unfollow" : "Follow"} </button> : <></>}
             </div>
             <div className="type-conatiner">
                 <img src={investorTypeImg} />

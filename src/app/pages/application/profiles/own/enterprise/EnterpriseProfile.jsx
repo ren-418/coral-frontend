@@ -34,7 +34,7 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
         enterpriseType: ""
     })
 
-    const [news, setNews] = useState([{title: 'Title', image: DefaultPic, description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta repellat amet laborum ea numquam dignissimos, officiis nemo delectus necessitatibus doloremque dolorum similique quam maiores ullam odio veritatis aperiam beatae error!', date: '09/06/2024'},{title: 'Title', image: DefaultPic, description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta repellat amet laborum ea numquam dignissimos, officiis nemo delectus necessitatibus doloremque dolorum similique quam maiores ullam odio veritatis aperiam beatae error!', date: '09/06/2024'}])
+    const [news, setNews] = useState([])
 
     useEffect(() => {
         fetchEnterpriseData()
@@ -56,6 +56,7 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
             const resJson = await res.json();
 
             if(res.ok){
+                console.log(resJson)
                 setEnterpriseData(resJson);
             }
             else{
@@ -79,9 +80,11 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
             const resJson = await res.json();
 
             if(res.ok){
+                console.log(resJson)
                 setNews(resJson);
             }
             else{
+                setNews([]);
             }
         } catch (error) {
         }
@@ -91,6 +94,7 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
         setNewTitleEdit(news[index].title)
         setDescription(news[index].description)
         setImageBlob(news[index].image)
+        setImageURL(news[index].image)
         setNewEditId(id)
         setEditNew(index)
     }
@@ -108,16 +112,6 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
 
     const [loading, setLoading] = useState(false)
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0]
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onloadend = () => {
-            setImageBlob(URL.createObjectURL(file));
-            setImageURL(reader.result);
-        }
-    }
-
     const hasErrors = () => {
         const newErrors = {}
         if(titleNewEdit.trim() === ''){
@@ -125,9 +119,6 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
         }
         if(description.trim() === ''){
             newErrors.description = 'Description is required'
-        }
-        if(imageURL === ''){
-            newErrors.image = 'Image is required'
         }
         setErrors(newErrors)
         return Object.keys(newErrors).length > 0
@@ -152,7 +143,7 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
                     }),
                 });
     
-                const resJson = await res.json();
+                const resText = await res.text();
     
                 if(res.ok){
                     fetchNews()
@@ -161,6 +152,7 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
                     setDescription('')
                     setImageBlob(DefaultPic)
                     setNewEditId('')
+                    closeEditNew()
                 }
                 else{
                 }
@@ -194,20 +186,21 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
                 }),
             });
 
-            const resJson = await res.json();
-
             if(res.ok){
                 fetchNews()
                 setEditNew(-1)
                 setNewTitleEdit('')
                 setDescription('')
                 setImageBlob(DefaultPic)
+                setNewEditId('')
+                closeEditNew()
             }
             else{
             }
         } catch (error) {
         }
     }
+
 
 
   return (
@@ -220,11 +213,6 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
                 <h1>Edit Post</h1>
                 <section className="title">
                     <ClassicInput type="text" placeholder="New's title" onChange={setNewTitleEdit} value={titleNewEdit} errorMessage={errors.title}></ClassicInput>
-                </section>
-                <section className='image'>
-                    <div className={"image-container " + (errors.image ? "error" : "")} style={{backgroundImage: 'url('+imageBlob+')'}}></div>
-                    <input type="file" name="profile-pic" accept=".png,.jpeg,.jpg" onChange={handleImageChange}/>
-                    {errors.image && <p className='image-error'>{errors.image}</p>}
                 </section>
                 <section className='description'>
                     <ClassicInput type="textarea" placeholder="Description" onChange={setDescription} value={description} errorMessage={errors.description}></ClassicInput>

@@ -89,6 +89,7 @@ function Controller() {
   
       if(!res.ok){
         localStorage.removeItem('sessionToken');
+        localStorage.removeItem('userId');
         navigate('/login');
       }
       else{ 
@@ -106,6 +107,7 @@ function Controller() {
           }
           else{
             navigate('/');
+            localStorage.setItem('userId', user.userId);
           }
         }else{
           navigate('/login');

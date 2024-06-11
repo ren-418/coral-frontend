@@ -6,8 +6,8 @@ function NotificationCard({notification}) {
     <div className="notification-card">
         <div className="notification-content">
             <div className="investor-info">
-                <img src={notification.investor.profilePicture}/>
-                <p className="investor-name">{notification.investor.name}</p>
+                <img src={notification.profilePicture}/>
+                <p className="investor-name">{notification.name}</p>
             </div>
             <p className="notification-message">{notification.notificationMessage}</p>
         </div>

@@ -50,4 +50,22 @@
         -webkit-line-clamp: 2; /* Número de líneas antes de cortar */
         -webkit-box-orient: vertical;
     }
+
+    .tags{
+        width: 100%;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        flex-wrap: wrap;
+
+        .tag{
+            background-color: #e6e6e6;
+            padding: 5px 10px;
+            border-radius: 100px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            font-size: 10px;
+            width: fit-content;
+        }
+    }
 }

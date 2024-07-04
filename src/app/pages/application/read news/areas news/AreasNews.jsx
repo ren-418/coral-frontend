@@ -21,7 +21,6 @@ function AreasNews({setPage}) {
             });
 
             const resJson = await res.json();
-            console.log(resJson)
 
             if(res.ok){
                 setNews(resJson.posts);
@@ -35,7 +34,7 @@ function AreasNews({setPage}) {
             <h1>News in your areas of interest</h1>
             <div className='news-cotainer'>
                 {news.map((news, index) => (
-                    <NewsCard key={index} title={news.title} description={news.description} image={news.image} date={news.date} enterpriseId={news.enterpriseId} enterpriseName={news.enterpriseName} enterpriseProfileImage={news.enterpriseProfileImage} setPage={setPage}/>
+                    <NewsCard key={index} title={news.title} description={news.description} image={news.image} date={news.date} enterpriseId={news.enterpriseUserId} enterpriseName={news.enterpriseName} enterpriseProfileImage={news.enterpriseProfileImage} setPage={setPage} tags={news.tags}/>
                 ))}
                 {news.length === 0 && <p>No news available</p>}
             </div>

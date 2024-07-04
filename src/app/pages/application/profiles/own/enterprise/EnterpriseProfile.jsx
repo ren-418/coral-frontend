@@ -312,7 +312,7 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
                 <HorizontalSlider>
                     {news.map((news, index) => (
                         <div className="card" key={index}>
-                            <NewsOwnCard key={index} title={news.title} image={news.image} description={news.description} date={news.date} editNew={() => {editNewFunction(index, news.id)}}/>
+                            <NewsOwnCard key={index} setPage={setPage} title={news.title} image={news.image} description={news.description} date={news.date} tags={news.tags} editNew={() => {editNewFunction(index, news.id)}}/>
                         </div>
                     ))}
                 </HorizontalSlider>

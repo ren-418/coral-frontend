@@ -85,6 +85,92 @@
         }
     }
 
+    .tag-input{
+        label{
+            color: black;
+            text-align: left;
+            font-weight: bold;
+            width: 100%;
+        }
+        input{
+            background-color: #EAEAEA;
+            color: black;
+            border-radius: 10px;
+            border: none;
+            font-size: 20px;
+            padding: 0 10px;
+            height: 35px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 5px;
+        }
+    
+        input:focus{
+            outline: $dark-blue 2px solid;
+        }
+        .suggestions{
+            width: 100%;
+            max-height: 100px;
+            height: fit-content;
+            overflow-y: scroll; /* Para habilitar el desplazamiento vertical */
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: white;
+            color: black;
+            box-sizing: border-box;
+            border-radius: 10px;
+            .suggestions-container{
+                width: 100%;
+                height: fit-content;
+
+                :first-child{
+                    margin-top: 0;
+                
+                }
+
+                :last-child{
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        .tags{
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            width: 100%;
+            height: fit-content;
+            margin-top: 10px;
+            overflow-x: hidden;
+            flex-wrap: wrap;
+            .tag-button{
+                background-color: #e6e6e6;
+                width: fit-content;
+                display: flex;
+                align-items: center;
+                border-radius: 100px;
+                font-size: 10px;
+                padding: 5px 5px;
+                margin-right: 5px;
+                margin-bottom: 10px;
+
+                button{
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    border: none;
+                    background-color: rgb(194, 194, 194);
+                }
+
+                p{
+                    margin: 0;
+                    margin-right: 5px;
+                    margin-left: 5px;
+                }
+            }
+        }
+    }
+
     .submit{
         background-color: $pink;
         margin-bottom: 50px;

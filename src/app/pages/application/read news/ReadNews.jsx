@@ -13,8 +13,7 @@ function ReadNews({setPage}) {
     return (
         <div className="search-page">
             <div className="search-type">
-                <button onClick={() => setSearchType(0)} className='button' disabled={searchType === 0}>Investment
-                    News
+                <button onClick={() => setSearchType(0)} className='button' disabled={searchType === 0}>Investment News
                 </button>
                 <button onClick={() => setSearchType(1)} className='button' disabled={searchType === 1}>Areas of Interest
                 </button>

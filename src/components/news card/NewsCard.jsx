@@ -2,7 +2,7 @@ import React from 'react'
 import './NewsCard.scss'
 import routes from '../../data/routes.json'
 
-function NewsCard({title, description, image, date, enterpriseId, enterpriseName, enterpriseProfileImage, setPage}) {
+function NewsCard({title, description, image, date, enterpriseId, enterpriseName, enterpriseProfileImage, setPage, tags}) {
 
   const goToEnterprise = () => {
     setPage(routes.enterpriseAsInvestor, enterpriseId)
@@ -21,6 +21,14 @@ function NewsCard({title, description, image, date, enterpriseId, enterpriseName
             <h3>{title}</h3>
             <div className='image' style={{backgroundImage: 'url('+image+')'}}></div>
             <p>{description}</p>
+            {tags && <div className="tags">
+              {tags.map((tag, index) => (
+                <p className="tag" key={index} onClick={()=>{
+                  const route = tag.type === 'enterprise' ? routes.enterpriseAsInvestor : routes.investorAsEnterprise
+                  setPage(route, tag.id)
+                }}>{tag.name}</p>
+              ))}
+            </div>}
         </div>
     </div>
   )

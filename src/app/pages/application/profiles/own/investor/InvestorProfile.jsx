@@ -6,12 +6,19 @@ import HorizontalSlider from '../../../../../../components/horizontal slider/Hor
 import { FaUserEdit } from "react-icons/fa";
 import EnterpriseCard from '../../../../../../components/enterprise card/EnterpriseCard';
 
+import { BiSolidFileExport } from "react-icons/bi";
+
 import Shark from '../../../../../../imgs/global/shark.png'
 import Whale from '../../../../../../imgs/global/whale.png'
 import Fish from '../../../../../../imgs/global/fish.png'
 import Shrimp from '../../../../../../imgs/global/shrimp.png'
 
+import GeneratePdf from '../../../../../../components/generate pdf/GeneratePdf';
+
 function InvestorProfile({edit, logout, deleteUser, setPage}) {
+    const [exportPopUp, setExportPopUp] = useState(false)
+    const [fromDate, setFromDate] = useState('2024-01-01')
+    const [toDate, setToDate] = useState('2025-01-01')
 
     const [investorData, setInvestorData] = useState({
         profilePicture: "",
@@ -30,6 +37,16 @@ function InvestorProfile({edit, logout, deleteUser, setPage}) {
 
     useEffect(() => {
         fetchEnterpriseData()
+        const hoy = new Date();
+        const dia = hoy.getDate().toString().padStart(2, '0'); // Formato de dos dígitos
+        const mes = (hoy.getMonth() + 1).toString().padStart(2, '0'); // Meses en JavaScript van de 0 a 11
+        const año = hoy.getFullYear();
+
+        // Formatea la fecha como YYYY-MM-DD
+        const fechaFormateada = `${año}-${mes}-${dia}`;
+        
+        // Establece la fecha en el estado
+        setToDate(fechaFormateada);
     }, [])
 
     const fetchEnterpriseData = async () => {
@@ -64,6 +81,14 @@ function InvestorProfile({edit, logout, deleteUser, setPage}) {
         }
     }
 
+    const closeExportPopUp = () => {
+        setExportPopUp(false)
+    }
+
+    const openExportPopUp = () => {
+        setExportPopUp(true)
+    }
+
   return (
     <div className='investor-profile-page'>
         <div className="banner">
@@ -76,7 +101,33 @@ function InvestorProfile({edit, logout, deleteUser, setPage}) {
                 <img src={investorTypeImg} />
             </div>
         </div>
+
+        {exportPopUp &&
+        <div className='pop-up-export'>
+            <div className='pop-up-content'>
+                <h2>Export your investments data?</h2>
+                <div className="time-fiter">
+                    <div style={{display: 'flex', flexDirection: 'column', width: '45%'}}>
+                        <label name="from-date">From:</label>
+                        <input type="date" id="start" name="from-date" value={fromDate} min="2000-01-01" max="2030-01-01" onChange={(e)=>{setFromDate(e.target.value)}}/>
+                    </div>
+                    <div style={{display: 'flex', flexDirection: 'column', width: '45%'}}>
+                        <label name="to-date">To:</label>
+                        <input type="date" id="end" name="to-date" value={toDate} min="2000-01-01" max="2030-01-01" onChange={(e)=>{setToDate(e.target.value)}}/>
+                    </div>
+                </div>
+                <div className='buttons'>
+                    <GeneratePdf fromDate={fromDate} toDate={toDate}>Export data</GeneratePdf >
+                    <button className='cancel' onClick={closeExportPopUp}>Cancel</button>
+                </div>
+            </div>
+        </div>
+        }
+
         <div className='investor-data'>
+            <div className="export-pdf">
+                <button onClick={openExportPopUp} style={{border: 'none', borderRadius: '5px'}}><BiSolidFileExport color='rgba(0, 0, 0, 0.5)' size={30}/></button>
+            </div>
             <h1>{investorData.name}</h1>
             <div className='location'>
                 <FaLocationDot color='rgba(0, 0, 0, 0.548)'/>

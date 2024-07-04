@@ -276,7 +276,7 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
         </div>
         <div className='enterprise-data'>
             <div className="export-pdf">
-                <button onClick={openExportPopUp}><BiSolidFileExport color='rgba(0, 0, 0, 0.5)' size={30}/></button>
+                <button onClick={openExportPopUp} style={{border: 'none', borderRadius: '5px'}}><BiSolidFileExport color='rgba(0, 0, 0, 0.5)' size={30}/></button>
             </div>
             <h1>{enterpriseData.name}</h1>
             <div className='location'>

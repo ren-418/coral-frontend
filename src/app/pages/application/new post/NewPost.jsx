@@ -1,9 +1,10 @@
-import React, {useState, useCallback} from 'react'
+import React, {useState, useCallback, useEffect} from 'react'
 import './NewPost.scss'
 import ClassicInput from '../../../../components/classic input/ClassicInput'
 import DefaultPic from '../../../../imgs/global/default-pic.png'
 import PopUp from '../../../../components/popup/PopUp'
 import debounce from 'lodash/debounce';
+import { set } from 'lodash'
 
 function NewPost({}) {
     const [title, setTitle] = useState('')
@@ -13,7 +14,7 @@ function NewPost({}) {
     const [loading, setLoading] = useState(false)
     const [message, setMessage] = useState({});
     const [tags, setTags] = useState([])
-    const [suggestTags, setSuggestTags] = useState([{name: 'Tomás Serra', type: 'investor'}])
+    const [suggestTags, setSuggestTags] = useState([])
     const [tagInput, setTagInput] = useState('')
 
     const [errors, setErrors] = useState({
@@ -97,7 +98,7 @@ function NewPost({}) {
         })
     }
 
-    /*const fetchSuggestions = useCallback(debounce(async (query) => {
+    const fetchSuggestions = useCallback(debounce(async (query) => {
         try {
             const res = await fetch(`http://localhost:9090/api/v1/news/get-prefixes`, {
                 method: 'POST',
@@ -113,12 +114,23 @@ function NewPost({}) {
             const resJson = await res.json();
 
             if (res.ok) {
-                setSuggestions(resJson.prefixesResult);
+                setSuggestTags(resJson.prefixesResult);
+            }
+            else{
+                setSuggestTags([])
             }
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-    }, 500), [tagInput]);*/
+    }, 500), [tagInput]);
+
+    useEffect(() => {
+        if(tagInput !== ''){
+            fetchSuggestions(tagInput)
+        }else{
+            setSuggestTags([])
+        }
+    }, [tagInput])
 
   return (
     <div className='new-post-page'>
@@ -145,7 +157,9 @@ function NewPost({}) {
                 <div className="suggestions-container">
                     {suggestTags.map((suggestion, index) => (
                         <p key={index} onClick={() => {
-                            setTags([...tags, suggestion.name])
+                            if(!tags.includes(suggestion.name)){
+                                setTags([...tags, suggestion.name])
+                            }
                             setTagInput('')
                             setSuggestTags([])
                         }}><b>{suggestion.name}</b> - {suggestion.type}</p>

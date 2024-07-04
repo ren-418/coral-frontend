@@ -68,7 +68,7 @@ function EnterpriseProfileInvestor({enterpriseId, setPage, goBack, userType}) {
             <a className='back-button' onClick={goBack}>{'< Back'}</a>
             <div className='container'>
                 <img src={enterpriseData.profileImage !== "" ? enterpriseData.profileImage : ProfileImage} className='profile-picture' alt="profile picture enterprise"/>
-                {userType === "InvestorUser" && <button className='invest-button' onClick={() => {setOpenPopUp(true)}}>Invest <BiSolidDollarCircle size={25}/> </button>}
+                {(userType === "InvestorUser" && enterpriseData.goal !== enterpriseData.totalCollected) && <button className='invest-button' onClick={() => {setOpenPopUp(true)}}>Invest <BiSolidDollarCircle size={25}/> </button>}
             </div>
             {userType === "InvestorUser" && <button className='chat-button' onClick={chat}><AiFillMessage color='rgba(255, 255, 255, 0.8)'/></button>}
         </div>

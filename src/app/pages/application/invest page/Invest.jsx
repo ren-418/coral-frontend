@@ -11,10 +11,15 @@ function Invest({enterpriseData, setOpenPopUp, setPage}) {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState("")
   const [preferenceId, setPreferenceId] = useState()
+  const [privacity, setPrivacity] = useState(true)
 
   const createPreference = async () => {
     if(investAmount<enterpriseData.minimumInvestment || investAmount === undefined || investAmount === ""){
       setMessage("Invest amount should be greater than minimum investment")
+      return;
+    }
+    if(investAmount > enterpriseData.goal - enterpriseData.totalCollected){
+      setMessage("Invest amount should be less than the remaining amount")
       return;
     }
     try {
@@ -29,6 +34,7 @@ function Invest({enterpriseData, setOpenPopUp, setPage}) {
           title: enterpriseData.name,
           price: investAmount,
           quantity: 1,
+          isPublic: privacity
         }),
       });
       const preference = await res.json();
@@ -56,6 +62,11 @@ function Invest({enterpriseData, setOpenPopUp, setPage}) {
     setOpenPopUp(false)
   }
 
+  const togglePrivacity = () => {
+    setPrivacity(!privacity)
+  }
+
+
   return (
     <div className="invest-pop-up">
       <div className="box">
@@ -71,16 +82,26 @@ function Invest({enterpriseData, setOpenPopUp, setPage}) {
           <>
             <h2>How much do you want to invest?</h2>
             <p>Minimum invest: ${enterpriseData.minimumInvestment}</p>
+            <p style={{marginTop: '10px'}}>Max invest: ${enterpriseData.goal - enterpriseData.totalCollected}</p>
             <ClassicInput label='Investment amount' type='number' placeholder={"$" + enterpriseData.minimumInvestment} onChange={setInvestAmount} value={investAmount} disabled={loading}>Invest amount</ClassicInput>
-            {message !== "" && <p>{message}</p>}
-            <button onClick={set_preference} className='main-button' disabled={loading}>Invest</button>
-            {preferenceId && <Wallet initialization={{ preferenceId: preferenceId, redirectMode: "blank"}} customization={{ texts:{ valueProp: 'smart_option'}}} />}
+            {message !== "" && <p style={{color: 'red'}}>{message}</p>}
+            <div className="row">
+              <p>Notify other investors?</p>
+              <div className='toggle-bg' onClick={togglePrivacity}>
+                <div className={!privacity ? "toggle-button off" : "toggle-button on"}></div>
+              </div>
+            </div>
+            {!preferenceId && <button onClick={set_preference} className='main-button' disabled={loading}>Invest</button>}
+            {preferenceId &&
+            <div className='mp-btn'>
+              <Wallet initialization={{ preferenceId: preferenceId, redirectMode: "self"}} customization={{ texts:{ valueProp: 'smart_option'}}} />
+            </div> }
             <button onClick={close} className='close-button'>Close</button>
           </>
         }
         </div>
       </div>
-  )
+  ) 
 }
 
 export default Invest

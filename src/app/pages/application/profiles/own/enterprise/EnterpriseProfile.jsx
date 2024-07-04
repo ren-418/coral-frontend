@@ -6,13 +6,18 @@ import { FaLocationDot } from 'react-icons/fa6';
 import InvestorCard from '../../../../../../components/investor card/InvestorCard'
 import HorizontalSlider from '../../../../../../components/horizontal slider/HorizontalSlider';
 import { FaUserEdit } from "react-icons/fa";
+import { BiSolidFileExport } from "react-icons/bi";
 
 import DefaultPic from '../../../../../../imgs/global/default-pic.png'
 import NewsOwnCard from '../../../../../../components/news own card/NewsOwnCard';
 
 import ClassicInput from '../../../../../../components/classic input/ClassicInput';
+import GeneratePdf from '../../../../../../components/generate pdf/GeneratePdf';
 
 function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
+    const [exportPopUp, setExportPopUp] = useState(false)
+    const [fromDate, setFromDate] = useState('2024-01-01')
+    const [toDate, setToDate] = useState('2025-01-01')
 
     const [editNew, setEditNew] = useState(-1)
 
@@ -39,6 +44,16 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
     useEffect(() => {
         fetchEnterpriseData()
         fetchNews()
+        const hoy = new Date();
+        const dia = hoy.getDate().toString().padStart(2, '0'); // Formato de dos dígitos
+        const mes = (hoy.getMonth() + 1).toString().padStart(2, '0'); // Meses en JavaScript van de 0 a 11
+        const año = hoy.getFullYear();
+
+        // Formatea la fecha como YYYY-MM-DD
+        const fechaFormateada = `${año}-${mes}-${dia}`;
+        
+        // Establece la fecha en el estado
+        setToDate(fechaFormateada);
     }, [])
 
     const fetchEnterpriseData = async () => {
@@ -201,10 +216,18 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
         }
     }
 
+    const closeExportPopUp = () => {
+        setExportPopUp(false)
+    }
+
+    const openExportPopUp = () => {
+        setExportPopUp(true)
+    }
 
 
   return (
     <div className='enterprise-profile-page'>
+
         {editNew !== -1 && 
         <div className='edit-new-bg'>
             <div className='edit-new-container'>
@@ -221,6 +244,29 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
             </div>
         </div>
         }
+
+        {exportPopUp &&
+        <div className='pop-up-export'>
+            <div className='pop-up-content'>
+                <h2>Export your investors data?</h2>
+                <div className="time-fiter">
+                    <div style={{display: 'flex', flexDirection: 'column', width: '45%'}}>
+                        <label name="from-date">From:</label>
+                        <input type="date" id="start" name="from-date" value={fromDate} min="2000-01-01" max="2030-01-01" onChange={(e)=>{setFromDate(e.target.value)}}/>
+                    </div>
+                    <div style={{display: 'flex', flexDirection: 'column', width: '45%'}}>
+                        <label name="to-date">To:</label>
+                        <input type="date" id="end" name="to-date" value={toDate} min="2000-01-01" max="2030-01-01" onChange={(e)=>{setToDate(e.target.value)}}/>
+                    </div>
+                </div>
+                <div className='buttons'>
+                    <GeneratePdf fromDate={fromDate} toDate={toDate}>Export data</GeneratePdf >
+                    <button className='cancel' onClick={closeExportPopUp}>Cancel</button>
+                </div>
+            </div>
+        </div>
+        }
+
         <div className="banner">
             <button className='edit-btn' onClick={edit}><FaUserEdit/></button>
             <button className='logout-btn' onClick={logout}>Logout</button>
@@ -229,6 +275,9 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
             </div>
         </div>
         <div className='enterprise-data'>
+            <div className="export-pdf">
+                <button onClick={openExportPopUp} style={{border: 'none', borderRadius: '5px'}}><BiSolidFileExport color='rgba(0, 0, 0, 0.5)' size={30}/></button>
+            </div>
             <h1>{enterpriseData.name}</h1>
             <div className='location'>
                 <FaLocationDot color='rgba(0, 0, 0, 0.548)'/>
@@ -240,6 +289,7 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
                 ))}
             </div>
            {enterpriseData.enterpriseType == "Community" && <div className='progress-bar'>
+            <p style={{marginTop: 0, textAlign: 'center'}}><b>Collected: US${enterpriseData.totalCollected}</b></p>
                 <ProgressBar completed={Math.round((enterpriseData.totalCollected/enterpriseData.goal)*100)} bgColor="#ED4E67" width={'100%'}/>
                 <div className='numbers'>
                     <p>US$ 0</p>
@@ -262,7 +312,7 @@ function EnterpriseProfile({edit, logout, deleteUser, setPage}) {
                 <HorizontalSlider>
                     {news.map((news, index) => (
                         <div className="card" key={index}>
-                            <NewsOwnCard key={index} title={news.title} image={news.image} description={news.description} date={news.date} editNew={() => {editNewFunction(index, news.id)}}/>
+                            <NewsOwnCard key={index} setPage={setPage} title={news.title} image={news.image} description={news.description} date={news.date} tags={news.tags} editNew={() => {editNewFunction(index, news.id)}}/>
                         </div>
                     ))}
                 </HorizontalSlider>

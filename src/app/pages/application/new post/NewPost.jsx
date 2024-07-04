@@ -1,8 +1,10 @@
-import React, {useState} from 'react'
+import React, {useState, useCallback, useEffect} from 'react'
 import './NewPost.scss'
 import ClassicInput from '../../../../components/classic input/ClassicInput'
 import DefaultPic from '../../../../imgs/global/default-pic.png'
 import PopUp from '../../../../components/popup/PopUp'
+import debounce from 'lodash/debounce';
+import { set } from 'lodash'
 
 function NewPost({}) {
     const [title, setTitle] = useState('')
@@ -11,6 +13,9 @@ function NewPost({}) {
     const [description, setDescription] = useState('')
     const [loading, setLoading] = useState(false)
     const [message, setMessage] = useState({});
+    const [tags, setTags] = useState([])
+    const [suggestTags, setSuggestTags] = useState([])
+    const [tagInput, setTagInput] = useState('')
 
     const [errors, setErrors] = useState({
         title: "",
@@ -69,6 +74,7 @@ function NewPost({}) {
                 title: title,
                 description: description,
                 image: imageUrl,
+                tags: tags,
                 sessionToken: localStorage.getItem('sessionToken')
             }),
         }).then((res) => {
@@ -77,6 +83,9 @@ function NewPost({}) {
                 setDescription('')
                 setTitle('')
                 setImageBlob(DefaultPic)
+                setTags([])
+                setSuggestTags([])
+                setTagInput('')
             }else{
                 setNewMessage('An error has occurred', 'error')
             }
@@ -88,6 +97,40 @@ function NewPost({}) {
             setLoading(false)
         })
     }
+
+    const fetchSuggestions = useCallback(debounce(async (query) => {
+        try {
+            const res = await fetch(`http://localhost:9090/api/v1/news/get-prefixes`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    sessionToken: localStorage.getItem('sessionToken'),
+                    prefix: query
+                }),
+            });
+
+            const resJson = await res.json();
+
+            if (res.ok) {
+                setSuggestTags(resJson.prefixesResult);
+            }
+            else{
+                setSuggestTags([])
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }, 500), [tagInput]);
+
+    useEffect(() => {
+        if(tagInput !== ''){
+            fetchSuggestions(tagInput)
+        }else{
+            setSuggestTags([])
+        }
+    }, [tagInput])
 
   return (
     <div className='new-post-page'>
@@ -106,6 +149,34 @@ function NewPost({}) {
         </section>
         <section className='description'>
             <ClassicInput type="textarea" placeholder="Description" onChange={setDescription} value={description} errorMessage={errors.description}>Description*</ClassicInput>
+        </section>
+        <section className='tag-input'>
+            <label>Tags (Optional)</label>
+            <input type="text" value={tagInput} onChange={e => setTagInput(e.target.value)} placeholder='Tag an enterprise or investor'/>
+            {suggestTags.length !== 0 && tagInput !== "" && <div className="suggestions">
+                <div className="suggestions-container">
+                    {suggestTags.map((suggestion, index) => (
+                        <p key={index} onClick={() => {
+                            if(!tags.includes(suggestion.name)){
+                                setTags([...tags, suggestion.name])
+                            }
+                            setTagInput('')
+                            setSuggestTags([])
+                        }}><b>{suggestion.name}</b> - {suggestion.type}</p>
+                    ))}
+                </div>
+            </div>}
+            {tags.length !== 0 &&
+            <div className="tags">
+                {tags.map((tag, index) => (
+                    <div className="tag-button" key={index}>
+                        <p key={index}>{tag}</p>
+                        <button onClick={()=>{
+                            setTags(tags.filter((tagFilter, indexFilter) => indexFilter !== index))
+                        }}>x</button>
+                    </div>
+                ))}
+            </div>}
         </section>
         <button className='submit' onClick={submit} disabled={loading}>Post</button>
     </div>

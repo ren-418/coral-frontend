@@ -46,5 +46,22 @@
         h3{
             margin-bottom: 10px;
         }
+
+        .tags{
+            width: 100%;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            flex-wrap: wrap;
+
+            .tag{
+                background-color: #e6e6e6;
+                padding: 5px 10px;
+                border-radius: 100px;
+                margin-right: 10px;
+                margin-bottom: 10px;
+                font-size: 10px;
+            }
+        }
     }
 }

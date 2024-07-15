@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    padding-bottom: 90px;
     h1{
         margin: 0;
         width: 90vw;
@@ -17,5 +17,20 @@
         flex-direction: column;
         align-items: center;
         margin-top: 20px;
+    }
+
+    .load-button{
+        width: 90vw;
+        display: flex;
+        border-radius: 1000px;
+        border: none;
+        background-color: #09495D;
+        justify-content: center;
+        color: white;
+        padding: 10px 0;
+
+        &:active{
+            background-color: #083947;
+        }
     }
 }

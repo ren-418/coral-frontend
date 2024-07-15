@@ -3,6 +3,9 @@ import NewsCard from "../../../../../components/news card/NewsCard";
 
 function LocationNews({setPage}) {
     const [news, setNews] = useState([])
+    const [visibleItems, setVisibleItems] = useState([]);
+    const [loadMore, setLoadMore] = useState(3); // Número de elementos a cargar inicialmente
+    const [message, setMessage] = useState('Loading news...')
 
     useEffect(() => {
         fetchNews()
@@ -24,20 +27,39 @@ function LocationNews({setPage}) {
 
             if(res.ok){
                 setNews(resJson.posts);
+                setVisibleItems(resJson.posts.slice(0, loadMore));
+                if(resJson.posts.length === 0){
+                    setMessage('No news available')
+                }
+            }
+            else{
+                setMessage('No news available')
             }
         }catch(error){
+            setMessage('No news available')
         }
     }
+
+  useEffect(() => {
+      setVisibleItems(news.slice(0, loadMore));
+  }, [loadMore]);
+
+  const handleLoadMore = () => {
+    setLoadMore(loadMore + 3); // Incrementa el número de elementos visibles en 5
+  };
 
     return(
         <div className='read-news-page'>
             <h1>News In Your Location</h1>
             <div className='news-cotainer'>
-                {news.map((news, index) => (
+                {visibleItems.map((news, index) => (
                     <NewsCard key={index} title={news.title} description={news.description} image={news.image} date={news.date} enterpriseId={news.enterpriseUserId} enterpriseName={news.enterpriseName} enterpriseProfileImage={news.enterpriseProfileImage} setPage={setPage} tags={news.tags}/>
                 ))}
-                {news.length === 0 && <p>No news available</p>}
+                {news.length === 0 && <p>{message}</p>}
             </div>
+            {visibleItems.length < news.length && (
+                <button className='load-button' onClick={handleLoadMore}>Load more</button>
+            )}
         </div>
     )
 }
